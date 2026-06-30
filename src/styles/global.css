@@ -24,6 +24,27 @@
   --container-content: 72rem;
 }
 
+@font-face {
+  font-family: "Fraunces";
+  src: url("/fonts/fraunces.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans Thai";
+  src: url("/fonts/noto-sans-thai.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     color-scheme: light;
