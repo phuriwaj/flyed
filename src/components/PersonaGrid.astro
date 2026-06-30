@@ -1,0 +1,15 @@
+---
+interface Persona { label: string; href: string; description: string; icon: string; }
+interface Props { items: Persona[]; }
+const { items } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  {items.map((p) => (
+    <a href={p.href} class="block bg-rice-100 hover:bg-bamboo-100 p-8 rounded-lg text-center transition-colors no-underline">
+      <div class="text-4xl mb-3" aria-hidden="true">{p.icon}</div>
+      <h3 class="font-display text-2xl font-semibold text-teak-900">{p.label}</h3>
+      <p class="mt-2 text-teak-700">{p.description}</p>
+    </a>
+  ))}
+</div>

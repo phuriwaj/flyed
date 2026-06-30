@@ -1,0 +1,13 @@
+---
+interface Badge { name: string; imageSrc: string; href?: string; }
+interface Props { badges: Badge[]; }
+const { badges } = Astro.props;
+---
+
+<div class="flex flex-wrap items-center justify-center gap-8 opacity-80">
+  {badges.map((b) => (
+    <a href={b.href ?? '#'} class="grayscale hover:grayscale-0 transition" aria-label={b.name}>
+      <img src={b.imageSrc} alt={b.name} class="h-12 w-auto" loading="lazy" />
+    </a>
+  ))}
+</div>

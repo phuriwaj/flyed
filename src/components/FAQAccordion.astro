@@ -1,0 +1,27 @@
+---
+interface QA { q: string; a: string; }
+interface Props { items: QA[]; }
+const { items } = Astro.props;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((qa) => ({
+    '@type': 'Question',
+    name: qa.q,
+    acceptedAnswer: { '@type': 'Answer', text: qa.a },
+  })),
+};
+---
+
+<div class="divide-y divide-teak-500/20 border-y border-teak-500/20">
+  {items.map((qa) => (
+    <details class="group py-4">
+      <summary class="flex justify-between items-center cursor-pointer font-medium text-teak-900 list-none">
+        <span>{qa.q}</span>
+        <span class="text-sunset-600 text-2xl transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+      </summary>
+      <p class="mt-3 text-teak-700">{qa.a}</p>
+    </details>
+  ))}
+</div>
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
