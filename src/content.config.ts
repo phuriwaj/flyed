@@ -1,4 +1,5 @@
 import { defineCollection, reference, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 import type { Loader } from 'astro/loaders';
 
 function emptyLoader(): Loader {
@@ -35,7 +36,7 @@ const blog = defineCollection({
 });
 
 const itineraries = defineCollection({
-  loader: emptyLoader(),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/itineraries' }),
   schema: z.object({
     title: z.string(),
     description: z.string().max(200),
@@ -56,7 +57,7 @@ const itineraries = defineCollection({
 });
 
 const destinations = defineCollection({
-  loader: emptyLoader(),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/destinations' }),
   schema: z.object({
     name: z.string(),
     nameTh: z.string(),
@@ -71,7 +72,7 @@ const destinations = defineCollection({
 });
 
 const categories = defineCollection({
-  loader: emptyLoader(),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/categories' }),
   schema: z.object({
     title: z.string(),
     titleTh: z.string(),
