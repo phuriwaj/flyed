@@ -1,0 +1,49 @@
+---
+import { getLocale, getDict } from '@/i18n';
+import Logo from './Logo.astro';
+import LanguageSwitcher from './LanguageSwitcher.tsx';
+
+const locale = getLocale(Astro.url);
+const dict = getDict(locale);
+const path = Astro.url.pathname;
+const isTh = locale === 'th';
+const altPath = isTh ? (path.replace(/^\/th/, '') || '/') : `/th${path === '/' ? '' : path}`;
+
+const navItems = [
+  { href: '/trips', label: dict.nav.trips },
+  { href: '/destinations', label: dict.nav.destinations },
+  { href: '/itineraries', label: dict.nav.itineraries },
+  { href: '/blog', label: dict.nav.blog },
+  { href: '/about', label: dict.nav.about },
+];
+---
+
+<header class="sticky top-0 z-40 bg-rice-50/95 backdrop-blur border-b border-teak-500/10">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
+    <a href={isTh ? '/th' : '/'} class="flex items-center gap-2 no-underline">
+      <Logo />
+      <span class="font-display text-xl font-semibold text-teak-900">flyed</span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-6" aria-label="Primary">
+      {navItems.map((item) => (
+        <a
+          href={isTh ? `/th${item.href === '/' ? '' : item.href}` : item.href}
+          class="text-teak-700 hover:text-bamboo-700 no-underline font-medium"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <LanguageSwitcher client:load currentLocale={locale} altPath={altPath} />
+      <a
+        href={isTh ? '/th/enquire' : '/enquire'}
+        class="hidden md:inline-block bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-4 py-2 rounded-md no-underline"
+      >
+        {dict.nav.enquire}
+      </a>
+    </div>
+  </div>
+</header>

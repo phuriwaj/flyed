@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { t, locales, isLocale } from './index';
+import { t, locales, isLocale, getLocale } from './index';
 
 describe('i18n', () => {
   it('exports en and th locales', () => {
@@ -19,5 +19,14 @@ describe('i18n', () => {
 
   it('falls back to English for missing key', () => {
     expect(t('th', 'nonexistent.key' as any)).toBe('nonexistent.key');
+  });
+
+  describe('getLocale', () => {
+    it('returns en for root path', () => {
+      expect(getLocale(new URL('https://flyed.dev/'))).toBe('en');
+    });
+    it('returns th for /th/* path', () => {
+      expect(getLocale(new URL('https://flyed.dev/th/about'))).toBe('th');
+    });
   });
 });

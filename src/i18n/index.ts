@@ -24,3 +24,8 @@ export function t(locale: Locale, key: string): string {
 export function getDict(locale: Locale) {
   return dictionaries[locale] ?? dictionaries.en;
 }
+
+export function getLocale(url: URL): Locale {
+  const seg = url.pathname.split('/')[1];
+  return isLocale(seg) ? seg : 'en';
+}
