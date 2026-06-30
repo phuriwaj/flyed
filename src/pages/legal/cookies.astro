@@ -1,0 +1,17 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Section from '@/components/Section.astro';
+import { getLocale } from '@/i18n';
+const locale = getLocale(Astro.url);
+const isTh = locale === 'th';
+---
+
+<PageLayout title={isTh ? 'คุกกี้' : 'Cookies'} description="flyed cookie policy">
+  <Section>
+    <div class="prose prose-lg max-w-prose">
+      <h1>{isTh ? 'นโยบายคุกกี้' : 'Cookie policy'}</h1>
+      <p>Last updated: 2026-06-30.</p>
+      <p>Placeholder. List cookies used (analytics, preferences), retention, opt-out instructions.</p>
+    </div>
+  </Section>
+</PageLayout>

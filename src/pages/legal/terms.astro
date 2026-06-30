@@ -1,0 +1,17 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Section from '@/components/Section.astro';
+import { getLocale } from '@/i18n';
+const locale = getLocale(Astro.url);
+const isTh = locale === 'th';
+---
+
+<PageLayout title={isTh ? 'ข้อกำหนด' : 'Terms of service'} description="flyed terms of service">
+  <Section>
+    <div class="prose prose-lg max-w-prose">
+      <h1>{isTh ? 'ข้อกำหนดการให้บริการ' : 'Terms of service'}</h1>
+      <p>Last updated: 2026-06-30.</p>
+      <p>Placeholder. Replace with reviewed legal text. Cover: booking terms, cancellation policy, payment schedule, liability limits, force majeure.</p>
+    </div>
+  </Section>
+</PageLayout>
