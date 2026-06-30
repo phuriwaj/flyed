@@ -1,0 +1,59 @@
+---
+import { getLocale, getDict } from '@/i18n';
+
+const locale = getLocale(Astro.url);
+const dict = getDict(locale);
+const isTh = locale === 'th';
+const prefix = isTh ? '/th' : '';
+
+const categories = [
+  { slug: 'service-learning', label: dict.categories['service-learning'] },
+  { slug: 'cultural-heritage', label: dict.categories['cultural-heritage'] },
+  { slug: 'stem-environmental', label: dict.categories['stem-environmental'] },
+  { slug: 'sports-adventure', label: dict.categories['sports-adventure'] },
+  { slug: 'language-immersion', label: dict.categories['language-immersion'] },
+  { slug: 'history-heritage', label: dict.categories['history-heritage'] },
+];
+
+const destinations = [
+  { slug: 'bangkok', name: 'Bangkok', th: 'กรุงเทพฯ' },
+  { slug: 'chiang-mai', name: 'Chiang Mai', th: 'เชียงใหม่' },
+  { slug: 'chiang-rai', name: 'Chiang Rai', th: 'เชียงราย' },
+  { slug: 'phuket', name: 'Phuket', th: 'ภูเก็ต' },
+  { slug: 'krabi', name: 'Krabi', th: 'กระบี่' },
+  { slug: 'khao-sok', name: 'Khao Sok', th: 'เขาสก' },
+  { slug: 'kanchanaburi', name: 'Kanchanaburi', th: 'กาญจนบุรี' },
+  { slug: 'ayutthaya', name: 'Ayutthaya', th: 'อยุธยา' },
+  { slug: 'koh-tao', name: 'Koh Tao', th: 'เกาะเต่า' },
+  { slug: 'sukhothai', name: 'Sukhothai', th: 'สุโขทัย' },
+  { slug: 'pai', name: 'Pai', th: 'ปาย' },
+  { slug: 'isan', name: 'Isan', th: 'อีสาน' },
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-rice-50 rounded-lg shadow-xl border border-teak-500/10 min-w-[640px]">
+  <div>
+    <h3 class="text-sm uppercase tracking-wider text-teak-500 mb-3">{isTh ? 'หมวดหมู่' : 'Trip Categories'}</h3>
+    <ul class="space-y-2">
+      {categories.map((cat) => (
+        <li>
+          <a href={`${prefix}/trips/${cat.slug}`} class="block text-teak-900 hover:text-bamboo-700 hover:bg-bamboo-100 px-3 py-2 rounded no-underline">
+            {cat.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+  <div>
+    <h3 class="text-sm uppercase tracking-wider text-teak-500 mb-3">{isTh ? 'จุดหมาย' : 'Destinations'}</h3>
+    <ul class="grid grid-cols-2 gap-2">
+      {destinations.map((dest) => (
+        <li>
+          <a href={`${prefix}/destinations/${dest.slug}`} class="block text-teak-700 hover:text-bamboo-700 hover:bg-bamboo-100 px-3 py-2 rounded no-underline text-sm">
+            {isTh ? dest.th : dest.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>
