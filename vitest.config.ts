@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
+      'astro:content': fileURLToPath(new URL('./src/test/astro-content-mock.ts', import.meta.url)),
     },
   },
 });
