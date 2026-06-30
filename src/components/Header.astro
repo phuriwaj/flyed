@@ -37,7 +37,7 @@ const navItems = [
     </nav>
 
     <div class="flex items-center gap-3">
-      <LanguageSwitcher client:load currentLocale={locale} altPath={altPath} />
+      <LanguageSwitcher client:load currentLocale={locale} altPath={altPath} currentPathname={Astro.url.pathname} />
       <a
         href={isTh ? '/th/enquire' : '/enquire'}
         class="hidden md:inline-block bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-4 py-2 rounded-md no-underline"

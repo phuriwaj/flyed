@@ -14,8 +14,8 @@ const year = new Date().getFullYear();
       <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.company}</h4>
       <ul class="space-y-2 text-sm">
         <li><a href={`${prefix}/about`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.about}</a></li>
-        <li><a href={`${prefix}/how-it-works`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'ขั้นตอน' : 'How it works'}</a></li>
-        <li><a href={`${prefix}/safety`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'ความปลอดภัย' : 'Safety'}</a></li>
+        <li><a href={`${prefix}/how-it-works`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.how_it_works}</a></li>
+        <li><a href={`${prefix}/safety`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.safety}</a></li>
         <li><a href={`${prefix}/contact`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.contact}</a></li>
       </ul>
     </div>
@@ -33,17 +33,17 @@ const year = new Date().getFullYear();
     <div>
       <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.legal}</h4>
       <ul class="space-y-2 text-sm">
-        <li><a href={`${prefix}/legal/privacy`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'นโยบายความเป็นส่วนตัว' : 'Privacy'}</a></li>
-        <li><a href={`${prefix}/legal/terms`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'ข้อกำหนด' : 'Terms'}</a></li>
-        <li><a href={`${prefix}/legal/cookies`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'คุกกี้' : 'Cookies'}</a></li>
+        <li><a href={`${prefix}/legal/privacy`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.privacy}</a></li>
+        <li><a href={`${prefix}/legal/terms`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.terms}</a></li>
+        <li><a href={`${prefix}/legal/cookies`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.cookies}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4 class="text-rice-50 font-display text-lg mb-4">{isTh ? 'ติดต่อ' : 'Contact'}</h4>
+      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.contact}</h4>
       <address class="not-italic text-sm space-y-2 text-rice-100">
-        <div>{isTh ? 'กรุงเทพมหานคร' : 'Bangkok HQ'}</div>
-        <div>{isTh ? 'เชียงใหม่' : 'Chiang Mai base'}</div>
+        <div>{dict.footer.bangkok_hq}</div>
+        <div>{dict.footer.chiang_mai_base}</div>
         <a href="mailto:hello@flyed.dev" class="text-rice-100 hover:text-sunset-400">hello@flyed.dev</a>
       </address>
     </div>

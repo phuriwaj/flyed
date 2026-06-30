@@ -13,7 +13,7 @@ const href = destinationPath(slug);
 
 <a href={href} class="group block bg-rice-50 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow no-underline">
   <div class="aspect-[4/3] overflow-hidden">
-    <img src={imageSrc} alt={name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+    <img src={imageSrc} alt={name} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" width={800} height={600} />
   </div>
   <div class="p-5">
     <h3 class="font-display text-2xl font-semibold text-teak-900 group-hover:text-bamboo-700">{name}</h3>

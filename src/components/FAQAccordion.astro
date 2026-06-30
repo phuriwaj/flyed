@@ -13,6 +13,15 @@ const jsonLd = {
 };
 ---
 
+<style is:global>
+  @media (prefers-reduced-motion: reduce) {
+    details summary > span[aria-hidden] {
+      transition: none !important;
+      transform: none !important;
+    }
+  }
+</style>
+
 <div class="divide-y divide-teak-500/20 border-y border-teak-500/20">
   {items.map((qa) => (
     <details class="group py-4">

@@ -60,7 +60,15 @@
     "explore": "Explore",
     "legal": "Legal",
     "trust": "Accreditations",
-    "rights": "All rights reserved."
+    "rights": "All rights reserved.",
+    "how_it_works": "How it works",
+    "safety": "Safety",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "contact": "Contact",
+    "bangkok_hq": "Bangkok HQ",
+    "chiang_mai_base": "Chiang Mai base"
   },
   "common": {
     "read_more": "Read more",
