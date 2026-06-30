@@ -1,0 +1,129 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import ImageCarousel from '@/components/ImageCarousel.tsx';
+import CTASection from '@/components/CTASection.astro';
+import ItineraryCard from '@/components/ItineraryCard.astro';
+import { getLocale, getDict } from '@/i18n';
+import { getCollection, type CollectionEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const itineraries = await getCollection('itineraries');
+  return itineraries
+    .filter((i) => i.data.published)
+    .map((entry) => ({
+      params: { slug: entry.data.slug },
+      props: { entry },
+    }));
+}
+
+interface Props { entry: CollectionEntry<'itineraries'>; }
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+const locale = getLocale(Astro.url);
+const dict = getDict(locale);
+const isTh = locale === 'th';
+const prefix = isTh ? '/th' : '';
+
+const allItineraries = await getCollection('itineraries');
+const related = allItineraries
+  .filter((i) => i.data.published && i.data.slug !== entry.data.slug && i.data.category === entry.data.category)
+  .slice(0, 3);
+
+const galleryImages = (entry.data.gallery ?? []).map((src) => ({ src, alt: entry.data.title }));
+
+const tripLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TouristTrip',
+  name: entry.data.title,
+  description: entry.data.description,
+  offers: {
+    '@type': 'Offer',
+    price: entry.data.priceFrom,
+    priceCurrency: entry.data.currency,
+    availability: 'https://schema.org/InStock',
+  },
+  itinerary: {
+    '@type': 'ItemList',
+    numberOfItems: entry.data.days,
+  },
+};
+---
+
+<PageLayout title={entry.data.title} description={entry.data.description}>
+  <Hero
+    variant="small"
+    headline={entry.data.title}
+    sub={`${entry.data.days} ${isTh ? 'วัน' : 'days'} · ${dict.categories[entry.data.category]} · ${isTh ? 'เริ่มต้น' : 'from'} ${entry.data.currency} ${entry.data.priceFrom.toLocaleString()}`}
+    imageSrc={entry.data.heroImage}
+    imageAlt={entry.data.title}
+  />
+
+  <Section class="py-8">
+    <Breadcrumbs items={[
+      { label: dict.nav.home, href: prefix || '/' },
+      { label: dict.nav.itineraries, href: `${prefix}/itineraries` },
+      { label: entry.data.title },
+    ]} />
+  </Section>
+
+  <Section>
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div class="lg:col-span-3 prose prose-lg max-w-prose">
+        <Content />
+      </div>
+      <aside class="bg-rice-100 p-6 rounded-lg h-fit">
+        <h3 class="font-display text-xl font-semibold mb-4">{isTh ? 'ภาพรวม' : 'At a glance'}</h3>
+        <dl class="space-y-3 text-sm">
+          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'วัน' : 'Days'}</dt><dd class="text-teak-900">{entry.data.days}</dd></div>
+          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'กลุ่ม' : 'Group size'}</dt><dd class="text-teak-900">{entry.data.groupSize.min}–{entry.data.groupSize.max}</dd></div>
+          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'อายุ' : 'Ages'}</dt><dd class="text-teak-900">{entry.data.ageBand.min}–{entry.data.ageBand.max}</dd></div>
+          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'ราคาเริ่มต้น' : 'Price from'}</dt><dd class="text-teak-900 font-semibold">{entry.data.currency} {entry.data.priceFrom.toLocaleString()}</dd></div>
+          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'เดือนเริ่มต้น' : 'Start months'}</dt><dd class="text-teak-900">{entry.data.startMonths.join(', ')}</dd></div>
+          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'หลักสูตร' : 'Curricula'}</dt><dd class="text-teak-900">{entry.data.curricula.join(', ')}</dd></div>
+        </dl>
+        <a href={`${prefix}/enquire?itinerary=${entry.data.slug}`} class="mt-6 block text-center bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-4 py-3 rounded-md no-underline">
+          {isTh ? 'ส่งคำขอสำหรับทริปนี้' : 'Enquire about this trip'}
+        </a>
+      </aside>
+    </div>
+  </Section>
+
+  {galleryImages.length > 0 && (
+    <Section bg="rice-100">
+      <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'แกลเลอรี่' : 'Gallery'}</h2>
+      <ImageCarousel client:visible images={galleryImages} />
+    </Section>
+  )}
+
+  {related.length > 0 && (
+    <Section>
+      <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'ทริปที่คล้ายกัน' : 'Related itineraries'}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {related.map((r) => (
+          <ItineraryCard
+            slug={r.data.slug}
+            title={r.data.title}
+            category={r.data.category}
+            destinations={r.data.destinations.map((d: any) => d.id ?? d)}
+            days={r.data.days}
+            priceFrom={r.data.priceFrom}
+            currency={r.data.currency}
+            heroImage={r.data.heroImage}
+            ageBand={r.data.ageBand}
+          />
+        ))}
+      </div>
+    </Section>
+  )}
+
+  <CTASection
+    headline={isTh ? 'พร้อมจองหรือยัง?' : 'Ready to book?'}
+    primaryCta={{ href: `${prefix}/enquire?itinerary=${entry.data.slug}`, label: dict.nav.enquire }}
+  />
+
+  <script type="application/ld+json" set:html={JSON.stringify(tripLd)} />
+</PageLayout>
