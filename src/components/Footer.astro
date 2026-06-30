@@ -1,0 +1,58 @@
+---
+import { getLocale, getDict } from '@/i18n';
+
+const locale = getLocale(Astro.url);
+const dict = getDict(locale);
+const isTh = locale === 'th';
+const prefix = isTh ? '/th' : '';
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-teak-900 text-rice-50 mt-20">
+  <div class="max-w-7xl mx-auto px-4 md:px-8 py-16 grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div>
+      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.company}</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href={`${prefix}/about`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.about}</a></li>
+        <li><a href={`${prefix}/how-it-works`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'ขั้นตอน' : 'How it works'}</a></li>
+        <li><a href={`${prefix}/safety`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'ความปลอดภัย' : 'Safety'}</a></li>
+        <li><a href={`${prefix}/contact`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.contact}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.explore}</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href={`${prefix}/trips`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.trips}</a></li>
+        <li><a href={`${prefix}/destinations`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.destinations}</a></li>
+        <li><a href={`${prefix}/itineraries`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.itineraries}</a></li>
+        <li><a href={`${prefix}/blog`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.blog}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.legal}</h4>
+      <ul class="space-y-2 text-sm">
+        <li><a href={`${prefix}/legal/privacy`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'นโยบายความเป็นส่วนตัว' : 'Privacy'}</a></li>
+        <li><a href={`${prefix}/legal/terms`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'ข้อกำหนด' : 'Terms'}</a></li>
+        <li><a href={`${prefix}/legal/cookies`} class="text-rice-100 hover:text-sunset-400 no-underline">{isTh ? 'คุกกี้' : 'Cookies'}</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4 class="text-rice-50 font-display text-lg mb-4">{isTh ? 'ติดต่อ' : 'Contact'}</h4>
+      <address class="not-italic text-sm space-y-2 text-rice-100">
+        <div>{isTh ? 'กรุงเทพมหานคร' : 'Bangkok HQ'}</div>
+        <div>{isTh ? 'เชียงใหม่' : 'Chiang Mai base'}</div>
+        <a href="mailto:hello@flyed.dev" class="text-rice-100 hover:text-sunset-400">hello@flyed.dev</a>
+      </address>
+    </div>
+  </div>
+
+  <div class="border-t border-rice-50/10">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-rice-100">
+      <div>© {year} flyed. {dict.footer.rights}</div>
+      <div>{dict.footer.trust}: TAT · TEATA · GSTC</div>
+    </div>
+  </div>
+</footer>
