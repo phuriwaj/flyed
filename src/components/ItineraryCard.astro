@@ -1,0 +1,31 @@
+---
+import { itineraryPath } from '@/utils/links';
+interface Props {
+  slug: string;
+  title: string;
+  category: string;
+  destinations: string[];
+  days: number;
+  priceFrom: number;
+  currency: string;
+  heroImage: string;
+  ageBand: { min: number; max: number };
+}
+const { slug, title, category, destinations, days, priceFrom, currency, heroImage, ageBand } = Astro.props;
+const href = itineraryPath(slug);
+---
+
+<a href={href} class="group block bg-rice-50 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-shadow no-underline">
+  <div class="aspect-[16/10] overflow-hidden">
+    <img src={heroImage} alt={title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async" />
+  </div>
+  <div class="p-5">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="text-xs bg-bamboo-700 text-rice-50 px-2 py-0.5 rounded uppercase tracking-wider">{category}</span>
+      <span class="text-xs text-teak-500">{days} days · ages {ageBand.min}–{ageBand.max}</span>
+    </div>
+    <h3 class="font-display text-xl font-semibold text-teak-900 group-hover:text-bamboo-700">{title}</h3>
+    <div class="mt-2 text-sm text-teak-500">{destinations.join(' · ')}</div>
+    <div class="mt-3 text-sunset-600 font-semibold">From {currency} {priceFrom.toLocaleString()}</div>
+  </div>
+</a>

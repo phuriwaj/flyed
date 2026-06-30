@@ -1,0 +1,19 @@
+---
+import { categoryPath } from '@/utils/links';
+interface Props {
+  slug: string;
+  title: string;
+  description: string;
+  icon: string;
+  itineraryCount: number;
+}
+const { slug, title, description, icon, itineraryCount } = Astro.props;
+const href = categoryPath(slug);
+---
+
+<a href={href} class="block bg-rice-100 hover:bg-bamboo-100 rounded-lg p-6 transition-colors no-underline h-full">
+  <div class="text-3xl mb-3" aria-hidden="true">{icon}</div>
+  <h3 class="font-display text-xl font-semibold text-teak-900">{title}</h3>
+  <p class="mt-2 text-teak-700 text-sm">{description}</p>
+  <div class="mt-4 text-sm text-bamboo-700 font-medium">{itineraryCount} itineraries →</div>
+</a>
