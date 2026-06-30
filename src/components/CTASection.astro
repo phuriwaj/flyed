@@ -1,0 +1,26 @@
+---
+interface Props {
+  headline: string;
+  sub?: string;
+  primaryCta: { href: string; label: string };
+  secondaryCta?: { href: string; label: string };
+}
+const { headline, sub, primaryCta, secondaryCta } = Astro.props;
+---
+
+<section class="bg-sunset-600 text-rice-50 py-16 md:py-20">
+  <div class="max-w-4xl mx-auto px-4 md:px-8 text-center">
+    <h2 class="font-display text-3xl md:text-5xl font-semibold">{headline}</h2>
+    {sub && <p class="mt-4 text-lg text-rice-100 max-w-2xl mx-auto">{sub}</p>}
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <a href={primaryCta.href} class="bg-rice-50 hover:bg-rice-100 text-sunset-600 font-medium px-6 py-3 rounded-md no-underline">
+        {primaryCta.label}
+      </a>
+      {secondaryCta && (
+        <a href={secondaryCta.href} class="border-2 border-rice-50 hover:bg-rice-50 hover:text-sunset-600 text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
+          {secondaryCta.label}
+        </a>
+      )}
+    </div>
+  </div>
+</section>

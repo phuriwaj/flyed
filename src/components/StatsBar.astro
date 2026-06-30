@@ -1,0 +1,28 @@
+---
+import Counter from './Counter.tsx';
+
+interface Stat {
+  value: number;
+  suffix?: string;
+  label: string;
+}
+
+interface Props {
+  stats: Stat[];
+  variant?: 'light' | 'dark';
+}
+
+const { stats, variant = 'light' } = Astro.props;
+const isDark = variant === 'dark';
+---
+
+<div class={`grid grid-cols-2 md:grid-cols-4 gap-8 ${isDark ? 'text-rice-50' : 'text-teak-900'}`}>
+  {stats.map((s) => (
+    <div class="text-center">
+      <div class="font-display text-4xl md:text-5xl font-semibold">
+        <Counter client:visible end={s.value} suffix={s.suffix} />
+      </div>
+      <div class={`mt-2 text-sm uppercase tracking-wider ${isDark ? 'text-rice-100' : 'text-teak-500'}`}>{s.label}</div>
+    </div>
+  ))}
+</div>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  bg?: 'rice-50' | 'rice-100' | 'bamboo-100' | 'teak-900';
+  id?: string;
+  class?: string;
+}
+
+const { bg = 'rice-50', id, class: className = '' } = Astro.props;
+const bgClass = {
+  'rice-50': 'bg-rice-50 text-teak-900',
+  'rice-100': 'bg-rice-100 text-teak-900',
+  'bamboo-100': 'bg-bamboo-100 text-teak-900',
+  'teak-900': 'bg-teak-900 text-rice-50',
+}[bg];
+---
+
+<section id={id} class={`py-20 md:py-28 ${bgClass} ${className}`}>
+  <div class="max-w-6xl mx-auto px-4 md:px-8">
+    <slot />
+  </div>
+</section>
