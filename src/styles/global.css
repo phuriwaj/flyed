@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --color-teak-900: #1F1410;
+  --color-teak-700: #3D2A1F;
+  --color-teak-500: #7A5A40;
+  --color-bamboo-700: #2D4A2B;
+  --color-bamboo-500: #5A7A57;
+  --color-bamboo-100: #E8EFE6;
+  --color-sunset-600: #D96B3D;
+  --color-sunset-400: #E89668;
+  --color-rice-50: #FAF6EE;
+  --color-rice-100: #F2EBDA;
+  --color-gold-500: #C8A24A;
+  --color-ink-900: #0E0A07;
+  --color-alert-red: #B33A2A;
+  --color-info-blue: #3A6FB3;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", sans-serif;
+  --font-thai: "Noto Sans Thai", sans-serif;
+
+  --container-home: 80rem;
+  --container-content: 72rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    font-family: var(--font-body);
+    background-color: var(--color-rice-50);
+    color: var(--color-teak-900);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-teak-900);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  h1 { font-size: clamp(2.5rem, 5vw, 5rem); }
+  h2 { font-size: clamp(1.875rem, 3.5vw, 3.5rem); }
+  h3 { font-size: clamp(1.5rem, 2.5vw, 2.5rem); }
+  h4 { font-size: 1.25rem; }
+
+  a {
+    color: var(--color-info-blue);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-sunset-600);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  :lang(th) {
+    font-family: var(--font-thai);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
