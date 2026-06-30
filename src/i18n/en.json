@@ -1,0 +1,74 @@
+{
+  "nav": {
+    "home": "Home",
+    "trips": "Trips",
+    "destinations": "Destinations",
+    "itineraries": "Itineraries",
+    "schools": "For Schools",
+    "parents": "For Parents",
+    "educators": "For Educators",
+    "about": "About",
+    "blog": "Blog",
+    "enquire": "Plan a Trip",
+    "contact": "Contact"
+  },
+  "categories": {
+    "service-learning": "Service Learning",
+    "cultural-heritage": "Cultural & Heritage",
+    "stem-environmental": "STEM & Environmental",
+    "sports-adventure": "Sports & Adventure",
+    "language-immersion": "Language Immersion",
+    "history-heritage": "History & Heritage"
+  },
+  "home": {
+    "hero_headline": "Educational travel that changes how students see the world.",
+    "hero_sub": "Curriculum-aligned school trips to Thailand — designed by educators, led by locals.",
+    "cta_primary": "Plan a school trip",
+    "cta_secondary": "Browse itineraries",
+    "stats_schools": "Schools hosted",
+    "stats_destinations": "Destinations",
+    "stats_rebook": "Teacher rebook rate",
+    "stats_years": "Years operating"
+  },
+  "enquire": {
+    "title": "Plan your Thailand school trip",
+    "step1": "Tell us about you",
+    "step2": "About your group",
+    "step3": "Subjects & curriculum",
+    "step4": "Destinations",
+    "step5": "Anything else?",
+    "step6": "Submit",
+    "submit": "Send enquiry",
+    "success": "Thanks — we'll be in touch within one business day.",
+    "school_name": "School / organization",
+    "role": "Your role",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "group_size": "Group size",
+    "ages": "Ages / grades",
+    "departure_month": "Departure month",
+    "duration": "Trip length (days)",
+    "subjects": "Subjects of interest",
+    "curriculum": "Curriculum",
+    "destinations": "Destinations",
+    "notes": "Notes / questions"
+  },
+  "footer": {
+    "tagline": "Inbound educational travel to Thailand.",
+    "company": "Company",
+    "explore": "Explore",
+    "legal": "Legal",
+    "trust": "Accreditations",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "read_more": "Read more",
+    "view_all": "View all",
+    "learn_more": "Learn more",
+    "best_for": "Best for",
+    "days": "days",
+    "from": "from",
+    "ages": "ages"
+  }
+}
