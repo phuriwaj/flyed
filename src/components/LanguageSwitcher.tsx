@@ -29,7 +29,7 @@ export default function LanguageSwitcher({ currentLocale, altPath }: Props) {
           </li>
           <li>
             <a
-              href={currentLocale === 'th' ? altPath : `/th${altPath === '/' ? '' : altPath}`}
+              href={altPath}
               className="block px-3 py-2 hover:bg-bamboo-100 no-underline text-teak-900"
             >
               TH
