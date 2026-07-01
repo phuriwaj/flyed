@@ -36,14 +36,20 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
 
 ### 3. DNS records (Cloudflare)
 - [ ] A record: `@` → Cloudflare Pages auto-managed
-- [ ] CNAME: `www` → `flyed.pages.dev` (then 301 redirect apex→www, or vice versa)
+- [ ] CNAME: `www` → `flyed.pages.dev`
 - [ ] Verify with `dig flyed.dev +short`
 
 ### 4. Domain
 - [ ] Custom domain `flyed.dev` added to Pages project
+- [ ] Custom domain `www.flyed.dev` added to Pages project
 - [ ] SSL/TLS: Full (strict)
 - [ ] Always Use HTTPS: ON
 - [ ] Minimum TLS Version: 1.2
+- [ ] www → apex redirect: Cloudflare Dashboard → Rules → Redirect Rules
+  (static `_redirects` file does NOT support absolute URLs — must be configured in dashboard)
+  - Name: `www to apex`
+  - If: hostname eq `www.flyed.dev`
+  - Then: Static redirect → `https://flyed.dev/${uri}` status 301
 
 ## Deploy
 
