@@ -104,7 +104,22 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(result.data),
       });
-      if (!res.ok) throw new Error('Network error');
+      if (!res.ok) {
+        // Surface server-side validation issues so users know which field is
+        // wrong. 422 carries Zod issues; other 4xx/5xx show a generic message.
+        if (res.status === 422) {
+          const body = await res.json().catch(() => null);
+          if (body && Array.isArray(body.issues) && body.issues.length > 0) {
+            const first = body.issues[0];
+            const field = Array.isArray(first?.path) ? first.path.join('.') : '';
+            const msg = first?.message ?? 'Validation failed';
+            setSubmitError(field ? `${field}: ${msg}` : msg);
+            setSubmitting(false);
+            return;
+          }
+        }
+        throw new Error(`HTTP ${res.status}`);
+      }
       setSubmitted(true);
     } catch (e) {
       setSubmitError(locale === 'th' ? 'เกิดข้อผิดพลาด กรุณาลองอีกครั้ง' : 'Something went wrong. Please try again.');
