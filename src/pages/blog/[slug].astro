@@ -60,7 +60,7 @@ const articleLd = {
   description: entry.data.description,
   datePublished: entry.data.pubDate.toISOString(),
   ...(entry.data.updatedDate ? { dateModified: entry.data.updatedDate.toISOString() } : {}),
-  author: { '@type': 'Person', name: author?.data.name ?? 'flyed' },
+  author: { '@type': 'Person', name: author?.data?.name ?? 'flyed' },
   image: new URL(entry.data.heroImage, Astro.site).toString(),
   publisher: { '@type': 'Organization', name: 'flyed', logo: { '@type': 'ImageObject', url: new URL('/logo.svg', Astro.site).toString() } },
 };
