@@ -60,7 +60,7 @@ const badges = [
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
       {team.map((member) => (
         <div class="text-center">
-          <img src={member.data.photo} alt={member.data.name} class="w-32 h-32 rounded-full mx-auto object-cover" loading="lazy" />
+          <img src={member.data.photo} alt={member.data.name} class="w-32 h-32 rounded-full mx-auto object-cover" loading="lazy" decoding="async" width={128} height={128} />
           <h3 class="font-semibold text-teak-900 mt-3">{member.data.name}</h3>
           <p class="text-sm text-teak-700">{member.data.roleTh ?? member.data.role}</p>
         </div>
