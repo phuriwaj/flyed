@@ -1,5 +1,6 @@
 ---
 import { getLocale, getDict } from '@/i18n';
+import NewsletterForm from './NewsletterForm.tsx';
 
 const locale = getLocale(Astro.url);
 const dict = getDict(locale);
@@ -46,6 +47,13 @@ const year = new Date().getFullYear();
         <div>{dict.footer.chiang_mai_base}</div>
         <a href="mailto:hello@flyed.dev" class="text-rice-100 hover:text-sunset-400">hello@flyed.dev</a>
       </address>
+    </div>
+  </div>
+
+  <div class="border-t border-rice-50/10">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div class="text-sm text-rice-100">Get occasional trip ideas in your inbox.</div>
+      <NewsletterForm client:visible />
     </div>
   </div>
 
