@@ -1,0 +1,181 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import StatsBar from '@/components/StatsBar.astro';
+import DestinationCard from '@/components/DestinationCard.astro';
+import CategoryCard from '@/components/CategoryCard.astro';
+import ItineraryCard from '@/components/ItineraryCard.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import TestimonialCard from '@/components/TestimonialCard.astro';
+import CTASection from '@/components/CTASection.astro';
+import BadgeRow from '@/components/BadgeRow.astro';
+import PersonaGrid from '@/components/PersonaGrid.astro';
+import { getDict } from '@/i18n';
+
+export const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const featuredDestinations = [
+  { slug: 'chiang-mai', name: 'Chiang Mai', tagline: 'Service learning in the highlands', imageSrc: '/images/destinations/chiang-mai-hero.jpg' },
+  { slug: 'phuket', name: 'Phuket', tagline: 'Marine science on the Andaman', imageSrc: '/images/destinations/phuket-hero.jpg' },
+  { slug: 'bangkok', name: 'Bangkok', tagline: 'Culture and history in the capital', imageSrc: '/images/destinations/bangkok-hero.jpg' },
+  { slug: 'kanchanaburi', name: 'Kanchanaburi', tagline: 'WWII history along the River Kwai', imageSrc: '/images/destinations/kanchanaburi-hero.jpg' },
+];
+
+const categories = [
+  { slug: 'service-learning', title: dict.categories['service-learning'], description: 'Curriculum-linked volunteer programs', icon: '🤝', itineraryCount: 2 },
+  { slug: 'cultural-heritage', title: dict.categories['cultural-heritage'], description: 'Temples, homestays, Isan villages', icon: '🏛️', itineraryCount: 1 },
+  { slug: 'stem-environmental', title: dict.categories['stem-environmental'], description: 'Marine, jungle, and conservation', icon: '🔬', itineraryCount: 2 },
+  { slug: 'sports-adventure', title: dict.categories['sports-adventure'], description: 'Muay Thai, sailing, diving', icon: '⛵', itineraryCount: 3 },
+  { slug: 'language-immersion', title: dict.categories['language-immersion'], description: 'Thai language and homestay', icon: '🗣️', itineraryCount: 1 },
+  { slug: 'history-heritage', title: dict.categories['history-heritage'], description: 'WWII, Ayutthaya, Mekong history', icon: '📜', itineraryCount: 1 },
+];
+
+const stats = [
+  { value: 240, suffix: '+', label: dict.home.stats_schools },
+  { value: 12, label: dict.home.stats_destinations },
+  { value: 98, suffix: '%', label: dict.home.stats_rebook },
+  { value: 14, label: dict.home.stats_years },
+];
+
+const personas = [
+  { label: "I'm a teacher", href: `${prefix}/educators`, description: 'Plan curriculum-aligned trips', icon: '👩‍🏫' },
+  { label: "I'm a parent", href: `${prefix}/parents`, description: 'See what your child experiences', icon: '👨‍👩‍👧' },
+  { label: 'I run a school', href: `${prefix}/schools`, description: 'Group bookings & risk assessment', icon: '🏫' },
+];
+
+const testimonials = [
+  { quote: 'Our Chiang Mai service week changed how our IB students think about themselves. We rebooked within a month.', author: 'Sarah Whitfield', role: 'Head of Year 11', school: 'Auckland International School', city: 'Auckland', country: 'NZ' },
+  { quote: 'Risk assessment was the cleanest I have seen from an Asian operator. Communication was flawless.', author: 'James O\'Connor', role: 'Vice Principal', school: 'Berkhamsted School', city: 'London', country: 'UK' },
+  { quote: 'Our students came back speaking Thai, cooking pad krapow, and planning their return.', author: 'Anika Patel', role: 'MYP Coordinator', school: 'Singapore American School', city: 'Singapore', country: 'SG' },
+];
+
+const featuredItineraries = [
+  { slug: 'northern-thailand-service-week', title: 'Northern Thailand Service Week', category: 'service', destinations: ['Chiang Mai', 'Chiang Rai'], days: 7, priceFrom: 1850, currency: 'USD', heroImage: '/images/itineraries/northern-thailand-service-week-hero.jpg', ageBand: { min: 14, max: 18 } },
+  { slug: 'andaman-marine-biology', title: 'Marine Biology in the Andaman', category: 'stem', destinations: ['Phuket', 'Krabi'], days: 5, priceFrom: 1450, currency: 'USD', heroImage: '/images/itineraries/andaman-marine-biology-hero.jpg', ageBand: { min: 15, max: 18 } },
+  { slug: 'ayutthaya-kanchanaburi-history-loop', title: 'Ayutthaya & Kanchanaburi History Loop', category: 'history', destinations: ['Ayutthaya', 'Kanchanaburi'], days: 6, priceFrom: 1650, currency: 'USD', heroImage: '/images/itineraries/ayutthaya-kanchanaburi-hero.jpg', ageBand: { min: 14, max: 18 } },
+];
+
+const badges = [
+  { name: 'TAT Licensed', imageSrc: '/images/badges/tat.svg' },
+  { name: 'TEATA Member', imageSrc: '/images/badges/teata.svg' },
+  { name: 'GSTC Certified', imageSrc: '/images/badges/gstc.svg' },
+  { name: 'IATAN Accredited', imageSrc: '/images/badges/iatan.svg' },
+];
+
+// Latest blog posts (placeholder until content collections have data)
+const recentPosts: any[] = [];
+---
+
+<PageLayout title={dict.home.hero_headline} description={dict.home.hero_sub}>
+  <Hero
+    headline={dict.home.hero_headline}
+    sub={dict.home.hero_sub}
+    imageSrc="/images/hero/home-hero.jpg"
+    imageAlt="Students hiking a forested ridge at golden hour in northern Thailand"
+    primaryCta={{ href: `${prefix}/enquire`, label: dict.home.cta_primary }}
+    secondaryCta={{ href: `${prefix}/itineraries`, label: dict.home.cta_secondary }}
+  />
+
+  <Section bg="rice-50">
+    <h2 class="sr-only">คุณคือใคร</h2>
+    <PersonaGrid items={personas} />
+  </Section>
+
+  <Section bg="rice-100">
+    <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-5xl font-semibold">ความไว้วางใจจากโรงเรียนทั่วโลก</h2>
+    </div>
+    <StatsBar stats={stats} />
+    <div class="mt-16">
+      <BadgeRow badges={badges} />
+    </div>
+  </Section>
+
+  <Section>
+    <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-5xl font-semibold">จุดหมายเด่น</h2>
+      <p class="mt-4 text-lg text-teak-700">สี่เมืองที่ครูจองบ่อยที่สุด</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {featuredDestinations.map((d) => <DestinationCard {...d} />)}
+    </div>
+    <div class="text-center mt-12">
+      <a href={`${prefix}/destinations`} class="inline-block border-2 border-bamboo-700 text-bamboo-700 hover:bg-bamboo-700 hover:text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
+        ดูจุดหมายทั้งหมด
+      </a>
+    </div>
+  </Section>
+
+  <Section bg="rice-100">
+    <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-5xl font-semibold">ประเภททริป</h2>
+      <p class="mt-4 text-lg text-teak-700">เลือกตามสิ่งที่นักเรียนจะได้เรียนรู้</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {categories.map((c) => <CategoryCard {...c} />)}
+    </div>
+  </Section>
+
+  <Section>
+    <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-5xl font-semibold">โปรแกรมตัวอย่าง</h2>
+      <p class="mt-4 text-lg text-teak-700">ทริปที่ครูนิยมจอง</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {featuredItineraries.map((i) => <ItineraryCard {...i} />)}
+    </div>
+  </Section>
+
+  <Section bg="bamboo-100">
+    <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-5xl font-semibold">ทำไมต้อง flyed</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {[
+        { title: 'Curriculum-aligned', body: 'IB MYP/DP, IGCSE, A-Level, AP — every trip maps to learning outcomes.' },
+        { title: 'Local expert guides', body: 'Thai educators and licensed guides on every departure.' },
+        { title: '24/7 safety', body: 'In-country operations team and hospital partnerships.' },
+        { title: 'Ethical operations', body: 'GSTC-aligned, fair-pay local teams, animal-welfare standards.' },
+      ].map((b) => (
+        <div class="bg-rice-50 p-6 rounded-lg">
+          <h3 class="font-display text-xl font-semibold text-teak-900">{b.title}</h3>
+          <p class="mt-2 text-teak-700">{b.body}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <div class="text-center mb-12">
+      <h2 class="font-display text-3xl md:text-5xl font-semibold">ครูพูดถึงเรา</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {testimonials.map((t) => <TestimonialCard {...t} />)}
+    </div>
+  </Section>
+
+  <Section bg="teak-900">
+    <StatsBar stats={stats} variant="dark" />
+  </Section>
+
+  {recentPosts.length > 0 && (
+    <Section>
+      <div class="text-center mb-12">
+        <h2 class="font-display text-3xl md:text-5xl font-semibold">อ่านล่าสุด</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {recentPosts.map((p: any) => <BlogCard {...p} />)}
+      </div>
+    </Section>
+  )}
+
+  <CTASection
+    headline="พร้อมวางแผนทริปหรือยัง?"
+    sub="บอกเราเกี่ยวกับกลุ่มของคุณ แล้วเราจะออกแบบทริปให้ภายใน 5 วันทำการ"
+    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
+  />
+</PageLayout>

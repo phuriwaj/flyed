@@ -1,0 +1,68 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import DestinationCard from '@/components/DestinationCard.astro';
+import CTASection from '@/components/CTASection.astro';
+import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
+
+export const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const destinations = await getCollection('destinations');
+
+const grouped: Record<string, typeof destinations> = {
+  North: [],
+  Central: [],
+  Andaman: [],
+  Gulf: [],
+  Northeast: [],
+};
+for (const d of destinations) grouped[d.data.region].push(d);
+
+const regionOrder = ['North', 'Central', 'Andaman', 'Gulf', 'Northeast'] as const;
+const regionLabel: Record<string, { en: string; th: string }> = {
+  North: { en: 'Northern Thailand', th: 'ภาคเหนือ' },
+  Central: { en: 'Central Thailand', th: 'ภาคกลาง' },
+  Andaman: { en: 'Andaman Coast', th: 'ฝั่งอันดามัน' },
+  Gulf: { en: 'Gulf Coast', th: 'ฝั่งอ่าวไทย' },
+  Northeast: { en: 'Northeast (Isan)', th: 'ภาคอีสาน' },
+};
+---
+
+<PageLayout title="จุดหมาย" description="สิบสองเมืองในประเทศไทยสำหรับทริปโรงเรียน">
+  <Hero
+    variant="small"
+    headline="จุดหมาย 12 แห่งในประเทศไทย"
+    sub="จากเทือกเขาทางเหนือถึงเกาะในอ่าวไทย"
+    imageSrc="/images/hero/destinations-hero.jpg"
+    imageAlt="Map mosaic of Thailand destinations"
+  />
+
+  {regionOrder.map((region) => (
+    grouped[region].length > 0 && (
+      <Section>
+        <h2 class="font-display text-3xl font-semibold mb-8">{regionLabel[region].th}</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {grouped[region].map((dest) => (
+            <DestinationCard
+              slug={dest.data.slug}
+              name={dest.data.nameTh ?? dest.data.name}
+              tagline={dest.data.tagline}
+              imageSrc={dest.data.heroImage}
+              bestFor={dest.data.bestFor as unknown as string[]}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  ))}
+
+  <CTASection
+    headline="ยังไม่รู้จะไปไหน?"
+    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
+  />
+</PageLayout>

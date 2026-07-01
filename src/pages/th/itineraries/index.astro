@@ -1,0 +1,51 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import ItineraryCard from '@/components/ItineraryCard.astro';
+import CTASection from '@/components/CTASection.astro';
+import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
+
+export const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const itineraries = await getCollection('itineraries');
+const published = itineraries.filter((i) => i.data.published);
+---
+
+<PageLayout title="โปรแกรมตัวอย่าง" description="โปรแกรมทริปทั้งหมดของเรา">
+  <Hero
+    variant="small"
+    headline="โปรแกรมตัวอย่าง"
+    sub="ทริปที่ครูนิยมจองและปรับแต่ง"
+    imageSrc="/images/hero/itineraries-hero.jpg"
+    imageAlt="Students in a Thai setting"
+  />
+
+  <Section>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {published.map((itin) => (
+        <ItineraryCard
+          slug={itin.data.slug}
+          title={itin.data.title}
+          category={itin.data.category}
+          destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+          days={itin.data.days}
+          priceFrom={itin.data.priceFrom}
+          currency={itin.data.currency}
+          heroImage={itin.data.heroImage}
+          ageBand={itin.data.ageBand}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <CTASection
+    headline="ต้องการทริปแบบกำหนดเอง?"
+    sub="เราสามารถผสมหมวดหมู่และจุดหมายเพื่อสร้างโปรแกรมเฉพาะกลุ่มของคุณ"
+    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
+  />
+</PageLayout>

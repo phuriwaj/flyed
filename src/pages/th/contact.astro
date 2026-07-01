@@ -1,0 +1,68 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import { getDict } from '@/i18n';
+
+export const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const offices = [
+  { city: 'Bangkok HQ', address: 'Sukhumvit Soi 22, Khlong Toei, Bangkok 10110', phone: '+66 2 000 0000' },
+  { city: 'Chiang Mai base', address: '12 Nimmanhaemin Rd, Suthep, Chiang Mai 50200', phone: '+66 53 000 000' },
+];
+---
+
+<PageLayout title="ติดต่อ" description="ข้อมูลติดต่อและที่อยู่">
+  <Hero
+    variant="small"
+    headline="ติดต่อเรา"
+    imageSrc="/images/hero/contact-hero.jpg"
+    imageAlt="Contact us"
+  />
+
+  <Section>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div>
+        <form action={`${prefix}/api/contact`} method="post" class="space-y-4">
+          <label class="block">
+            <span class="text-sm font-medium text-teak-700">ชื่อ</span>
+            <input name="name" required class="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium text-teak-700">อีเมล</span>
+            <input type="email" name="email" required class="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2" />
+          </label>
+          <label class="block">
+            <span class="text-sm font-medium text-teak-700">ข้อความ</span>
+            <textarea name="message" rows={5} required class="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2"></textarea>
+          </label>
+          <button type="submit" class="bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-6 py-3 rounded-md">
+            ส่ง
+          </button>
+        </form>
+      </div>
+      <div class="space-y-8">
+        {offices.map((o) => (
+          <div>
+            <h3 class="font-display text-xl font-semibold text-teak-900">{o.city}</h3>
+            <address class="not-italic text-teak-700 mt-2">
+              <div>{o.address}</div>
+              <div class="mt-1">{o.phone}</div>
+            </address>
+          </div>
+        ))}
+        <div>
+          <h3 class="font-display text-xl font-semibold text-teak-900">ออนไลน์</h3>
+          <ul class="text-teak-700 mt-2 space-y-1">
+            <li><a href="mailto:hello@flyed.dev">hello@flyed.dev</a></li>
+            <li>WhatsApp: +66 81 000 0000</li>
+            <li>Line: @flyed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Section>
+</PageLayout>

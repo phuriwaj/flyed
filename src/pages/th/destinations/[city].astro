@@ -1,0 +1,132 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import ItineraryCard from '@/components/ItineraryCard.astro';
+import Breadcrumbs from '@/components/Breadcrumbs.astro';
+import FAQAccordion from '@/components/FAQAccordion.astro';
+import TestimonialCard from '@/components/TestimonialCard.astro';
+import CTASection from '@/components/CTASection.astro';
+import { getDict } from '@/i18n';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const destinations = await getCollection('destinations');
+  return destinations.map((entry) => ({
+    params: { city: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+interface Props { entry: CollectionEntry<'destinations'>; }
+const { entry } = Astro.props;
+export const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const allItineraries = await getCollection('itineraries');
+const matchingItineraries = allItineraries.filter((itin) =>
+  itin.data.destinations.some((d: any) => (typeof d === 'string' ? d === entry.data.name : d.id === entry.id))
+);
+
+const title = entry.data.nameTh ?? entry.data.name;
+
+const faqs = [
+  { q: 'What is the best time to visit?', a: `${entry.data.bestMonths.join(', ')} are the recommended months.` },
+  { q: 'How do students get there?', a: 'Fly into Bangkok, then domestic connection. We arrange all transfers from airport to first hotel.' },
+  { q: 'Is it safe?', a: 'Yes. Our risk assessment covers this destination specifically and is available on request.' },
+];
+
+const testimonial = {
+  quote: `Our ${title} trip exceeded expectations. The local team made all the difference.`,
+  author: 'David Chen',
+  role: 'Trip Leader',
+  school: 'Hong Kong International School',
+  city: 'Hong Kong',
+  country: 'HK',
+};
+---
+
+<PageLayout title={title} description={entry.data.tagline}>
+  <Hero
+    variant="small"
+    headline={title}
+    sub={entry.data.tagline}
+    imageSrc={entry.data.heroImage}
+    imageAlt={`View of ${title}`}
+  />
+
+  <Section class="py-8">
+    <Breadcrumbs items={[
+      { label: dict.nav.home, href: prefix || '/' },
+      { label: dict.nav.destinations, href: `${prefix}/destinations` },
+      { label: title },
+    ]} />
+  </Section>
+
+  <Section>
+    <div class="prose prose-lg max-w-prose mx-auto">
+      <p class="text-teak-700 text-lg leading-relaxed">{entry.data.intro}</p>
+    </div>
+  </Section>
+
+  <Section bg="rice-100">
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">ทริปที่เราจัดที่นี่</h2>
+    {matchingItineraries.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {matchingItineraries.map((itin) => (
+          <ItineraryCard
+            slug={itin.data.slug}
+            title={itin.data.title}
+            category={itin.data.category}
+            destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+            days={itin.data.days}
+            priceFrom={itin.data.priceFrom}
+            currency={itin.data.currency}
+            heroImage={itin.data.heroImage}
+            ageBand={itin.data.ageBand}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-teak-700">ยังไม่มีโปรแกรมสำเร็จรูป แต่เราสามารถออกแบบให้</p>
+    )}
+  </Section>
+
+  <Section bg="rice-100">
+    <TestimonialCard {...testimonial} />
+  </Section>
+
+  <Section>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">ข้อมูลการเดินทาง</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-rice-100 p-6 rounded-lg">
+        <h3 class="font-semibold text-teak-900 mb-2">ช่วงเวลาที่ดี</h3>
+        <p class="text-teak-700">{entry.data.bestMonths.join(', ')}</p>
+      </div>
+      <div class="bg-rice-100 p-6 rounded-lg">
+        <h3 class="font-semibold text-teak-900 mb-2">ประเภทที่เหมาะ</h3>
+        <div class="flex flex-wrap gap-1">
+          {entry.data.bestFor.map((cat) => (
+            <span class="text-xs bg-bamboo-700 text-rice-50 px-2 py-0.5 rounded">{dict.categories[cat]}</span>
+          ))}
+        </div>
+      </div>
+      <div class="bg-rice-100 p-6 rounded-lg">
+        <h3 class="font-semibold text-teak-900 mb-2">ภูมิภาค</h3>
+        <p class="text-teak-700">{entry.data.region}</p>
+      </div>
+    </div>
+  </Section>
+
+  <Section bg="rice-100">
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">FAQ</h2>
+    <FAQAccordion items={faqs} />
+  </Section>
+
+  <CTASection
+    headline={`วางแผนทริป${title}`}
+    primaryCta={{ href: `${prefix}/enquire?destination=${entry.data.slug}`, label: dict.nav.enquire }}
+  />
+</PageLayout>

@@ -1,0 +1,59 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Section from '@/components/Section.astro';
+import Hero from '@/components/Hero.astro';
+import CategoryCard from '@/components/CategoryCard.astro';
+import FAQAccordion from '@/components/FAQAccordion.astro';
+import CTASection from '@/components/CTASection.astro';
+import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
+
+export const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const categoryEntries = await getCollection('categories');
+
+const faqs = [
+  { q: 'How do you align trips to our curriculum?', a: 'Every itinerary lists mapped learning outcomes for IB MYP, IB DP, IGCSE, A-Level, and AP. We share a curriculum-fit PDF with your department head before booking.' },
+  { q: 'What is the typical group size?', a: 'School groups run 12–40 students plus 2–4 teachers. Below 12 we can still run a private trip with adjusted pricing.' },
+  { q: 'Can we combine categories?', a: 'Yes — many schools pair cultural-heritage with sports-adventure, or service-learning with language-immersion. Our designers will combine them into one itinerary.' },
+  { q: 'When is the best time to travel?', a: 'November through February is dry season across most of Thailand. The Andaman region has a separate May–October monsoon. Each itinerary lists start months.' },
+];
+---
+
+<PageLayout title="ประเภททริป" description="หกประเภทของทริปการศึกษาในประเทศไทย">
+  <Hero
+    variant="small"
+    headline="เลือกทริปตามสิ่งที่นักเรียนจะได้เรียนรู้"
+    sub="หกประเภททริปที่สอดคล้องหลักสูตร"
+    imageSrc="/images/hero/trips-hero.jpg"
+    imageAlt="Students learning together in a Thai temple courtyard"
+  />
+
+  <Section>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {categoryEntries.map((entry) => (
+        <CategoryCard
+          slug={entry.data.slug}
+          title={entry.data.titleTh ?? entry.data.title}
+          description={entry.data.description}
+          icon={entry.data.icon}
+          itineraryCount={entry.data.itineraryCount}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section bg="rice-100">
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">คำถามที่พบบ่อย</h2>
+    <FAQAccordion items={faqs} />
+  </Section>
+
+  <CTASection
+    headline="ไม่แน่ใจว่าจะเลือกอะไร?"
+    sub="บอกเราเกี่ยวกับนักเรียนของคุณ แล้วเราจะแนะนำ"
+    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
+  />
+</PageLayout>

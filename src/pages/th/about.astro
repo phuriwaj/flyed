@@ -1,0 +1,81 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import CTASection from '@/components/CTASection.astro';
+import BadgeRow from '@/components/BadgeRow.astro';
+import { getCollection } from 'astro:content';
+
+export const locale = 'th';
+const isTh = true;
+const prefix = '/th';
+
+const team = await getCollection('team');
+team.sort((a, b) => a.data.order - b.data.order);
+
+const values = [
+  { title: 'Curriculum over tourism', body: 'Every trip is built backward from learning outcomes, not forward from a destination list.' },
+  { title: 'Local expertise', body: 'Our guides are Thai educators, not generic tour operators.' },
+  { title: 'Ethical operations', body: 'Fair pay, animal welfare, GSTC-aligned sustainability, transparent pricing.' },
+  { title: 'Safety first', body: 'Risk-assessed, insured, 24/7 supported. School-administrator approved.' },
+];
+
+const badges = [
+  { name: 'TAT', imageSrc: '/images/badges/tat.svg' },
+  { name: 'TEATA', imageSrc: '/images/badges/teata.svg' },
+  { name: 'GSTC', imageSrc: '/images/badges/gstc.svg' },
+];
+---
+
+<PageLayout title="เกี่ยวกับเรา" description="เรื่องราวของ flyed">
+  <Hero
+    variant="small"
+    headline="เรื่องราวของเรา"
+    sub="ก่อตั้งโดยครูและคนท้องถิ่นในปี 2012"
+    imageSrc="/images/hero/about-hero.jpg"
+    imageAlt="Team photo"
+  />
+
+  <Section>
+    <div class="prose prose-lg max-w-prose mx-auto">
+      <p>flyed was founded in 2012 by Kriengsak Wongthong, a former K-12 teacher in Chiang Mai, and Sarah Whitfield, an education consultant from New Zealand. We started with one Chiang Mai service week for 14 students. Fourteen years later, we've hosted 240+ schools across 30+ countries.</p>
+      <p>We focus on Thailand because depth beats breadth. Our team lives here, our guides are from here, and our partner organizations are vetted annually. When you book with flyed, you're not buying a packaged tour — you're hiring a Thai education team that knows this place.</p>
+    </div>
+  </Section>
+
+  <Section bg="rice-100">
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">ค่านิยม</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {values.map((v) => (
+        <div class="bg-rice-50 p-6 rounded-lg">
+          <h3 class="font-display text-xl font-semibold text-teak-900 mb-2">{v.title}</h3>
+          <p class="text-teak-700 text-sm">{v.body}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-12 text-center">ทีม</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {team.map((member) => (
+        <div class="text-center">
+          <img src={member.data.photo} alt={member.data.name} class="w-32 h-32 rounded-full mx-auto object-cover" loading="lazy" />
+          <h3 class="font-semibold text-teak-900 mt-3">{member.data.name}</h3>
+          <p class="text-sm text-teak-700">{member.data.roleTh ?? member.data.role}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section bg="rice-100">
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">การรับรอง</h2>
+    <BadgeRow badges={badges} />
+  </Section>
+
+  <CTASection
+    headline="มาร่วมงานกับเรา?"
+    sub="เรากำลังมองหาคนที่รักการศึกษาและประเทศไทย"
+    primaryCta={{ href: `${prefix}/contact`, label: 'ติดต่อ' }}
+  />
+</PageLayout>
