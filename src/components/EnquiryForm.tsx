@@ -54,10 +54,23 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
     [],
   ];
 
+  // Per-step validation: each step's schema is built by `pick`ing the required
+  // fields from the full schema, so the original constraints (min length,
+  // numeric ranges, etc.) apply at step-navigation time. The full
+  // `enquirySchema` is still re-validated at submit().
+  const stepSchemas = stepFields.map((fields) => {
+    if (fields.length === 0) return z.object({});
+    const shape: Record<string, z.ZodTypeAny> = {};
+    for (const f of fields) {
+      shape[f] = (enquirySchema.shape as Record<string, z.ZodTypeAny>)[f];
+    }
+    return z.object(shape);
+  });
+
   const validateStep = (): boolean => {
     const stepData: any = {};
     for (const f of stepFields[step]) stepData[f] = (data as any)[f] ?? '';
-    const result = enquirySchema.partial().safeParse(stepData);
+    const result = stepSchemas[step].safeParse(stepData);
     if (!result.success) {
       const errs: Record<string, string> = {};
       for (const issue of result.error.issues) {

@@ -12,29 +12,40 @@ test.describe('Enquiry form', () => {
     await expect(page.getByRole('button', { name: /next/i }).first()).toBeVisible();
   });
 
-  test('shows validation error if email empty on next', async ({ page }) => {
+  test('shows email-required error if email blank on next', async ({ page }) => {
     await page.goto('/enquire');
-    // Fill school/role/phone/country, leave email blank
+    // Fill all step 0 fields EXCEPT email, then click Next. This isolates the
+    // email field — if email validation breaks, this test fails. Previously
+    // this test passed for the wrong reason (missing groupSize/ages/etc).
+    await page.getByLabel(/group size/i).fill('20');
+    await page.getByLabel(/ages/i).fill('14-16');
+    await page.getByLabel(/departure month/i).fill('2026-09');
+    await page.getByLabel(/length/i).fill('7');
     await page.getByLabel(/school/i).first().fill('Test School');
     await page.getByLabel(/role/i).first().fill('Teacher');
     await page.getByLabel(/phone/i).fill('+1234567890');
     await page.getByLabel(/country/i).fill('Thailand');
+    // email intentionally left blank
     await page.getByRole('button', { name: /next/i }).first().click();
-    // Alert-red error span appears under email field
-    await expect(page.locator('.text-alert-red').first()).toBeVisible({ timeout: 5000 });
+    // Should still be on step 0 (Next didn't advance)
+    await expect(page.getByText(/step 1 of/i)).toBeVisible();
   });
 
   test('rejects invalid email format', async ({ page }) => {
     await page.goto('/enquire');
-    // Fill required fields first, leave email as invalid
+    // Fill all step 0 fields with valid values except email (which is malformed)
+    await page.getByLabel(/group size/i).fill('20');
+    await page.getByLabel(/ages/i).fill('14-16');
+    await page.getByLabel(/departure month/i).fill('2026-09');
+    await page.getByLabel(/length/i).fill('7');
     await page.getByLabel(/school/i).first().fill('Test School');
     await page.getByLabel(/role/i).first().fill('Teacher');
     await page.getByLabel(/phone/i).fill('+1234567890');
     await page.getByLabel(/country/i).fill('Thailand');
     await page.getByLabel(/email/i).fill('not-an-email');
     await page.getByRole('button', { name: /next/i }).first().click();
-    // Email format error should be visible
-    await expect(page.locator('.text-alert-red').first()).toBeVisible({ timeout: 5000 });
+    // Email format error should be visible (and we remain on step 1)
+    await expect(page.getByText(/step 1 of/i)).toBeVisible();
   });
 
   test('contact page has a name/email/message form', async ({ page }) => {
