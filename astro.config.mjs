@@ -7,11 +7,13 @@ import sitemap from '@astrojs/sitemap';
 import prefetch from '@astrojs/prefetch';
 import partytown from '@astrojs/partytown';
 import react from '@astrojs/react';
+import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://flyed.dev',
-  output: 'static',
+  output: 'server',
+  adapter: node({ mode: 'standalone' }),
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'th'],
