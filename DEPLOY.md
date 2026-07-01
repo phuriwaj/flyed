@@ -1,0 +1,155 @@
+# flyed Production Launch Runbook
+
+This is the deployment + manual verification checklist for the flyed marketing
+site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
+
+## Pre-launch checklist
+
+### 1. Cloudflare account setup (one-time)
+- [ ] Create Cloudflare account at https://dash.cloudflare.com/sign-up
+- [ ] Add domain `flyed.dev` to Cloudflare (free tier OK)
+- [ ] Update nameservers at registrar to Cloudflare's nameservers
+- [ ] Get Account ID from Cloudflare dashboard (right sidebar)
+- [ ] Create API token: My Profile → API Tokens → Create Token → Edit Cloudflare Pages template
+  - Account: <your account>
+  - Zone Resources: Include → Specific zone → flyed.dev
+  - Account Resources: Include → Specific account → <your account>
+- [ ] In GitHub repo: Settings → Secrets and variables → Actions
+  - Add `CLOUDFLARE_API_TOKEN` (the token above)
+  - Add `CLOUDFLARE_ACCOUNT_ID` (the account ID)
+  - Optional: add `LHCI_TOKEN` for Lighthouse CI public storage upload
+
+### 2. Cloudflare Pages project
+- [ ] Connect GitHub repo `flyed-dev/flyed` to Cloudflare Pages
+- [ ] Build settings:
+  - Framework preset: **Astro**
+  - Build command: `npm run build`
+  - Build output directory: `dist`
+  - Root directory: `/`
+  - Node version: 22
+- [ ] Environment variables (Production):
+  - `RESEND_API_KEY` — set via `wrangler secret put RESEND_API_KEY`
+  - `CRM_WEBHOOK_URL` — set via `wrangler secret put CRM_WEBHOOK_URL`
+  - `PUBLIC_PLAUSIBLE_DOMAIN` — `flyed.dev` (set in dashboard)
+  - `SITE_URL` — `https://flyed.dev`
+  - `NODE_ENV` — `production`
+
+### 3. DNS records (Cloudflare)
+- [ ] A record: `@` → Cloudflare Pages auto-managed
+- [ ] CNAME: `www` → `flyed.pages.dev` (then 301 redirect apex→www, or vice versa)
+- [ ] Verify with `dig flyed.dev +short`
+
+### 4. Domain
+- [ ] Custom domain `flyed.dev` added to Pages project
+- [ ] SSL/TLS: Full (strict)
+- [ ] Always Use HTTPS: ON
+- [ ] Minimum TLS Version: 1.2
+
+## Deploy
+
+```bash
+# From main branch, after all CI passes
+git push origin main
+
+# Cloudflare Pages auto-deploys via the GitHub Actions workflow
+# or via the Cloudflare GitHub App integration
+```
+
+## Post-deploy verification
+
+### 1. Smoke test (manual)
+- [ ] Visit https://flyed.dev — home page hero loads, "5 steps" CTA visible
+- [ ] Click "Enquire" → form step 1 renders
+- [ ] Fill and submit form → success message appears
+- [ ] Check Resend dashboard: email delivered to hello@flyed.dev
+- [ ] Check CRM webhook: payload received
+- [ ] Visit /th — Thai home page renders
+- [ ] Visit /th/about — Thai about page renders
+- [ ] Click language switcher → URL changes prefix
+- [ ] View page source: JSON-LD Organization present
+- [ ] View page source: hreflang alternates present
+- [ ] Open /blog/01-why-thailand-service-learning — article renders
+- [ ] Open /itineraries/andaman-sailing-week — itinerary renders
+- [ ] Click a destination card → /destinations/[city] loads
+- [ ] Open RSS feed at /rss.xml — 20 items present
+- [ ] Open sitemap at /sitemap-index.xml — valid XML
+
+### 2. Lighthouse audit
+- [ ] Open https://pagespeed.web.dev/ → enter https://flyed.dev
+- [ ] Performance ≥ 90 (target), 85 (warning floor)
+- [ ] Accessibility ≥ 95 (error floor)
+- [ ] Best Practices ≥ 90
+- [ ] SEO ≥ 95
+- [ ] Repeat for /blog/01-why-thailand-service-learning
+- [ ] Repeat for /enquire
+
+### 3. Cross-browser smoke
+- [ ] Chrome (desktop + mobile emulation)
+- [ ] Safari (iOS Safari 17+)
+- [ ] Firefox
+- [ ] Edge
+
+### 4. Mobile responsive
+- [ ] 375px width: hero text readable, no horizontal scroll
+- [ ] 768px width: tablet layout correct
+- [ ] 1440px width: desktop layout correct
+- [ ] Touch targets ≥ 44x44px
+- [ ] Form inputs don't trigger zoom on iOS (16px+ font size)
+
+### 5. SEO validation
+- [ ] Google Search Console: add property https://flyed.dev
+- [ ] Submit sitemap: https://flyed.dev/sitemap-index.xml
+- [ ] Request indexing: home, /about, /itineraries/andaman-sailing-week
+- [ ] Check hreflang with: `curl -s https://flyed.dev/ | grep hreflang`
+- [ ] Verify Open Graph: `curl -s https://flyed.dev/ | grep og:image`
+
+### 6. Performance checks
+- [ ] First Contentful Paint < 1.5s on 3G
+- [ ] Largest Contentful Paint < 2.5s
+- [ ] Cumulative Layout Shift < 0.1
+- [ ] Time to Interactive < 3.5s
+- [ ] Total page size < 1MB (excluding images)
+
+## Monitoring
+
+### Cloudflare Analytics
+- [ ] Enable Web Analytics in Pages project settings
+- [ ] Set up email alerts for: error rate > 1%, bandwidth > 50GB/month
+
+### Error tracking
+- [ ] Set up Sentry or similar for /api endpoints
+- [ ] Monitor: 4xx rate, 5xx rate, P95 response time
+
+### Form submission monitoring
+- [ ] Resend dashboard: 100% delivery rate
+- [ ] CRM webhook: success rate
+- [ ] Set up Slack/email alerts for failed submissions
+
+## Rollback
+
+If a deploy breaks production:
+
+```bash
+# Cloudflare Pages: Dashboard → flyed → Deployments → click previous successful deploy → "Rollback to this deploy"
+```
+
+Or via CLI:
+```bash
+wrangler pages deployment list --project-name=flyed
+wrangler pages deployment rollback <deployment-id> --project-name=flyed
+```
+
+## Known post-launch items
+
+- **Legal pages are placeholders** — replace with reviewed-and-approved legal text from counsel
+  (Priority: HIGH, before any paid traffic)
+- **Testimonials are hardcoded inline** on home page — replace with real customer quotes
+  (Priority: MEDIUM, after first 5 customer trips complete)
+- **Real blog post images** are Unsplash CDN-hosted — consider moving to flyed-owned CDN
+  (Priority: LOW, after 6 months of traffic data)
+- **Newsletter provider not wired** — endpoint accepts email, no provider integration
+  (Priority: HIGH, before any newsletter CTA drives traffic)
+- **Image srcset for mobile** could be tuned further based on real-user metrics
+  (Priority: LOW, ongoing)
+- **Zod v3→v5 migration** when Zod 5 ships
+  (Priority: LOW, when stable)
