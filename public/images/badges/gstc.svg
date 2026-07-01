@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <circle cx="60" cy="60" r="56" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+  <text x="60" y="55" text-anchor="middle" font-family="serif" font-size="22" font-weight="700" fill="#1B5E20">GSTC</text>
+  <text x="60" y="75" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#1B5E20">CRITERIA</text>
+  <text x="60" y="92" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#666">GLOBAL SUSTAINABLE TOURISM</text>
+</svg>
