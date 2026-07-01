@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { SEO } from 'astro-seo';
+import Analytics from '@/components/Analytics.astro';
 
 interface Props {
   title: string;
@@ -45,6 +46,8 @@ const orgLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/rss+xml" title="flyed blog" href="/rss.xml" />
+
+    <Analytics />
 
     <SEO
       title={`${title} | ${SITE_NAME}`}

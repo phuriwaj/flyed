@@ -1,0 +1,15 @@
+---
+const host = import.meta.env.PUBLIC_ANALYTICS_HOST;
+if (!host) {
+  // No analytics configured — render nothing
+}
+---
+
+{host && (
+  <script
+    type="text/partytown"
+    src={`${host}/script.js`}
+    data-domain="flyed.dev"
+    defer
+  />
+)}
