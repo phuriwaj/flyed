@@ -1,0 +1,35 @@
+{
+  "ci": {
+    "collect": {
+      "url": [
+        "http://localhost:4321/",
+        "http://localhost:4321/about",
+        "http://localhost:4321/destinations",
+        "http://localhost:4321/itineraries",
+        "http://localhost:4321/blog/2",
+        "http://localhost:4321/blog/01-why-thailand-service-learning",
+        "http://localhost:4321/enquire",
+        "http://localhost:4321/contact",
+        "http://localhost:4321/th",
+        "http://localhost:4321/th/blog/2"
+      ],
+      "numberOfRuns": 1,
+      "settings": {
+        "preset": "desktop",
+        "skipAudits": ["uses-http2", "is-on-https"]
+      }
+    },
+    "assert": {
+      "preset": "lighthouse:recommended",
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.85 }],
+        "categories:accessibility": ["error", { "minScore": 0.95 }],
+        "categories:best-practices": ["warn", { "minScore": 0.90 }],
+        "categories:seo": ["error", { "minScore": 0.95 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage"
+    }
+  }
+}
