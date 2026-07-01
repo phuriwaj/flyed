@@ -10,7 +10,6 @@
 # Legacy paths
 /about-us /about 301
 /contact-us /contact 301
-/trips /trips 301
 
 # Blog pagination page 1 → blog root
 /blog/1 /blog 301
