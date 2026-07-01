@@ -1,8 +1,7 @@
 ---
+export const prerender = true;
 import PageLayout from '@/layouts/PageLayout.astro';
-import { getLocale } from '@/i18n';
-const locale = getLocale(Astro.url);
-const isTh = locale === 'th';
+const isTh = false;
 ---
 
 <PageLayout title={isTh ? 'ไม่พบหน้า' : 'Page not found'} description="404" noindex>

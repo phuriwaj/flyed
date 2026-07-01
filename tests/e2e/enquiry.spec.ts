@@ -26,9 +26,14 @@ test.describe('Enquiry form', () => {
 
   test('rejects invalid email format', async ({ page }) => {
     await page.goto('/enquire');
+    // Fill required fields first, leave email as invalid
+    await page.getByLabel(/school/i).first().fill('Test School');
+    await page.getByLabel(/role/i).first().fill('Teacher');
+    await page.getByLabel(/phone/i).fill('+1234567890');
+    await page.getByLabel(/country/i).fill('Thailand');
     await page.getByLabel(/email/i).fill('not-an-email');
     await page.getByRole('button', { name: /next/i }).first().click();
-    // At least one alert-red message should be visible
+    // Email format error should be visible
     await expect(page.locator('.text-alert-red').first()).toBeVisible({ timeout: 5000 });
   });
 
