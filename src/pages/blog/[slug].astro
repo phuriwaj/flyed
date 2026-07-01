@@ -41,6 +41,14 @@ const relatedPosts = (await getCollection('blog', ({ data }) => !data.draft))
 const relatedItineraries = await Promise.all(
   (entry.data.relatedItineraries ?? []).map(async (ref) => {
     const itin = await getEntry(ref);
+    if (!itin) {
+      // Fail loudly at build time so content typos in relatedItineraries
+      // surface immediately instead of silently dropping the related-trips card.
+      throw new Error(
+        `Blog post "${entry.id}" references missing itinerary "${ref.id}". ` +
+        `Fix the relatedItineraries frontmatter in src/content/blog/${entry.id}.`
+      );
+    }
     return itin;
   })
 );
