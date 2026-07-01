@@ -33,3 +33,8 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # Cloudflare's default for static HTML is "public, max-age=0, must-revalidate"
+  # which is fine for content that changes, but every top-level page is
+  # prerendered and rarely updated. 1 hour with revalidation matches /blog/*,
+  # /itineraries/*, /destinations/* above.
+  Cache-Control: public, max-age=3600, must-revalidate
