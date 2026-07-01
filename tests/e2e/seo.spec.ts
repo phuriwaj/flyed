@@ -28,9 +28,15 @@ test.describe('SEO basics', () => {
 
   test('sitemap is generated', async ({ request }) => {
     const res = await request.get('/sitemap-index.xml');
-    expect(res.status()).toBe(200);
-    const body = await res.text();
-    expect(body).toContain('<sitemapindex');
+    // @astrojs/sitemap only generates during `astro build`, not in dev.
+    // If dev, skip. In CI (production build), assert 200.
+    if (process.env.CI) {
+      expect(res.status()).toBe(200);
+      const body = await res.text();
+      expect(body).toContain('<sitemapindex');
+    } else {
+      test.skip(res.status() !== 200, 'Sitemap only generated in production build');
+    }
   });
 
   test('TH route exists', async ({ page }) => {

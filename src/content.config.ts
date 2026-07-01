@@ -85,7 +85,7 @@ const categories = defineCollection({
 });
 
 const team = defineCollection({
-  loader: emptyLoader(),
+  loader: glob({ pattern: '**/*.md', base: './src/content/team' }),
   schema: z.object({
     name: z.string(),
     role: z.string(),
@@ -97,7 +97,7 @@ const team = defineCollection({
 });
 
 const testimonials = defineCollection({
-  loader: emptyLoader(),
+  loader: glob({ pattern: '**/*.md', base: './src/content/testimonials' }),
   schema: z.object({
     quote: z.string().max(300),
     author: z.string(),
