@@ -11,10 +11,16 @@ import type { GetStaticPathsResult } from 'astro';
 export async function getStaticPaths({ paginate }: { paginate: Function }) {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-  return paginate(posts, { pageSize: 12 }) as GetStaticPathsResult;
+  // Tag filter chips must be GLOBAL across all pagination pages, not derived
+  // from page.data — otherwise /blog and /blog/2 show different chips.
+  const allTags = Array.from(new Set(posts.flatMap((p) => p.data.tags)));
+  return paginate(posts, { pageSize: 12 }).map((entry) => ({
+    ...entry,
+    props: { ...entry.props, allTags },
+  })) as unknown as GetStaticPathsResult;
 }
 
-const { page } = Astro.props as { page: any };
+const { page, allTags } = Astro.props as { page: any; allTags: string[] };
 const locale = getLocale(Astro.url);
 const dict = getDict(locale);
 const isTh = locale === 'th';
@@ -34,8 +40,6 @@ const postsWithMeta = await Promise.all(
   })
 );
 
-const pageData: any[] = page.data;
-const allTags = Array.from(new Set(pageData.flatMap((p) => p.data.tags as string[])));
 const tagChipBase = `${prefix}/blog/tag`;
 ---
 
