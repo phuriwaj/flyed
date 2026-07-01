@@ -96,17 +96,4 @@ const team = defineCollection({
   }),
 });
 
-const testimonials = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/testimonials' }),
-  schema: z.object({
-    quote: z.string().max(300),
-    author: z.string(),
-    role: z.string(),
-    school: z.string(),
-    city: z.string(),
-    country: z.string(),
-    itinerary: reference('itineraries').optional(),
-  }),
-});
-
-export const collections = { blog, itineraries, destinations, categories, team, testimonials };
+export const collections = { blog, itineraries, destinations, categories, team };

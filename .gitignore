@@ -1,5 +1,7 @@
 # Build output
 dist/
+# Wrangler build artifact (generated, not committed)
+dist/**/wrangler.json
 .astro/
 
 # Dependencies
@@ -31,3 +33,7 @@ test-results/
 
 # Astro DB
 .astro/db.sqlite*
+
+# Playwright visual snapshot baselines
+tests/e2e/*-snapshots/
+.wrangler/

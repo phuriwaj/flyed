@@ -58,13 +58,6 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Start preview server
-        run: |
-          npx astro preview --port 4321 &
-          sleep 5
-        env:
-          HOST: 0.0.0.0
-
       - name: Run Playwright tests
         run: npm run test:e2e -- --reporter=line
         env:
@@ -98,8 +91,8 @@ jobs:
 
       - name: Run Lighthouse CI
         run: |
-          npx astro preview --port 4321 &
-          sleep 5
+          npm run preview &
+          npx wait-on http://localhost:4321 --timeout 60000
           LHCI_TOKEN=${{ secrets.LHCI_TOKEN }} npx lhci autorun
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}

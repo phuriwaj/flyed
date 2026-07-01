@@ -13,7 +13,6 @@ export const POST: APIRoute = async ({ request }) => {
   if (!result.success) {
     return new Response(JSON.stringify({ ok: false }), { status: 422 });
   }
-  // Email + log (mirror enquiry implementation, simplified)
-  console.log('Contact form submission:', result.data);
+  // (No logging in production to avoid leaking form data)
   return new Response(JSON.stringify({ ok: true }), { status: 200 });
 };
