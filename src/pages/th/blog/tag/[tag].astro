@@ -1,0 +1,44 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import { getLocale } from '@/i18n';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const tags = Array.from(new Set(posts.flatMap((p) => p.data.tags)));
+  return tags.map((tag) => ({
+    params: { tag: tag.toLowerCase() },
+    props: { tag, posts: posts.filter((p) => p.data.tags.includes(tag as any)) },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+const locale = 'th';
+const isTh = true;
+const prefix = '/th';
+
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const postsWithMeta = posts.map((post) => ({
+  slug: post.id.replace(/\.mdx?$/, ''),
+  title: post.data.title,
+  description: post.data.description,
+  heroImage: post.data.heroImage,
+  pubDate: post.data.pubDate,
+  readingMinutes: Math.max(1, Math.round((post.body?.split(/\s+/).length ?? 0) / 220)),
+}));
+---
+
+<PageLayout title={`${tag} | บล็อก`} description={`โพสต์ที่ติดแท็ก ${tag}`}>
+  <Hero variant="small" headline={`แท็ก: ${tag}`} imageSrc="/images/hero/blog-hero.jpg" imageAlt="blog" />
+  <Section>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {postsWithMeta.map((p) => <BlogCard {...p} />)}
+    </div>
+    <div class="mt-8 text-center">
+      <a href={`${prefix}/blog`} class="text-bamboo-700 hover:underline">← กลับไปบล็อก</a>
+    </div>
+  </Section>
+</PageLayout>

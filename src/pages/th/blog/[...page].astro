@@ -1,0 +1,74 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
+import type { GetStaticPathsResult } from 'astro';
+
+export async function getStaticPaths({ paginate }: { paginate: Function }) {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(posts, { pageSize: 12 }) as GetStaticPathsResult;
+}
+
+const { page } = Astro.props as { page: any };
+const locale = 'th';
+const dict = getDict('th');
+const isTh = true;
+const prefix = '/th';
+
+const postsWithMeta = await Promise.all(
+  page.data.map(async (post: any) => {
+    const wordCount = post.body?.split(/\s+/).length ?? 0;
+    return {
+      slug: post.id.replace(/\.mdx?$/, ''),
+      title: post.data.title,
+      description: post.data.description,
+      heroImage: post.data.heroImage,
+      pubDate: post.data.pubDate,
+      readingMinutes: Math.max(1, Math.round(wordCount / 220)),
+    };
+  })
+);
+
+const pageData: any[] = page.data;
+const allTags = Array.from(new Set(pageData.flatMap((p) => p.data.tags as string[])));
+const tagChipBase = `${prefix}/blog/tag`;
+---
+
+<PageLayout title="บล็อก" description="เรื่องราว เคล็ดลับ และความรู้เกี่ยวกับทริปโรงเรียนในประเทศไทย">
+  <Hero
+    variant="small"
+    headline="บล็อก"
+    sub="เรื่องราว เคล็ดลับ และความรู้"
+    imageSrc="/images/hero/blog-hero.jpg"
+    imageAlt="flyed journal"
+  />
+
+  <Section>
+    {allTags.length > 0 && (
+      <div class="mb-12 flex flex-wrap gap-2">
+        <span class="text-sm text-teak-500 mr-2">หมวดหมู่:</span>
+        {allTags.map((tag: string) => (
+          <a href={`${tagChipBase}/${tag.toLowerCase()}`} class="text-xs bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 text-bamboo-700 px-3 py-1 rounded no-underline">{tag}</a>
+        ))}
+      </div>
+    )}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {postsWithMeta.map((p) => <BlogCard {...p} />)}
+    </div>
+
+    <nav class="mt-12 flex justify-center gap-3" aria-label="Pagination">
+      {page.url.prev && (
+        <a href={page.url.prev} class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline">← ก่อนหน้า</a>
+      )}
+      <span class="px-4 py-2 text-teak-700">{page.currentPage} / {page.lastPage}</span>
+      {page.url.next && (
+        <a href={page.url.next} class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline">ถัดไป →</a>
+      )}
+    </nav>
+  </Section>
+</PageLayout>
