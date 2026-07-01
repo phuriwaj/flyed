@@ -21,7 +21,7 @@ const categoryEnum = z.enum([
 ]);
 
 const blog = defineCollection({
-  loader: emptyLoader(),
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
   schema: z.object({
     title: z.string().max(120),
     description: z.string().max(180),
