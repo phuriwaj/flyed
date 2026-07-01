@@ -1,0 +1,23 @@
+# Cloudflare Pages redirects
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+# Remove trailing slashes (except root) for SEO
+/*/ /:splat 301
+
+# Canonical www → apex
+https://www.flyed.dev/* https://flyed.dev/:splat 301
+
+# Legacy paths (if any)
+/about-us /about 301
+/contact-us /contact 301
+/trips /trips 301
+
+# Blog pagination page 1 → blog root
+/blog/1 /blog 301
+/th/blog/1 /th/blog 301
+
+# API endpoints - no redirects (they need to be handled by Astro SSR worker)
+/api/* /api/:splat 200
+
+# SPA-style fallback for any unrecognized routes (handled by 404.astro)
+/* /404 404

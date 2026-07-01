@@ -1,0 +1,14 @@
+name = "flyed"
+compatibility_date = "2026-06-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "dist"
+
+# Site configuration
+[vars]
+SITE_URL = "https://flyed.dev"
+NODE_ENV = "production"
+
+# Production secrets (set via `wrangler secret put` or Cloudflare dashboard):
+# - RESEND_API_KEY
+# - CRM_WEBHOOK_URL
+# - PUBLIC_PLAUSIBLE_DOMAIN
