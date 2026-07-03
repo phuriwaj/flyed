@@ -35,7 +35,12 @@ test-results/
 .astro/db.sqlite*
 
 # Playwright visual snapshot baselines
-tests/e2e/*-snapshots/
+# These ARE committed — they are the canonical regression baselines for
+# `toHaveScreenshot()` assertions. Do NOT add `tests/e2e/*-snapshots/` back.
+# (Playwright test run output — HTML reports, traces, screenshots from
+# failure-only runs — lives in playwright-report/ and test-results/ which
+# remain ignored.)
+# tests/e2e/*-snapshots/
 .wrangler/
 
 # Decap CMS local cache
