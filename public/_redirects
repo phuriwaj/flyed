@@ -16,3 +16,6 @@
 /th/blog/1 /th/blog 301
 # (No catch-all 404 redirect — Cloudflare Pages serves /404.html from
 # src/pages/404.astro automatically for unmatched paths)
+
+# Decap CMS SPA fallback (loads index.html for all /admin/* paths)
+/admin/*    /admin/index.html    200

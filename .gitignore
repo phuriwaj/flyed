@@ -37,3 +37,6 @@ test-results/
 # Playwright visual snapshot baselines
 tests/e2e/*-snapshots/
 .wrangler/
+
+# Decap CMS local cache
+.decap/

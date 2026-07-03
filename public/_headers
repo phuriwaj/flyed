@@ -38,3 +38,8 @@
   # prerendered and rarely updated. 1 hour with revalidation matches /blog/*,
   # /itineraries/*, /destinations/* above.
   Cache-Control: public, max-age=3600, must-revalidate
+
+# Admin (Decap CMS) — never index, never cache
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: public, max-age=0, must-revalidate
