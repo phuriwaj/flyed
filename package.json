@@ -15,7 +15,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "lhci": "lhci autorun",
-    "check": "astro check && tsc --noEmit"
+    "check": "astro check && tsc --noEmit",
+    "migrate:blog-i18n": "node --experimental-strip-types scripts/migrate-blog-i18n.mts"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.0.2",
@@ -50,6 +51,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@vitest/ui": "^2.1.9",
+    "gray-matter": "^4.0.3",
     "happy-dom": "^15.11.7",
     "vitest": "^2.1.9",
     "wait-on": "^9.0.10"
