@@ -11,14 +11,14 @@ import { getDict } from '@/i18n';
 import { getCollection, type CollectionEntry, render, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blogTh', ({ data }) => !data.draft);
   return posts.map((entry) => ({
-    params: { slug: entry.id.replace(/\.mdx?$/, '') },
+    params: { slug: entry.id.replace(/\.en\.mdx$|\.th\.mdx$|\.mdx?$/, '') },
     props: { entry },
   }));
 }
 
-interface Props { entry: CollectionEntry<'blog'>; }
+interface Props { entry: CollectionEntry<'blogTh'>; }
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
@@ -82,14 +82,14 @@ const articleLd = {
     {entry.data.tags.length > 0 && (
       <div class="max-w-prose mx-auto mt-12 flex flex-wrap gap-2">
         {entry.data.tags.map((tag) => (
-          <a href={`${prefix}/blog/tag/${tag.toLowerCase()}`} class="text-xs bg-bamboo-100 text-bamboo-700 px-3 py-1 rounded no-underline">#{tag}</a>
+          <a href={`${prefix}/blog/tag/${tag.toLowerCase()}`} class="text-fine-print bg-canvas-parchment text-primary px-3 py-1 rounded no-underline">#{tag}</a>
         ))}
       </div>
     )}
   </Section>
 
   {relatedItineraries.length > 0 && (
-    <Section bg="rice-100">
+    <Section bg="parchment">
       <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">ทริปที่เกี่ยวข้อง</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         {relatedItineraries.filter(Boolean).map((itin: any) => (

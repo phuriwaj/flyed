@@ -8,7 +8,7 @@ import { getLocale } from '@/i18n';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blogTh', ({ data }) => !data.draft);
   const tags = Array.from(new Set(posts.flatMap((p) => p.data.tags)));
   return tags.map((tag) => ({
     params: { tag: tag.toLowerCase() },
@@ -23,7 +23,7 @@ const prefix = '/th';
 
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 const postsWithMeta = posts.map((post) => ({
-  slug: post.id.replace(/\.mdx?$/, ''),
+  slug: post.id.replace(/\.en\.mdx$|\.th\.mdx$|\.mdx?$/, ''),
   title: post.data.title,
   description: post.data.description,
   heroImage: post.data.heroImage,
@@ -39,7 +39,7 @@ const postsWithMeta = posts.map((post) => ({
       {postsWithMeta.map((p) => <BlogCard {...p} />)}
     </div>
     <div class="mt-8 text-center">
-      <a href={`${prefix}/blog`} class="text-bamboo-700 hover:underline">← กลับไปบล็อก</a>
+      <a href={`${prefix}/blog`} class="text-primary hover:underline">← กลับไปบล็อก</a>
     </div>
   </Section>
 </PageLayout>

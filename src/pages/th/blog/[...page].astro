@@ -9,7 +9,7 @@ import { getCollection } from 'astro:content';
 import type { GetStaticPathsResult } from 'astro';
 
 export async function getStaticPaths({ paginate }: { paginate: Function }) {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blogTh', ({ data }) => !data.draft);
   posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   // Tag filter chips must be GLOBAL across all pagination pages, not derived
   // from page.data — otherwise /th/blog and /th/blog/2 show different chips.
@@ -30,7 +30,7 @@ const postsWithMeta = await Promise.all(
   page.data.map(async (post: any) => {
     const wordCount = post.body?.split(/\s+/).length ?? 0;
     return {
-      slug: post.id.replace(/\.mdx?$/, ''),
+      slug: post.id.replace(/\.en\.mdx$|\.th\.mdx$|\.mdx?$/, ''),
       title: post.data.title,
       description: post.data.description,
       heroImage: post.data.heroImage,
@@ -55,9 +55,9 @@ const tagChipBase = `${prefix}/blog/tag`;
   <Section>
     {allTags.length > 0 && (
       <div class="mb-12 flex flex-wrap gap-2">
-        <span class="text-sm text-teak-500 mr-2">หมวดหมู่:</span>
+        <span class="text-sm text-ink-muted-60 mr-2">หมวดหมู่:</span>
         {allTags.map((tag: string) => (
-          <a href={`${tagChipBase}/${tag.toLowerCase()}`} class="text-xs bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 text-bamboo-700 px-3 py-1 rounded no-underline">{tag}</a>
+          <a href={`${tagChipBase}/${tag.toLowerCase()}`} class="text-fine-print bg-canvas-parchment hover:bg-ink hover:text-canvas text-primary px-3 py-1 rounded no-underline">{tag}</a>
         ))}
       </div>
     )}
@@ -68,11 +68,11 @@ const tagChipBase = `${prefix}/blog/tag`;
 
     <nav class="mt-12 flex justify-center gap-3" aria-label="Pagination">
       {page.url.prev && (
-        <a href={page.url.prev} class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline">← ก่อนหน้า</a>
+        <a href={page.url.prev} class="px-4 py-2 bg-canvas-parchment hover:bg-ink hover:text-canvas rounded no-underline">← ก่อนหน้า</a>
       )}
-      <span class="px-4 py-2 text-teak-700">{page.currentPage} / {page.lastPage}</span>
+      <span class="px-4 py-2 text-ink-muted-80">{page.currentPage} / {page.lastPage}</span>
       {page.url.next && (
-        <a href={page.url.next} class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline">ถัดไป →</a>
+        <a href={page.url.next} class="px-4 py-2 bg-canvas-parchment hover:bg-ink hover:text-canvas rounded no-underline">ถัดไป →</a>
       )}
     </nav>
   </Section>
