@@ -8,7 +8,7 @@ test.describe('404 page', () => {
 
   test('404 page has heading and back-to-home link', async ({ page }) => {
     await page.goto('/this-page-does-not-exist-xyzzy');
-    await expect(page.getByText('404')).toBeVisible();
+    await expect(page.getByText('404').first()).toBeVisible();
     const homeLink = page.getByRole('link', { name: /home/i }).first();
     await expect(homeLink).toBeVisible();
   });

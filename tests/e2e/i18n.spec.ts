@@ -14,7 +14,9 @@ test.describe('i18n navigation', () => {
   test('switching to Thai locale prefix persists across navigation', async ({ page }) => {
     await page.goto('/th');
     await page.goto('/th/about');
-    await expect(page).toHaveURL(/\/th\/about$/);
+    // python http.server normalizes /th/about -> /th/about/, hence the
+    // optional trailing slash.
+    await expect(page).toHaveURL(/\/th\/about\/?$/);
   });
 
   test('Thai home page has Thai lang attribute or content', async ({ page }) => {

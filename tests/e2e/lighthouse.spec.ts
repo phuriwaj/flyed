@@ -42,7 +42,7 @@ test.describe('Lighthouse-style checks', () => {
   });
 
   test('blog post page has structured data', async ({ page }) => {
-    await page.goto('/blog/01-why-thailand-service-learning');
+    await page.goto('/blog/01-why-thailand-service-learning', { waitUntil: 'domcontentloaded' });
     const ldJson = await page.locator('script[type="application/ld+json"]').first().textContent();
     expect(ldJson).toBeTruthy();
     const parsed = JSON.parse(ldJson!);
