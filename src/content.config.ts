@@ -21,7 +21,22 @@ const categoryEnum = z.enum([
 ]);
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.en.mdx', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string().max(120),
+    description: z.string().max(180),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    author: reference('team'),
+    tags: z.array(z.enum(['Service','Cultural','STEM','Sports','Language','History','Curriculum','Safety','Brand','Educator'])),
+    heroImage: z.string(),
+    relatedItineraries: z.array(reference('itineraries')).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
+const blogTh = defineCollection({
+  loader: glob({ pattern: '**/*.th.mdx', base: './src/content/blog' }),
   schema: z.object({
     title: z.string().max(120),
     description: z.string().max(180),
@@ -96,4 +111,4 @@ const team = defineCollection({
   }),
 });
 
-export const collections = { blog, itineraries, destinations, categories, team };
+export const collections = { blog, blogTh, itineraries, destinations, categories, team };
