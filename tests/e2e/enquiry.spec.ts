@@ -4,7 +4,7 @@ test.describe('Enquiry form', () => {
   test('wizard shows step 1 with school/email fields', async ({ page }) => {
     await page.goto('/enquire');
     await expect(page.getByLabel(/school/i).first()).toBeVisible();
-    await expect(page.getByLabel(/email/i)).toBeVisible();
+    await expect(page.getByLabel(/email/i).first()).toBeVisible();
   });
 
   test('Next button is visible on step 1', async ({ page }) => {
@@ -42,7 +42,7 @@ test.describe('Enquiry form', () => {
     await page.getByLabel(/role/i).first().fill('Teacher');
     await page.getByLabel(/phone/i).fill('+1234567890');
     await page.getByLabel(/country/i).fill('Thailand');
-    await page.getByLabel(/email/i).fill('not-an-email');
+    await page.getByLabel(/email/i).first().fill('not-an-email');
     await page.getByRole('button', { name: /next/i }).first().click();
     // Email format error should be visible (and we remain on step 1)
     await expect(page.getByText(/step 1 of/i)).toBeVisible();

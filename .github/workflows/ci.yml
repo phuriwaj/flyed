@@ -91,8 +91,12 @@ jobs:
 
       - name: Run Lighthouse CI
         run: |
-          npm run preview &
-          npx wait-on http://localhost:4321 --timeout 60000
+          # All audited URLs (see .lighthouserc.json) are prerendered to
+          # dist/client/. The Cloudflare adapter has no Node entry — Astro
+          # preview enters a redirect loop on /enquire — so we serve the
+          # prerendered output with python's stdlib HTTP server.
+          (cd dist/client && python3 -m http.server 4321 --bind 127.0.0.1) &
+          npx wait-on http://127.0.0.1:4321 --timeout 30000
           LHCI_TOKEN=${{ secrets.LHCI_TOKEN }} npx lhci autorun
         env:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}

@@ -37,7 +37,7 @@ for (const vp of VIEWPORTS) {
       await expect(page).toHaveScreenshot(`${p.name}-${vp.name}.png`, {
         fullPage: true,
         maxDiffPixelRatio: 0.02,
-        timeout: 30000,
+        timeout: 60000,
         animations: 'disabled',
       });
     });

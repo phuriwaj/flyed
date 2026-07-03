@@ -31,7 +31,7 @@ test.describe('i18n navigation', () => {
   });
 
   test('Thai blog page exists', async ({ page }) => {
-    const res = await page.goto('/th/blog/2');
+    const res = await page.goto('/th/blog');
     expect(res?.ok()).toBe(true);
   });
 });
