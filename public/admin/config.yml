@@ -52,6 +52,9 @@ collections:
       - { label: "Related itineraries", name: "relatedItineraries", widget: "relation", collection: "itineraries", search_fields: ["title"], value_field: "id", display_fields: ["title"], multiple: true, required: false }
       - { label: "Draft", name: "draft", widget: "boolean", default: false, hint: "Hidden from production when true" }
       - { label: "Body", name: "body", widget: "markdown" }
+    preview_path: "blog/{{slug}}"
+    preview_path_date_field: "pubDate"
+    preview_path_date_format: "YYYY-MM-DD"
 
   - name: "blog-th"
     label: "Blog (ไทย)"
@@ -76,6 +79,9 @@ collections:
       - { label: "ทริปที่เกี่ยวข้อง (Related itineraries)", name: "relatedItineraries", widget: "relation", collection: "itineraries", search_fields: ["title"], value_field: "id", display_fields: ["title"], multiple: true, required: false }
       - { label: "ฉบับร่าง (Draft)", name: "draft", widget: "boolean", default: false, hint: "ซ่อนจากเว็บไซต์เมื่อเปิดใช้" }
       - { label: "เนื้อหา (Body)", name: "body", widget: "markdown" }
+    preview_path: "blog/{{slug}}"
+    preview_path_date_field: "pubDate"
+    preview_path_date_format: "YYYY-MM-DD"
 
   - name: "team"
     label: "Team"

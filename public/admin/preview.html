@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>flyed CMS — Preview</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; height: 100vh; display: flex; flex-direction: column; }
+      .preview-banner { padding: 8px 12px; background: #fef3c7; color: #78350f; font-size: 13px; border-bottom: 1px solid #fbbf24; flex-shrink: 0; }
+      .preview-banner code { background: rgba(0,0,0,0.05); padding: 1px 4px; border-radius: 3px; }
+      .preview-frame { width: 100%; flex-grow: 1; border: 0; background: #fff; }
+      .preview-loading { display: flex; align-items: center; justify-content: center; height: 100%; color: #6b7280; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <div class="preview-banner" id="banner">Loading preview…</div>
+    <iframe id="frame" class="preview-frame" title="Post preview"></iframe>
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search);
+        var branch = params.get('branch') || 'main';
+        var slug = params.get('slug') || '';
+        var locale = params.get('locale') || 'en';
+
+        // Strip any file extension Decap might pass in the slug
+        var cleanSlug = slug.replace(/\.(en|th)\.mdx?$/, '').replace(/\.mdx?$/, '');
+
+        var previewUrl;
+        if (branch === 'main' || !branch) {
+          previewUrl = 'https://flyed.dev/blog/' + cleanSlug;
+        } else {
+          // CF Pages branch deploy format: <branch>.<project>.pages.dev
+          // Branch names from Decap may have slashes; replace with -- for subdomain
+          var safeBranch = branch.replace(/\//g, '--');
+          previewUrl = 'https://' + safeBranch + '--flyed-dev.pages.dev/blog/' + cleanSlug;
+        }
+
+        var frame = document.getElementById('frame');
+        var banner = document.getElementById('banner');
+
+        banner.innerHTML = branch === 'main'
+          ? 'Live site: <code>main</code> branch'
+          : 'Preview: <code>' + branch + '</code> — first load may take 30–60s while CF Pages deploys';
+
+        frame.src = previewUrl;
+
+        frame.addEventListener('load', function () {
+          try {
+            // Detect 404 in iframe
+            var title = frame.contentDocument && frame.contentDocument.title;
+            if (title && /404|not found/i.test(title)) {
+              banner.innerHTML = 'Page not found at <code>' + previewUrl + '</code> — has the branch deployed yet?';
+              banner.style.background = '#fee2e2';
+              banner.style.color = '#7f1d1d';
+            }
+          } catch (e) {
+            // Cross-origin; can't inspect. Assume success.
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
