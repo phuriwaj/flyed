@@ -13,12 +13,25 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:4321',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  webServer: process.env.CI
+    ? // In CI the GitHub Actions workflow already serves the prerendered
+      // dist/client/ on 127.0.0.1:4321 (see .github/workflows/ci.yml).
+      // Reuse that server instead of starting `npm run dev`, which has a
+      // "Invalid hook call" failure inside workerd for pages containing
+      // React components (e.g. /about renders <LanguageSwitcher/>).
+      {
+        command: 'echo "reusing existing server on 127.0.0.1:4321"',
+        url: 'http://127.0.0.1:4321',
+        reuseExistingServer: true,
+        timeout: 10_000,
+      }
+    : // Locally, fall back to `npm run dev` for the dev workflow.
+      {
+        command: 'npm run dev',
+        url: 'http://localhost:4321',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120_000,
+      },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
