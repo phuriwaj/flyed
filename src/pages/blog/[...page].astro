@@ -14,7 +14,7 @@ export async function getStaticPaths({ paginate }: { paginate: Function }) {
   // Tag filter chips must be GLOBAL across all pagination pages, not derived
   // from page.data — otherwise /blog and /blog/2 show different chips.
   const allTags = Array.from(new Set(posts.flatMap((p) => p.data.tags)));
-  return paginate(posts, { pageSize: 12 }).map((entry) => ({
+  return paginate(posts, { pageSize: 12 }).map((entry: any) => ({
     ...entry,
     props: { ...entry.props, allTags },
   })) as unknown as GetStaticPathsResult;

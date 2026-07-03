@@ -25,6 +25,9 @@ import cloudflare from '@astrojs/cloudflare';
 const th404Copy = () => ({
   name: 'th-404-copy',
   hooks: {
+    /**
+     * @param {{ dir: URL }} hook
+     */
     'astro:build:done': async ({ dir }) => {
       const src = fileURLToPath(new URL('./th/404/index.html', dir));
       const dst = fileURLToPath(new URL('./th/404.html', dir));
