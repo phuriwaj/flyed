@@ -40,3 +40,7 @@ tests/e2e/*-snapshots/
 
 # Decap CMS local cache
 .decap/
+
+# graphify skill output (chunked knowledge-graph artifacts)
+/graphify-out/
+/src/graphify-out/
