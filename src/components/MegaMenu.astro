@@ -31,13 +31,13 @@ const destinations = [
 ];
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-rice-50 rounded-lg shadow-xl border border-teak-500/10 min-w-[640px]">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-canvas border border-hairline rounded-lg min-w-[640px]">
   <div>
-    <h3 class="text-sm uppercase tracking-wider text-teak-500 mb-3">{isTh ? 'หมวดหมู่' : 'Trip Categories'}</h3>
-    <ul class="space-y-2">
+    <h3 class="text-caption-strong uppercase tracking-wider text-ink-muted-60 mb-3">{isTh ? 'หมวดหมู่' : 'Trip Categories'}</h3>
+    <ul>
       {categories.map((cat) => (
         <li>
-          <a href={`${prefix}/trips/${cat.slug}`} class="block text-teak-900 hover:text-bamboo-700 hover:bg-bamboo-100 px-3 py-2 rounded no-underline">
+          <a href={`${prefix}/trips/${cat.slug}`} class="block text-body-strong text-ink hover:text-primary px-3 py-2 rounded-xs no-underline">
             {cat.label}
           </a>
         </li>
@@ -45,11 +45,11 @@ const destinations = [
     </ul>
   </div>
   <div>
-    <h3 class="text-sm uppercase tracking-wider text-teak-500 mb-3">{isTh ? 'จุดหมาย' : 'Destinations'}</h3>
-    <ul class="grid grid-cols-2 gap-2">
+    <h3 class="text-caption-strong uppercase tracking-wider text-ink-muted-60 mb-3">{isTh ? 'จุดหมาย' : 'Destinations'}</h3>
+    <ul class="grid grid-cols-2 gap-1">
       {destinations.map((dest) => (
         <li>
-          <a href={`${prefix}/destinations/${dest.slug}`} class="block text-teak-700 hover:text-bamboo-700 hover:bg-bamboo-100 px-3 py-2 rounded no-underline text-sm">
+          <a href={`${prefix}/destinations/${dest.slug}`} class="block text-button-utility text-ink-muted-80 hover:text-primary px-3 py-2 rounded-xs no-underline">
             {isTh ? dest.th : dest.name}
           </a>
         </li>

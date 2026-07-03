@@ -76,17 +76,17 @@ const tripLd = {
       <div class="lg:col-span-3 prose prose-lg max-w-prose">
         <Content />
       </div>
-      <aside class="bg-rice-100 p-6 rounded-lg h-fit">
+      <aside class="bg-canvas-parchment p-6 rounded-lg h-fit">
         <h3 class="font-display text-xl font-semibold mb-4">{isTh ? 'ภาพรวม' : 'At a glance'}</h3>
         <dl class="space-y-3 text-sm">
-          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'วัน' : 'Days'}</dt><dd class="text-teak-900">{entry.data.days}</dd></div>
-          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'กลุ่ม' : 'Group size'}</dt><dd class="text-teak-900">{entry.data.groupSize.min}–{entry.data.groupSize.max}</dd></div>
-          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'อายุ' : 'Ages'}</dt><dd class="text-teak-900">{entry.data.ageBand.min}–{entry.data.ageBand.max}</dd></div>
-          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'ราคาเริ่มต้น' : 'Price from'}</dt><dd class="text-teak-900 font-semibold">{entry.data.currency} {entry.data.priceFrom.toLocaleString()}</dd></div>
-          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'เดือนเริ่มต้น' : 'Start months'}</dt><dd class="text-teak-900">{entry.data.startMonths.join(', ')}</dd></div>
-          <div><dt class="font-semibold text-teak-500 uppercase">{isTh ? 'หลักสูตร' : 'Curricula'}</dt><dd class="text-teak-900">{entry.data.curricula.join(', ')}</dd></div>
+          <div><dt class="font-semibold text-ink-muted-60 uppercase">{isTh ? 'วัน' : 'Days'}</dt><dd class="text-ink">{entry.data.days}</dd></div>
+          <div><dt class="font-semibold text-ink-muted-60 uppercase">{isTh ? 'กลุ่ม' : 'Group size'}</dt><dd class="text-ink">{entry.data.groupSize.min}–{entry.data.groupSize.max}</dd></div>
+          <div><dt class="font-semibold text-ink-muted-60 uppercase">{isTh ? 'อายุ' : 'Ages'}</dt><dd class="text-ink">{entry.data.ageBand.min}–{entry.data.ageBand.max}</dd></div>
+          <div><dt class="font-semibold text-ink-muted-60 uppercase">{isTh ? 'ราคาเริ่มต้น' : 'Price from'}</dt><dd class="text-ink font-semibold">{entry.data.currency} {entry.data.priceFrom.toLocaleString()}</dd></div>
+          <div><dt class="font-semibold text-ink-muted-60 uppercase">{isTh ? 'เดือนเริ่มต้น' : 'Start months'}</dt><dd class="text-ink">{entry.data.startMonths.join(', ')}</dd></div>
+          <div><dt class="font-semibold text-ink-muted-60 uppercase">{isTh ? 'หลักสูตร' : 'Curricula'}</dt><dd class="text-ink">{entry.data.curricula.join(', ')}</dd></div>
         </dl>
-        <a href={`${prefix}/enquire?itinerary=${entry.data.slug}`} class="mt-6 block text-center bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-4 py-3 rounded-md no-underline">
+        <a href={`${prefix}/enquire?itinerary=${entry.data.slug}`} class="mt-6 block text-center bg-primary hover:bg-primary-hover text-canvas font-normal px-4 py-3 rounded-pill no-underline">
           {isTh ? 'ส่งคำขอสำหรับทริปนี้' : 'Enquire about this trip'}
         </a>
       </aside>
@@ -94,7 +94,7 @@ const tripLd = {
   </Section>
 
   {galleryImages.length > 0 && (
-    <Section bg="rice-100">
+    <Section bg="parchment">
       <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'แกลเลอรี่' : 'Gallery'}</h2>
       <ImageCarousel client:visible images={galleryImages} />
     </Section>

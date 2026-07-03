@@ -44,13 +44,13 @@ const badges = [
     </div>
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">ค่านิยม</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {values.map((v) => (
-        <div class="bg-rice-50 p-6 rounded-lg">
-          <h3 class="font-display text-xl font-semibold text-teak-900 mb-2">{v.title}</h3>
-          <p class="text-teak-700 text-sm">{v.body}</p>
+        <div class="bg-canvas p-6 rounded-lg">
+          <h3 class="font-display text-xl font-semibold text-ink mb-2">{v.title}</h3>
+          <p class="text-ink-muted-80 text-sm">{v.body}</p>
         </div>
       ))}
     </div>
@@ -62,14 +62,14 @@ const badges = [
       {team.map((member) => (
         <div class="text-center">
           <img src={member.data.photo} alt={member.data.name} class="w-32 h-32 rounded-full mx-auto object-cover" loading="lazy" decoding="async" width={128} height={128} />
-          <h3 class="font-semibold text-teak-900 mt-3">{member.data.name}</h3>
-          <p class="text-sm text-teak-700">{member.data.roleTh ?? member.data.role}</p>
+          <h3 class="font-semibold text-ink mt-3">{member.data.name}</h3>
+          <p class="text-sm text-ink-muted-80">{member.data.roleTh ?? member.data.role}</p>
         </div>
       ))}
     </div>
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8 text-center">การรับรอง</h2>
     <BadgeRow badges={badges} />
   </Section>

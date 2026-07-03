@@ -9,56 +9,56 @@ const prefix = isTh ? '/th' : '';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-teak-900 text-rice-50 mt-20">
+<footer class="bg-canvas-parchment text-ink-muted-80 mt-20">
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-16 grid grid-cols-2 md:grid-cols-4 gap-8">
     <div>
-      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.company}</h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href={`${prefix}/about`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.about}</a></li>
-        <li><a href={`${prefix}/how-it-works`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.how_it_works}</a></li>
-        <li><a href={`${prefix}/safety`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.safety}</a></li>
-        <li><a href={`${prefix}/contact`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.contact}</a></li>
+      <h4 class="text-caption-strong text-ink mb-3">{dict.footer.company}</h4>
+      <ul>
+        <li><a href={`${prefix}/about`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.nav.about}</a></li>
+        <li><a href={`${prefix}/how-it-works`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.footer.how_it_works}</a></li>
+        <li><a href={`${prefix}/safety`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.footer.safety}</a></li>
+        <li><a href={`${prefix}/contact`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.nav.contact}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.explore}</h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href={`${prefix}/trips`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.trips}</a></li>
-        <li><a href={`${prefix}/destinations`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.destinations}</a></li>
-        <li><a href={`${prefix}/itineraries`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.itineraries}</a></li>
-        <li><a href={`${prefix}/blog`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.nav.blog}</a></li>
+      <h4 class="text-caption-strong text-ink mb-3">{dict.footer.explore}</h4>
+      <ul>
+        <li><a href={`${prefix}/trips`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.nav.trips}</a></li>
+        <li><a href={`${prefix}/destinations`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.nav.destinations}</a></li>
+        <li><a href={`${prefix}/itineraries`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.nav.itineraries}</a></li>
+        <li><a href={`${prefix}/blog`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.nav.blog}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.legal}</h4>
-      <ul class="space-y-2 text-sm">
-        <li><a href={`${prefix}/legal/privacy`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.privacy}</a></li>
-        <li><a href={`${prefix}/legal/terms`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.terms}</a></li>
-        <li><a href={`${prefix}/legal/cookies`} class="text-rice-100 hover:text-sunset-400 no-underline">{dict.footer.cookies}</a></li>
+      <h4 class="text-caption-strong text-ink mb-3">{dict.footer.legal}</h4>
+      <ul>
+        <li><a href={`${prefix}/legal/privacy`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.footer.privacy}</a></li>
+        <li><a href={`${prefix}/legal/terms`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.footer.terms}</a></li>
+        <li><a href={`${prefix}/legal/cookies`} class="text-body text-ink-muted-80 hover:text-ink no-underline block py-1">{dict.footer.cookies}</a></li>
       </ul>
     </div>
 
     <div>
-      <h4 class="text-rice-50 font-display text-lg mb-4">{dict.footer.contact}</h4>
-      <address class="not-italic text-sm space-y-2 text-rice-100">
+      <h4 class="text-caption-strong text-ink mb-3">{dict.footer.contact}</h4>
+      <address class="not-italic text-body space-y-1 text-ink-muted-80">
         <div>{dict.footer.bangkok_hq}</div>
         <div>{dict.footer.chiang_mai_base}</div>
-        <a href="mailto:hello@flyed.dev" class="text-rice-100 hover:text-sunset-400">hello@flyed.dev</a>
+        <a href="mailto:hello@flyed.dev" class="text-primary hover:text-primary-hover no-underline">hello@flyed.dev</a>
       </address>
     </div>
   </div>
 
-  <div class="border-t border-rice-50/10">
+  <div class="border-t border-hairline">
     <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-      <div class="text-sm text-rice-100">Get occasional trip ideas in your inbox.</div>
+      <div class="text-body text-ink-muted-80">Get occasional trip ideas in your inbox.</div>
       <NewsletterForm client:visible />
     </div>
   </div>
 
-  <div class="border-t border-rice-50/10">
-    <div class="max-w-7xl mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-xs text-rice-100">
+  <div class="border-t border-hairline">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-fine-print text-ink-muted-60">
       <div>© {year} flyed. {dict.footer.rights}</div>
       <div>{dict.footer.trust}: TAT · TEATA · GSTC</div>
     </div>

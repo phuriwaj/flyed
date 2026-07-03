@@ -9,10 +9,10 @@ describe('SmartImage.astro', () => {
     expect(src).toMatch(/Why not <Image> from astro:assets/);
   });
 
-  it('exports Props with required alt/width/height', () => {
+  it('exports Props with alt required and width/height optional', () => {
     expect(src).toMatch(/alt:\s*string/);
-    expect(src).toMatch(/width:\s*number/);
-    expect(src).toMatch(/height:\s*number/);
+    expect(src).toMatch(/width\?:\s*number/);
+    expect(src).toMatch(/height\?:\s*number/);
   });
 
   it('defaults loading to lazy', () => {
@@ -24,7 +24,7 @@ describe('SmartImage.astro', () => {
   });
 
   it('builds responsive srcset at common widths', () => {
-    expect(src).toMatch(/variants\s*=\s*\[400,\s*800,\s*1200,\s*1600\]/);
+    expect(src).toMatch(/\[400,\s*800,\s*1200,\s*1600\]/);
     expect(src).toMatch(/srcset/);
   });
 

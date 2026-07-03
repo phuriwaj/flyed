@@ -81,12 +81,12 @@ const recentPosts: any[] = [];
     secondaryCta={{ href: `${prefix}/itineraries`, label: dict.home.cta_secondary }}
   />
 
-  <Section bg="rice-50">
+  <Section bg="canvas">
     <h2 class="sr-only">คุณคือใคร</h2>
     <PersonaGrid items={personas} />
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <div class="text-center mb-12">
       <h2 class="font-display text-3xl md:text-5xl font-semibold">ความไว้วางใจจากโรงเรียนทั่วโลก</h2>
     </div>
@@ -99,22 +99,22 @@ const recentPosts: any[] = [];
   <Section>
     <div class="text-center mb-12">
       <h2 class="font-display text-3xl md:text-5xl font-semibold">จุดหมายเด่น</h2>
-      <p class="mt-4 text-lg text-teak-700">สี่เมืองที่ครูจองบ่อยที่สุด</p>
+      <p class="mt-4 text-lg text-ink-muted-80">สี่เมืองที่ครูจองบ่อยที่สุด</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {featuredDestinations.map((d) => <DestinationCard {...d} />)}
     </div>
     <div class="text-center mt-12">
-      <a href={`${prefix}/destinations`} class="inline-block border-2 border-bamboo-700 text-bamboo-700 hover:bg-bamboo-700 hover:text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
+      <a href={`${prefix}/destinations`} class="inline-block border-2 border-ink text-primary hover:bg-ink hover:text-canvas font-normal px-6 py-3 rounded-pill no-underline">
         ดูจุดหมายทั้งหมด
       </a>
     </div>
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <div class="text-center mb-12">
       <h2 class="font-display text-3xl md:text-5xl font-semibold">ประเภททริป</h2>
-      <p class="mt-4 text-lg text-teak-700">เลือกตามสิ่งที่นักเรียนจะได้เรียนรู้</p>
+      <p class="mt-4 text-lg text-ink-muted-80">เลือกตามสิ่งที่นักเรียนจะได้เรียนรู้</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {categories.map((c) => <CategoryCard {...c} />)}
@@ -124,14 +124,14 @@ const recentPosts: any[] = [];
   <Section>
     <div class="text-center mb-12">
       <h2 class="font-display text-3xl md:text-5xl font-semibold">โปรแกรมตัวอย่าง</h2>
-      <p class="mt-4 text-lg text-teak-700">ทริปที่ครูนิยมจอง</p>
+      <p class="mt-4 text-lg text-ink-muted-80">ทริปที่ครูนิยมจอง</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {featuredItineraries.map((i) => <ItineraryCard {...i} />)}
     </div>
   </Section>
 
-  <Section bg="bamboo-100">
+  <Section bg="parchment">
     <div class="text-center mb-12">
       <h2 class="font-display text-3xl md:text-5xl font-semibold">ทำไมต้อง flyed</h2>
     </div>
@@ -142,9 +142,9 @@ const recentPosts: any[] = [];
         { title: '24/7 safety', body: 'In-country operations team and hospital partnerships.' },
         { title: 'Ethical operations', body: 'GSTC-aligned, fair-pay local teams, animal-welfare standards.' },
       ].map((b) => (
-        <div class="bg-rice-50 p-6 rounded-lg">
-          <h3 class="font-display text-xl font-semibold text-teak-900">{b.title}</h3>
-          <p class="mt-2 text-teak-700">{b.body}</p>
+        <div class="bg-canvas p-6 rounded-lg">
+          <h3 class="font-display text-xl font-semibold text-ink">{b.title}</h3>
+          <p class="mt-2 text-ink-muted-80">{b.body}</p>
         </div>
       ))}
     </div>
@@ -159,7 +159,7 @@ const recentPosts: any[] = [];
     </div>
   </Section>
 
-  <Section bg="teak-900">
+  <Section bg="tile-1">
     <StatsBar stats={stats} variant="dark" />
   </Section>
 

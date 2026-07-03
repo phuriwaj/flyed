@@ -7,6 +7,7 @@ const locale = getLocale(Astro.url);
 const dict = getDict(locale);
 const path = Astro.url.pathname;
 const isTh = locale === 'th';
+const prefix = isTh ? '/th' : '';
 const altPath = isTh ? (path.replace(/^\/th/, '') || '/') : `/th${path === '/' ? '' : path}`;
 
 const navItems = [
@@ -16,34 +17,83 @@ const navItems = [
   { href: '/blog', label: dict.nav.blog },
   { href: '/about', label: dict.nav.about },
 ];
+
+const subNavCategories = [
+  { slug: 'service-learning', label: dict.categories['service-learning'] },
+  { slug: 'cultural-heritage', label: dict.categories['cultural-heritage'] },
+  { slug: 'stem-environmental', label: dict.categories['stem-environmental'] },
+  { slug: 'sports-adventure', label: dict.categories['sports-adventure'] },
+  { slug: 'language-immersion', label: dict.categories['language-immersion'] },
+  { slug: 'history-heritage', label: dict.categories['history-heritage'] },
+];
 ---
 
-<header class="sticky top-0 z-40 bg-rice-50/95 backdrop-blur border-b border-teak-500/10">
-  <div class="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
-    <a href={isTh ? '/th' : '/'} class="flex items-center gap-2 no-underline">
-      <Logo />
-      <span class="font-display text-xl font-semibold text-teak-900">flyed</span>
-    </a>
-
-    <nav class="hidden md:flex items-center gap-6" aria-label="Primary">
-      {navItems.map((item) => (
-        <a
-          href={isTh ? `/th${item.href === '/' ? '' : item.href}` : item.href}
-          class="text-teak-700 hover:text-bamboo-700 no-underline font-medium"
-        >
-          {item.label}
-        </a>
-      ))}
-    </nav>
-
-    <div class="flex items-center gap-3">
-      <LanguageSwitcher client:load currentLocale={locale} altPath={altPath} currentPathname={Astro.url.pathname} />
-      <a
-        href={isTh ? '/th/enquire' : '/enquire'}
-        class="hidden md:inline-block bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-4 py-2 rounded-md no-underline"
-      >
-        {dict.nav.enquire}
+<header class="sticky top-0 z-40">
+  {/* Global nav — 44px black bar */}
+  <div class="bg-ink text-canvas h-11">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 h-full flex items-center justify-between">
+      <a href={isTh ? '/th' : '/'} class="flex items-center gap-2 no-underline text-canvas" aria-label="flyed home">
+        <Logo variant="dark" />
+        <span class="text-nav-link tracking-nav-link font-semibold">flyed</span>
       </a>
+
+      <nav class="hidden md:flex items-center gap-6" aria-label="Primary">
+        {navItems.map((item) => (
+          <a
+            href={isTh ? `/th${item.href === '/' ? '' : item.href}` : item.href}
+            class="text-nav-link text-canvas/90 hover:text-canvas no-underline transition-opacity duration-150"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <LanguageSwitcher client:load currentLocale={locale} altPath={altPath} currentPathname={Astro.url.pathname} />
+        <button
+          type="button"
+          class="hidden md:inline-flex text-canvas/90 hover:text-canvas p-1.5"
+          aria-label="Search"
+        >
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M6.5 1a5.5 5.5 0 1 1-3.89 9.39l-2.32 2.32a.5.5 0 0 1-.78-.62l.07-.08 2.32-2.32A5.5 5.5 0 0 1 6.5 1Zm0 1a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9Z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button
+          type="button"
+          class="md:hidden text-canvas/90 hover:text-canvas p-1.5"
+          aria-label="Open menu"
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2 4h14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1Zm0 4.5h14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1ZM2 13h14a.5.5 0 0 1 0 1H2a.5.5 0 0 1 0-1Z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {/* Sub-nav — 52px frosted parchment bar with trip categories */}
+  <div class="bg-canvas-parchment/80 supports-[backdrop-filter]:bg-canvas-parchment/70 border-b border-hairline" style="backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 h-[52px] flex items-center justify-between gap-6">
+      <nav class="flex items-center gap-5 overflow-x-auto" aria-label="Trip categories">
+        {subNavCategories.map((cat) => (
+          <a
+            href={`${prefix}/trips/${cat.slug}`}
+            class="text-button-utility text-ink-muted-80 hover:text-ink whitespace-nowrap no-underline transition-colors duration-150"
+          >
+            {cat.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="hidden md:flex items-center gap-3 shrink-0">
+        <a
+          href={isTh ? '/th/enquire' : '/enquire'}
+          class="bg-primary hover:bg-primary-hover active:scale-[0.95] text-canvas text-button-utility px-[22px] py-[11px] rounded-pill no-underline transition-colors duration-150"
+        >
+          {dict.nav.enquire}
+        </a>
+      </div>
     </div>
   </div>
 </header>

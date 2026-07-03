@@ -33,7 +33,6 @@ const regionLabel: Record<string, { en: string; th: string }> = {
   Northeast: { en: 'Northeast (Isan)', th: 'ภาคอีสาน' },
 };
 ---
-
 <PageLayout title={isTh ? 'จุดหมาย' : 'Destinations'} description={isTh ? 'สิบสองเมืองในประเทศไทยสำหรับทริปโรงเรียน' : 'Twelve Thailand cities for school trips'}>
   <Hero
     variant="small"
@@ -46,7 +45,7 @@ const regionLabel: Record<string, { en: string; th: string }> = {
   {regionOrder.map((region) => (
     grouped[region].length > 0 && (
       <Section>
-        <h2 class="font-display text-3xl font-semibold mb-8">{isTh ? regionLabel[region].th : regionLabel[region].en}</h2>
+        <h2 class="text-display-md text-ink mb-8">{isTh ? regionLabel[region].th : regionLabel[region].en}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {grouped[region].map((dest) => (
             <DestinationCard

@@ -16,13 +16,13 @@ const { stats, variant = 'light' } = Astro.props;
 const isDark = variant === 'dark';
 ---
 
-<div class={`grid grid-cols-2 md:grid-cols-4 gap-8 ${isDark ? 'text-rice-50' : 'text-teak-900'}`}>
+<div class={`grid grid-cols-2 md:grid-cols-4 gap-8 ${isDark ? 'text-canvas' : 'text-ink'}`}>
   {stats.map((s) => (
     <div class="text-center">
-      <div class="font-display text-4xl md:text-5xl font-semibold">
+      <div class="text-display-lg font-semibold">
         <Counter client:visible end={s.value} suffix={s.suffix} />
       </div>
-      <div class={`mt-2 text-sm uppercase tracking-wider ${isDark ? 'text-rice-100' : 'text-teak-500'}`}>{s.label}</div>
+      <div class={`mt-2 text-caption uppercase tracking-wider ${isDark ? 'text-canvas/70' : 'text-ink-muted-80'}`}>{s.label}</div>
     </div>
   ))}
 </div>

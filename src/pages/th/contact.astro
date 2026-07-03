@@ -29,18 +29,18 @@ const offices = [
       <div>
         <form action={`${prefix}/api/contact`} method="post" class="space-y-4">
           <label class="block">
-            <span class="text-sm font-medium text-teak-700">ชื่อ</span>
-            <input name="name" required class="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2" />
+            <span class="text-sm font-normal text-ink-muted-80">ชื่อ</span>
+            <input name="name" required class="mt-1 w-full rounded border border-hairline bg-canvas px-3 py-2" />
           </label>
           <label class="block">
-            <span class="text-sm font-medium text-teak-700">อีเมล</span>
-            <input type="email" name="email" required class="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2" />
+            <span class="text-sm font-normal text-ink-muted-80">อีเมล</span>
+            <input type="email" name="email" required class="mt-1 w-full rounded border border-hairline bg-canvas px-3 py-2" />
           </label>
           <label class="block">
-            <span class="text-sm font-medium text-teak-700">ข้อความ</span>
-            <textarea name="message" rows={5} required class="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2"></textarea>
+            <span class="text-sm font-normal text-ink-muted-80">ข้อความ</span>
+            <textarea name="message" rows={5} required class="mt-1 w-full rounded border border-hairline bg-canvas px-3 py-2"></textarea>
           </label>
-          <button type="submit" class="bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-6 py-3 rounded-md">
+          <button type="submit" class="bg-primary hover:bg-primary-hover text-canvas font-normal px-6 py-3 rounded-pill">
             ส่ง
           </button>
         </form>
@@ -48,16 +48,16 @@ const offices = [
       <div class="space-y-8">
         {offices.map((o) => (
           <div>
-            <h3 class="font-display text-xl font-semibold text-teak-900">{o.city}</h3>
-            <address class="not-italic text-teak-700 mt-2">
+            <h3 class="font-display text-xl font-semibold text-ink">{o.city}</h3>
+            <address class="not-italic text-ink-muted-80 mt-2">
               <div>{o.address}</div>
               <div class="mt-1">{o.phone}</div>
             </address>
           </div>
         ))}
         <div>
-          <h3 class="font-display text-xl font-semibold text-teak-900">ออนไลน์</h3>
-          <ul class="text-teak-700 mt-2 space-y-1">
+          <h3 class="font-display text-xl font-semibold text-ink">ออนไลน์</h3>
+          <ul class="text-ink-muted-80 mt-2 space-y-1">
             <li><a href="mailto:hello@flyed.dev">hello@flyed.dev</a></li>
             <li>WhatsApp: +66 81 000 0000</li>
             <li>Line: @flyed</li>

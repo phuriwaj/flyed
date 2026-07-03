@@ -15,7 +15,7 @@ export default function NewsletterForm() {
     setStatus(res.ok ? 'done' : 'error');
   };
 
-  if (status === 'done') return <p className="text-bamboo-700 text-sm">Thanks — we'll send occasional trip ideas.</p>;
+  if (status === 'done') return <p className="text-caption text-ink-muted-80">Thanks — we'll send occasional trip ideas.</p>;
 
   return (
     <form onSubmit={submit} className="flex gap-2 max-w-md">
@@ -25,12 +25,17 @@ export default function NewsletterForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="you@school.edu"
-        className="flex-1 rounded border border-teak-500/30 bg-rice-50 px-3 py-2"
+        aria-label="Email address"
+        className="flex-1 h-11 px-5 rounded-pill bg-canvas text-body text-ink placeholder:text-ink-muted-40 border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150"
       />
-      <button type="submit" disabled={status === 'sending'} className="px-4 py-2 bg-bamboo-700 hover:bg-bamboo-500 text-rice-50 rounded font-medium disabled:opacity-50">
+      <button
+        type="submit"
+        disabled={status === 'sending'}
+        className="inline-flex items-center justify-center bg-primary hover:bg-primary-hover active:scale-[0.95] text-canvas text-body px-[22px] py-[11px] rounded-pill transition-colors duration-150 disabled:opacity-50"
+      >
         {status === 'sending' ? '...' : 'Subscribe'}
       </button>
-      {status === 'error' && <p className="text-alert-red text-sm self-center">Try again</p>}
+      {status === 'error' && <p className="text-caption text-[color:var(--color-alert-red)] self-center">Try again</p>}
     </form>
   );
 }

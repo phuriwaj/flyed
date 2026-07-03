@@ -33,6 +33,9 @@ const destinationOptions = [
   'Bangkok','Chiang Mai','Chiang Rai','Phuket','Krabi','Khao Sok','Kanchanaburi','Ayutthaya','Koh Tao','Sukhothai','Pai','Isan',
 ];
 
+const inputClass = 'mt-1 w-full h-11 px-5 rounded-pill bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
+const textareaClass = 'mt-1 w-full px-5 py-3 rounded-lg bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
+
 interface Props {
   defaults?: Partial<EnquiryData>;
   locale?: 'en' | 'th';
@@ -54,10 +57,6 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
     [],
   ];
 
-  // Per-step validation: each step's schema is built by `pick`ing the required
-  // fields from the full schema, so the original constraints (min length,
-  // numeric ranges, etc.) apply at step-navigation time. The full
-  // `enquirySchema` is still re-validated at submit().
   const stepSchemas = stepFields.map((fields) => {
     if (fields.length === 0) return z.object({});
     const shape: Record<string, z.ZodTypeAny> = {};
@@ -105,8 +104,6 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
         body: JSON.stringify(result.data),
       });
       if (!res.ok) {
-        // Surface server-side validation issues so users know which field is
-        // wrong. 422 carries Zod issues; other 4xx/5xx show a generic message.
         if (res.status === 422) {
           const body = await res.json().catch(() => null);
           if (body && Array.isArray(body.issues) && body.issues.length > 0) {
@@ -130,11 +127,11 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
 
   if (submitted) {
     return (
-      <div className="bg-bamboo-100 p-8 rounded-lg text-center">
-        <h2 className="font-display text-2xl font-semibold text-teak-900">
+      <div className="bg-canvas-parchment p-8 rounded-lg border border-hairline text-center">
+        <h2 className="text-display-md text-ink">
           {locale === 'th' ? 'ขอบคุณ!' : 'Thanks!'}
         </h2>
-        <p className="mt-2 text-teak-700">
+        <p className="mt-2 text-body text-ink-muted-80">
           {locale === 'th' ? 'เราจะติดต่อกลับภายใน 1 วันทำการ' : "We'll be in touch within one business day."}
         </p>
       </div>
@@ -143,21 +140,21 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
 
   const Field = ({ name, label, type = 'text', required = true }: { name: keyof EnquiryData; label: string; type?: string; required?: boolean }) => (
     <label className="block" htmlFor={name}>
-      <span className="text-sm font-medium text-teak-700">{label}{required && ' *'}</span>
+      <span className="text-caption-strong text-ink">{label}{required && ' *'}</span>
       <input
         id={name}
         type={type}
         value={(data[name] as string) ?? ''}
         onChange={(e) => setData((d) => ({ ...d, [name]: e.target.value }))}
-        className="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2"
+        className={inputClass}
       />
-      {errors[name] && <span className="text-sm text-alert-red">{errors[name]}</span>}
+      {errors[name] && <span className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors[name]}</span>}
     </label>
   );
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-      <div className="text-sm text-teak-500">Step {step + 1} of {stepFields.length}</div>
+      <div className="text-caption text-ink-muted-60">Step {step + 1} of {stepFields.length}</div>
 
       {step === 0 && (
         <div className="space-y-4">
@@ -175,10 +172,10 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
 
       {step === 1 && (
         <div>
-          <span className="text-sm font-medium text-teak-700">{locale === 'th' ? 'วิชาที่สนใจ' : 'Subjects of interest'} *</span>
-          <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+          <span className="text-caption-strong text-ink">{locale === 'th' ? 'วิชาที่สนใจ' : 'Subjects of interest'} *</span>
+          <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
             {categoryOptions.map((c) => (
-              <label key={c.value} className="flex items-center gap-2">
+              <label key={c.value} className="flex items-center gap-2 text-body text-ink">
                 <input
                   type="checkbox"
                   checked={data.subjects?.includes(c.value) ?? false}
@@ -188,21 +185,22 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
                     else next.delete(c.value);
                     setData((d) => ({ ...d, subjects: Array.from(next) }));
                   }}
+                  className="accent-primary"
                 />
                 <span>{c.label}</span>
               </label>
             ))}
           </div>
-          {errors.subjects && <span className="text-sm text-alert-red">{errors.subjects}</span>}
+          {errors.subjects && <span className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors.subjects}</span>}
         </div>
       )}
 
       {step === 2 && (
         <div>
-          <span className="text-sm font-medium text-teak-700">{locale === 'th' ? 'จุดหมาย' : 'Destinations (optional)'}</span>
-          <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-2">
+          <span className="text-caption-strong text-ink">{locale === 'th' ? 'จุดหมาย' : 'Destinations (optional)'}</span>
+          <div className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2">
             {destinationOptions.map((d) => (
-              <label key={d} className="flex items-center gap-2">
+              <label key={d} className="flex items-center gap-2 text-body text-ink">
                 <input
                   type="checkbox"
                   checked={data.destinations?.includes(d) ?? false}
@@ -212,51 +210,65 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
                     else next.delete(d);
                     setData((d2) => ({ ...d2, destinations: Array.from(next) }));
                   }}
+                  className="accent-primary"
                 />
-                <span className="text-sm">{d}</span>
+                <span>{d}</span>
               </label>
             ))}
           </div>
-          <p className="mt-2 text-sm text-teak-500">{locale === 'th' ? 'หรือเลือก "ให้เราเลือก" ด้านล่าง' : 'Or pick "you choose" below'}</p>
+          <p className="mt-2 text-caption text-ink-muted-60">{locale === 'th' ? 'หรือเลือก "ให้เราเลือก" ด้านล่าง' : 'Or pick "you choose" below'}</p>
         </div>
       )}
 
       {step === 3 && (
         <div>
           <label className="block">
-            <span className="text-sm font-medium text-teak-700">{locale === 'th' ? 'หมายเหตุ' : 'Notes / questions'}</span>
+            <span className="text-caption-strong text-ink">{locale === 'th' ? 'หมายเหตุ' : 'Notes / questions'}</span>
             <textarea
               rows={6}
               value={data.notes ?? ''}
               onChange={(e) => setData((d) => ({ ...d, notes: e.target.value }))}
-              className="mt-1 w-full rounded border border-teak-500/30 bg-rice-50 px-3 py-2"
+              className={textareaClass}
             />
           </label>
         </div>
       )}
 
       {step === 4 && (
-        <div className="bg-rice-100 p-6 rounded">
-          <h3 className="font-display text-xl font-semibold mb-3">{locale === 'th' ? 'ตรวจสอบข้อมูล' : 'Review'}</h3>
-          <pre className="text-sm text-teak-700 whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
+        <div className="bg-canvas-parchment p-6 rounded-lg border border-hairline">
+          <h3 className="text-body-strong text-ink mb-3">{locale === 'th' ? 'ตรวจสอบข้อมูล' : 'Review'}</h3>
+          <pre className="text-caption text-ink-muted-80 whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
         </div>
       )}
 
-      {submitError && <p className="text-alert-red text-sm">{submitError}</p>}
+      {submitError && <p className="text-caption text-[color:var(--color-alert-red)]">{submitError}</p>}
 
       <div className="flex justify-between gap-3">
         {step > 0 && (
-          <button type="button" onClick={back} className="px-4 py-2 border border-teak-500/30 rounded hover:bg-bamboo-100">
+          <button
+            type="button"
+            onClick={back}
+            className="inline-flex items-center justify-center bg-transparent text-primary text-body px-[22px] py-[11px] rounded-pill border border-primary hover:bg-primary/5 active:scale-[0.95] transition-colors duration-150"
+          >
             {locale === 'th' ? 'ก่อนหน้า' : 'Back'}
           </button>
         )}
         <div className="flex-1" />
         {step < stepFields.length - 1 ? (
-          <button type="button" onClick={next} className="px-6 py-2 bg-sunset-600 hover:bg-sunset-400 text-rice-50 rounded font-medium">
+          <button
+            type="button"
+            onClick={next}
+            className="inline-flex items-center justify-center bg-primary hover:bg-primary-hover active:scale-[0.95] text-canvas text-body px-[22px] py-[11px] rounded-pill transition-colors duration-150"
+          >
             {locale === 'th' ? 'ถัดไป' : 'Next'} →
           </button>
         ) : (
-          <button type="button" onClick={submit} disabled={submitting} className="px-6 py-2 bg-bamboo-700 hover:bg-bamboo-500 text-rice-50 rounded font-medium disabled:opacity-50">
+          <button
+            type="button"
+            onClick={submit}
+            disabled={submitting}
+            className="inline-flex items-center justify-center bg-primary hover:bg-primary-hover active:scale-[0.95] text-canvas text-body px-[22px] py-[11px] rounded-pill transition-colors duration-150 disabled:opacity-50"
+          >
             {submitting ? (locale === 'th' ? 'กำลังส่ง...' : 'Sending...') : (locale === 'th' ? 'ส่งคำขอ' : 'Send enquiry')}
           </button>
         )}

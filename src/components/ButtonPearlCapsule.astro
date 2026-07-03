@@ -1,0 +1,17 @@
+---
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  class?: string;
+  ariaLabel?: string;
+}
+
+const { href, type = 'button', class: className = '', ariaLabel } = Astro.props;
+const base = 'inline-flex items-center justify-center bg-surface-pearl text-ink-muted-80 text-caption font-normal px-[14px] py-2 rounded-md border-[3px] border-divider-soft no-underline transition-all duration-150 hover:border-divider-strong active:scale-[0.95] focus-visible:outline-2 focus-visible:outline-primary-focus focus-visible:outline-offset-2';
+const cls = `${base} ${className}`;
+---
+{href ? (
+  <a href={href} class={cls} aria-label={ariaLabel}><slot /></a>
+) : (
+  <button type={type} class={cls} aria-label={ariaLabel}><slot /></button>
+)}

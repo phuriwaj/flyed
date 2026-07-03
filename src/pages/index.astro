@@ -1,17 +1,17 @@
 ---
 export const prerender = true;
 import PageLayout from '@/layouts/PageLayout.astro';
-import Hero from '@/components/Hero.astro';
-import Section from '@/components/Section.astro';
-import StatsBar from '@/components/StatsBar.astro';
-import DestinationCard from '@/components/DestinationCard.astro';
-import CategoryCard from '@/components/CategoryCard.astro';
-import ItineraryCard from '@/components/ItineraryCard.astro';
-import BlogCard from '@/components/BlogCard.astro';
-import TestimonialCard from '@/components/TestimonialCard.astro';
-import CTASection from '@/components/CTASection.astro';
-import BadgeRow from '@/components/BadgeRow.astro';
+import ServiceTile from '@/components/ServiceTile.astro';
+import ServiceUtilityCard from '@/components/ServiceUtilityCard.astro';
+import ButtonPrimary from '@/components/ButtonPrimary.astro';
+import ButtonSecondaryPill from '@/components/ButtonSecondaryPill.astro';
+import ButtonIconCircular from '@/components/ButtonIconCircular.astro';
+import TextLink from '@/components/TextLink.astro';
 import PersonaGrid from '@/components/PersonaGrid.astro';
+import StatsBar from '@/components/StatsBar.astro';
+import BadgeRow from '@/components/BadgeRow.astro';
+import TestimonialCard from '@/components/TestimonialCard.astro';
+import SmartImage from '@/components/SmartImage.astro';
 import { getLocale, getDict } from '@/i18n';
 
 const locale = getLocale(Astro.url);
@@ -27,12 +27,12 @@ const featuredDestinations = [
 ];
 
 const categories = [
-  { slug: 'service-learning', title: dict.categories['service-learning'], description: 'Curriculum-linked volunteer programs', icon: '🤝', itineraryCount: 2 },
-  { slug: 'cultural-heritage', title: dict.categories['cultural-heritage'], description: 'Temples, homestays, Isan villages', icon: '🏛️', itineraryCount: 1 },
-  { slug: 'stem-environmental', title: dict.categories['stem-environmental'], description: 'Marine, jungle, and conservation', icon: '🔬', itineraryCount: 2 },
-  { slug: 'sports-adventure', title: dict.categories['sports-adventure'], description: 'Muay Thai, sailing, diving', icon: '⛵', itineraryCount: 3 },
-  { slug: 'language-immersion', title: dict.categories['language-immersion'], description: 'Thai language and homestay', icon: '🗣️', itineraryCount: 1 },
-  { slug: 'history-heritage', title: dict.categories['history-heritage'], description: 'WWII, Ayutthaya, Mekong history', icon: '📜', itineraryCount: 1 },
+  { slug: 'service-learning', title: dict.categories['service-learning'], description: 'Curriculum-linked volunteer programs', imageSrc: '/images/categories/service-learning.jpg', itineraryCount: 2 },
+  { slug: 'cultural-heritage', title: dict.categories['cultural-heritage'], description: 'Temples, homestays, Isan villages', imageSrc: '/images/categories/cultural-heritage.jpg', itineraryCount: 1 },
+  { slug: 'stem-environmental', title: dict.categories['stem-environmental'], description: 'Marine, jungle, and conservation', imageSrc: '/images/categories/stem-environmental.jpg', itineraryCount: 2 },
+  { slug: 'sports-adventure', title: dict.categories['sports-adventure'], description: 'Muay Thai, sailing, diving', imageSrc: '/images/categories/sports-adventure.jpg', itineraryCount: 3 },
+  { slug: 'language-immersion', title: dict.categories['language-immersion'], description: 'Thai language and homestay', imageSrc: '/images/categories/language-immersion.jpg', itineraryCount: 1 },
+  { slug: 'history-heritage', title: dict.categories['history-heritage'], description: 'WWII, Ayutthaya, Mekong history', imageSrc: '/images/categories/history-heritage.jpg', itineraryCount: 1 },
 ];
 
 const stats = [
@@ -49,15 +49,15 @@ const personas = [
 ];
 
 const testimonials = [
-  { quote: 'Our Chiang Mai service week changed how our IB students think about themselves. We rebooked within a month.', author: 'Sarah Whitfield', role: 'Head of Year 11', school: 'Auckland International School', city: 'Auckland', country: 'NZ' },
-  { quote: 'Risk assessment was the cleanest I have seen from an Asian operator. Communication was flawless.', author: 'James O\'Connor', role: 'Vice Principal', school: 'Berkhamsted School', city: 'London', country: 'UK' },
-  { quote: 'Our students came back speaking Thai, cooking pad krapow, and planning their return.', author: 'Anika Patel', role: 'MYP Coordinator', school: 'Singapore American School', city: 'Singapore', country: 'SG' },
+  { quote: 'Our Chiang Mai service week changed how our IB students think about themselves. We rebooked within a month.', author: 'Sarah Whitfield', role: 'Head of Year 11', school: 'Auckland International School' },
+  { quote: 'Risk assessment was the cleanest I have seen from an Asian operator. Communication was flawless.', author: 'James O\'Connor', role: 'Vice Principal', school: 'Berkhamsted School' },
+  { quote: 'Our students came back speaking Thai, cooking pad krapow, and planning their return.', author: 'Anika Patel', role: 'MYP Coordinator', school: 'Singapore American School' },
 ];
 
 const featuredItineraries = [
-  { slug: 'northern-thailand-service-week', title: 'Northern Thailand Service Week', category: 'service', destinations: ['Chiang Mai', 'Chiang Rai'], days: 7, priceFrom: 1850, currency: 'USD', heroImage: '/images/itineraries/northern-thailand-service-week-hero.jpg', ageBand: { min: 14, max: 18 } },
-  { slug: 'andaman-marine-biology', title: 'Marine Biology in the Andaman', category: 'stem', destinations: ['Phuket', 'Krabi'], days: 5, priceFrom: 1450, currency: 'USD', heroImage: '/images/itineraries/andaman-marine-biology-hero.jpg', ageBand: { min: 15, max: 18 } },
-  { slug: 'ayutthaya-kanchanaburi-history-loop', title: 'Ayutthaya & Kanchanaburi History Loop', category: 'history', destinations: ['Ayutthaya', 'Kanchanaburi'], days: 6, priceFrom: 1650, currency: 'USD', heroImage: '/images/itineraries/ayutthaya-kanchanaburi-hero.jpg', ageBand: { min: 14, max: 18 } },
+  { slug: 'northern-thailand-service-week', title: 'Northern Thailand Service Week', destinations: 'Chiang Mai · Chiang Rai', days: 7, priceFrom: 1850, currency: 'USD', imageSrc: '/images/itineraries/northern-thailand-service-week-hero.jpg' },
+  { slug: 'andaman-marine-biology', title: 'Marine Biology in the Andaman', destinations: 'Phuket · Krabi', days: 5, priceFrom: 1450, currency: 'USD', imageSrc: '/images/itineraries/andaman-marine-biology-hero.jpg' },
+  { slug: 'ayutthaya-kanchanaburi-history-loop', title: 'Ayutthaya & Kanchanaburi History Loop', destinations: 'Ayutthaya · Kanchanaburi', days: 6, priceFrom: 1650, currency: 'USD', imageSrc: '/images/itineraries/ayutthaya-kanchanaburi-hero.jpg' },
 ];
 
 const badges = [
@@ -66,117 +66,160 @@ const badges = [
   { name: 'GSTC Certified', imageSrc: '/images/badges/gstc.svg' },
   { name: 'IATAN Accredited', imageSrc: '/images/badges/iatan.svg' },
 ];
-
-// Latest blog posts (placeholder until content collections have data)
-const recentPosts: any[] = [];
 ---
 
 <PageLayout title={dict.home.hero_headline} description={dict.home.hero_sub}>
-  <Hero
-    headline={dict.home.hero_headline}
-    sub={dict.home.hero_sub}
-    imageSrc="/images/hero/home-hero.jpg"
-    imageAlt="Students hiking a forested ridge at golden hour in northern Thailand"
-    primaryCta={{ href: `${prefix}/enquire`, label: dict.home.cta_primary }}
-    secondaryCta={{ href: `${prefix}/itineraries`, label: dict.home.cta_secondary }}
-  />
+  {/* Hero tile — edge-to-edge photography, no gradient */}
+  <ServiceTile surface="ink" ariaLabel="Hero">
+    <div class="relative w-full h-[80vh] min-h-[600px] -my-12 md:-my-20">
+      <SmartImage
+        src="/images/hero/home-hero.jpg"
+        alt="Students hiking a forested ridge at golden hour in northern Thailand"
+        widths={[800, 1200, 1800, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 flex flex-col justify-end">
+        <div class="max-w-6xl mx-auto w-full px-4 md:px-8 pb-12 md:pb-20">
+          <h1 class="text-display-md md:text-hero-display text-canvas max-w-3xl">
+            {dict.home.hero_headline}
+          </h1>
+          <p class="mt-4 text-lead text-canvas/85 max-w-2xl">{dict.home.hero_sub}</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <ButtonPrimary href={`${prefix}/enquire`}>{dict.home.cta_primary}</ButtonPrimary>
+            <ButtonSecondaryPill href={`${prefix}/itineraries`} class="!text-canvas !border-canvas hover:!bg-canvas/10">
+              {dict.home.cta_secondary}
+            </ButtonSecondaryPill>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ServiceTile>
 
-  <Section bg="rice-50">
+  {/* Persona grid */}
+  <ServiceTile surface="canvas" ariaLabel="Personas">
     <h2 class="sr-only">{isTh ? 'คุณคือใคร' : 'Who are you planning for?'}</h2>
     <PersonaGrid items={personas} />
-  </Section>
+  </ServiceTile>
 
-  <Section bg="rice-100">
+  {/* Stats + badges — dark tile */}
+  <ServiceTile surface="tile-1" ariaLabel="Stats and accreditations">
     <div class="text-center mb-12">
-      <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'ความไว้วางใจจากโรงเรียนทั่วโลก' : 'Trusted by schools worldwide'}</h2>
+      <h2 class="text-display-md text-canvas">{isTh ? 'ความไว้วางใจจากโรงเรียนทั่วโลก' : 'Trusted by schools worldwide'}</h2>
     </div>
-    <StatsBar stats={stats} />
+    <StatsBar stats={stats} variant="dark" />
     <div class="mt-16">
       <BadgeRow badges={badges} />
     </div>
-  </Section>
+  </ServiceTile>
 
-  <Section>
+  {/* Featured destinations */}
+  <ServiceTile surface="canvas" ariaLabel="Featured destinations">
     <div class="text-center mb-12">
-      <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'จุดหมายเด่น' : 'Featured destinations'}</h2>
-      <p class="mt-4 text-lg text-teak-700">{isTh ? 'สี่เมืองที่ครูจองบ่อยที่สุด' : 'Four of the cities teachers book most often'}</p>
+      <h2 class="text-display-md text-ink">{isTh ? 'จุดหมายเด่น' : 'Featured destinations'}</h2>
+      <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'สี่เมืองที่ครูจองบ่อยที่สุด' : 'Four of the cities teachers book most often'}</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {featuredDestinations.map((d) => <DestinationCard {...d} />)}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {featuredDestinations.map((d) => (
+        <ServiceUtilityCard
+          href={`${prefix}/destinations/${d.slug}`}
+          imageSrc={d.imageSrc}
+          imageAlt={d.name}
+          title={d.name}
+          meta={d.tagline}
+          cta={isTh ? 'สำรวจ' : 'Explore'}
+        />
+      ))}
     </div>
     <div class="text-center mt-12">
-      <a href={`${prefix}/destinations`} class="inline-block border-2 border-bamboo-700 text-bamboo-700 hover:bg-bamboo-700 hover:text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
+      <ButtonSecondaryPill href={`${prefix}/destinations`}>
         {isTh ? 'ดูจุดหมายทั้งหมด' : 'View all destinations'}
-      </a>
+      </ButtonSecondaryPill>
     </div>
-  </Section>
+  </ServiceTile>
 
-  <Section bg="rice-100">
+  {/* Trip categories — category overview per tile */}
+  <ServiceTile surface="parchment" ariaLabel="Trip categories">
     <div class="text-center mb-12">
-      <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'ประเภททริป' : 'Trip categories'}</h2>
-      <p class="mt-4 text-lg text-teak-700">{isTh ? 'เลือกตามสิ่งที่นักเรียนจะได้เรียนรู้' : 'Choose by what your students will learn'}</p>
+      <h2 class="text-display-md text-ink">{isTh ? 'ประเภททริป' : 'Trip categories'}</h2>
+      <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'เลือกตามสิ่งที่นักเรียนจะได้เรียนรู้' : 'Choose by what your students will learn'}</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {categories.map((c) => <CategoryCard {...c} />)}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {categories.map((c) => (
+        <ServiceUtilityCard
+          href={`${prefix}/trips/${c.slug}`}
+          imageSrc={c.imageSrc}
+          imageAlt={c.title}
+          title={c.title}
+          meta={`${c.description} · ${c.itineraryCount} ${c.itineraryCount === 1 ? 'trip' : 'trips'}`}
+          cta={isTh ? 'ดูทริป' : 'View trips'}
+        />
+      ))}
     </div>
-  </Section>
+  </ServiceTile>
 
-  <Section>
+  {/* Sample itineraries */}
+  <ServiceTile surface="canvas" ariaLabel="Sample itineraries">
     <div class="text-center mb-12">
-      <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}</h2>
-      <p class="mt-4 text-lg text-teak-700">{isTh ? 'ทริปที่ครูนิยมจอง' : 'Trips teachers rebook most often'}</p>
+      <h2 class="text-display-md text-ink">{isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}</h2>
+      <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'ทริปที่ครูนิยมจอง' : 'Trips teachers rebook most often'}</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {featuredItineraries.map((i) => <ItineraryCard {...i} />)}
+      {featuredItineraries.map((i) => (
+        <ServiceUtilityCard
+          href={`${prefix}/itineraries/${i.slug}`}
+          imageSrc={i.imageSrc}
+          imageAlt={i.title}
+          title={i.title}
+          meta={`${i.destinations} · ${i.days} days · from ${i.currency} ${i.priceFrom.toLocaleString()}`}
+          cta={isTh ? 'ดูรายละเอียด' : 'View details'}
+        />
+      ))}
     </div>
-  </Section>
+  </ServiceTile>
 
-  <Section bg="bamboo-100">
+  {/* Why flyed */}
+  <ServiceTile surface="parchment" ariaLabel="Why flyed">
     <div class="text-center mb-12">
-      <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'ทำไมต้อง flyed' : 'Why flyed'}</h2>
+      <h2 class="text-display-md text-ink">{isTh ? 'ทำไมต้อง flyed' : 'Why flyed'}</h2>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       {[
         { title: 'Curriculum-aligned', body: 'IB MYP/DP, IGCSE, A-Level, AP — every trip maps to learning outcomes.' },
         { title: 'Local expert guides', body: 'Thai educators and licensed guides on every departure.' },
         { title: '24/7 safety', body: 'In-country operations team and hospital partnerships.' },
         { title: 'Ethical operations', body: 'GSTC-aligned, fair-pay local teams, animal-welfare standards.' },
       ].map((b) => (
-        <div class="bg-rice-50 p-6 rounded-lg">
-          <h3 class="font-display text-xl font-semibold text-teak-900">{b.title}</h3>
-          <p class="mt-2 text-teak-700">{b.body}</p>
+        <div>
+          <h3 class="text-body-strong text-ink mb-2">{b.title}</h3>
+          <p class="text-body text-ink-muted-80">{b.body}</p>
         </div>
       ))}
     </div>
-  </Section>
+  </ServiceTile>
 
-  <Section>
+  {/* Testimonials — dark tile */}
+  <ServiceTile surface="tile-1" ariaLabel="Testimonials">
     <div class="text-center mb-12">
-      <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'ครูพูดถึงเรา' : 'What teachers say'}</h2>
+      <h2 class="text-display-md text-canvas">{isTh ? 'ครูพูดถึงเรา' : 'What teachers say'}</h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {testimonials.map((t) => <TestimonialCard {...t} />)}
     </div>
-  </Section>
+  </ServiceTile>
 
-  <Section bg="teak-900">
-    <StatsBar stats={stats} variant="dark" />
-  </Section>
-
-  {recentPosts.length > 0 && (
-    <Section>
-      <div class="text-center mb-12">
-        <h2 class="font-display text-3xl md:text-5xl font-semibold">{isTh ? 'อ่านล่าสุด' : 'Latest from the journal'}</h2>
+  {/* Final CTA — dark tile */}
+  <ServiceTile surface="ink" ariaLabel="Plan a trip">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-display-md text-canvas">{isTh ? 'พร้อมวางแผนทริปหรือยัง?' : 'Ready to plan your trip?'}</h2>
+      <p class="mt-4 text-lead text-canvas/80">
+        {isTh ? 'บอกเราเกี่ยวกับกลุ่มของคุณ แล้วเราจะออกแบบทริปให้ภายใน 5 วันทำการ' : 'Tell us about your group and we will design a trip within 5 business days.'}
+      </p>
+      <div class="mt-8 flex justify-center">
+        <ButtonPrimary href={`${prefix}/enquire`}>{dict.nav.enquire}</ButtonPrimary>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {recentPosts.map((p: any) => <BlogCard {...p} />)}
-      </div>
-    </Section>
-  )}
-
-  <CTASection
-    headline={isTh ? 'พร้อมวางแผนทริปหรือยัง?' : 'Ready to plan your trip?'}
-    sub={isTh ? 'บอกเราเกี่ยวกับกลุ่มของคุณ แล้วเราจะออกแบบทริปให้ภายใน 5 วันทำการ' : 'Tell us about your group and we will design a trip within 5 business days.'}
-    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
-  />
+    </div>
+  </ServiceTile>
 </PageLayout>

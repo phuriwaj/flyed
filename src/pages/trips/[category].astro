@@ -87,11 +87,11 @@ const testimonial = {
         ))}
       </div>
     ) : (
-      <p class="text-teak-700">{isTh ? 'โปรแกรมตัวอย่างกำลังจะมาเร็วๆ นี้' : 'Sample itineraries for this category are coming soon. Get in touch to discuss a custom program.'}</p>
+      <p class="text-ink-muted-80">{isTh ? 'โปรแกรมตัวอย่างกำลังจะมาเร็วๆ นี้' : 'Sample itineraries for this category are coming soon. Get in touch to discuss a custom program.'}</p>
     )}
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'จุดหมายที่เหมาะกับหมวดนี้' : 'Works in these destinations'}</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       {matchingDestinations.map((dest) => (
@@ -110,14 +110,14 @@ const testimonial = {
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'สอดคล้องหลักสูตร' : 'Curriculum alignment'}</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
       {['IB MYP', 'IB DP', 'IGCSE', 'A-Level', 'AP', 'GCSE'].map((c) => (
-        <div class="bg-bamboo-100 rounded-lg p-6 text-center">
-          <div class="font-display text-xl font-semibold text-teak-900">{c}</div>
+        <div class="bg-canvas-parchment rounded-lg p-6 text-center">
+          <div class="font-display text-xl font-semibold text-ink">{c}</div>
         </div>
       ))}
     </div>
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <TestimonialCard {...testimonial} />
   </Section>
 

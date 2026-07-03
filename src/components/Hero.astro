@@ -1,4 +1,7 @@
 ---
+import ButtonPrimary from './ButtonPrimary.astro';
+import ButtonSecondaryPill from './ButtonSecondaryPill.astro';
+
 interface Props {
   headline: string;
   sub?: string;
@@ -7,13 +10,14 @@ interface Props {
   primaryCta?: { href: string; label: string };
   secondaryCta?: { href: string; label: string };
   variant?: 'full' | 'small';
+  onDark?: boolean;
 }
 
-const { headline, sub, imageSrc, imageAlt, primaryCta, secondaryCta, variant = 'full' } = Astro.props;
+const { headline, sub, imageSrc, imageAlt, primaryCta, secondaryCta, variant = 'full', onDark = true } = Astro.props;
 const isSmall = variant === 'small';
 ---
 
-<section class={`relative ${isSmall ? 'h-[40vh] min-h-[320px]' : 'h-[85vh] min-h-[600px]'} w-full overflow-hidden bg-teak-900`}>
+<section class={`relative ${isSmall ? 'h-[40vh] min-h-[320px]' : 'h-[85vh] min-h-[600px]'} w-full overflow-hidden bg-ink`}>
   <img
     src={imageSrc}
     alt={imageAlt}
@@ -24,25 +28,20 @@ const isSmall = variant === 'small';
     width={2400}
     height={1350}
   />
-  <div class="absolute inset-0 bg-gradient-to-b from-teak-900/40 via-teak-900/20 to-teak-900/70"></div>
 
-  <div class={`relative z-10 max-w-6xl mx-auto px-4 md:px-8 flex flex-col justify-end ${isSmall ? 'pb-12' : 'pb-20'} h-full text-rice-50`}>
-    <h1 class={`font-display ${isSmall ? 'text-4xl md:text-5xl' : 'text-5xl md:text-7xl'} font-semibold max-w-3xl`}>
+  <div class={`relative z-10 max-w-6xl mx-auto px-4 md:px-8 flex flex-col justify-end ${isSmall ? 'pb-12' : 'pb-20'} h-full text-canvas`}>
+    <h1 class={`${isSmall ? 'text-display-md' : 'text-display-lg md:text-hero-display'} font-semibold max-w-3xl`}>
       {headline}
     </h1>
-    {sub && <p class={`mt-4 ${isSmall ? 'text-base md:text-lg' : 'text-lg md:text-2xl'} max-w-2xl text-rice-100`}>{sub}</p>}
+    {sub && <p class={`mt-4 ${isSmall ? 'text-body' : 'text-lead'} max-w-2xl text-canvas/85`}>{sub}</p>}
 
     {(primaryCta || secondaryCta) && (
       <div class="mt-8 flex flex-wrap gap-3">
-        {primaryCta && (
-          <a href={primaryCta.href} class="bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
-            {primaryCta.label}
-          </a>
-        )}
+        {primaryCta && <ButtonPrimary href={primaryCta.href}>{primaryCta.label}</ButtonPrimary>}
         {secondaryCta && (
-          <a href={secondaryCta.href} class="border-2 border-rice-50 hover:bg-rice-50 hover:text-teak-900 text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
+          <ButtonSecondaryPill href={secondaryCta.href} class={onDark ? '!text-canvas !border-canvas hover:!bg-canvas/10' : ''}>
             {secondaryCta.label}
-          </a>
+          </ButtonSecondaryPill>
         )}
       </div>
     )}

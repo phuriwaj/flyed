@@ -1,15 +1,15 @@
 ---
 export const prerender = true;
 import PageLayout from '@/layouts/PageLayout.astro';
+import ButtonPrimary from '@/components/ButtonPrimary.astro';
 const isTh = false;
 ---
-
 <PageLayout title={isTh ? 'ไม่พบหน้า' : 'Page not found'} description="404" noindex>
   <section class="py-32 text-center max-w-2xl mx-auto px-4">
-    <h1 class="font-display text-6xl font-semibold text-teak-900">404</h1>
-    <p class="mt-4 text-xl text-teak-700">{isTh ? 'ไม่พบหน้าที่คุณกำลังมองหา' : "We couldn't find that page."}</p>
-    <a href={isTh ? '/th' : '/'} class="mt-8 inline-block bg-sunset-600 hover:bg-sunset-400 text-rice-50 font-medium px-6 py-3 rounded-md no-underline">
-      {isTh ? 'กลับหน้าแรก' : 'Back to home'}
-    </a>
+    <h1 class="text-hero-display text-ink">404</h1>
+    <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'ไม่พบหน้าที่คุณกำลังมองหา' : "We couldn't find that page."}</p>
+    <div class="mt-8">
+      <ButtonPrimary href={isTh ? '/th' : '/'}>{isTh ? 'กลับหน้าแรก' : 'Back to home'}</ButtonPrimary>
+    </div>
   </section>
 </PageLayout>

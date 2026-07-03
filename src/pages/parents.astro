@@ -25,7 +25,6 @@ const faqs = [
   { q: 'What medical support is available?', a: 'Every trip carries a first-aid-trained guide. Hospital partnerships in Bangkok, Chiang Mai, and Phuket.' },
 ];
 ---
-
 <PageLayout title={isTh ? 'สำหรับผู้ปกครอง' : 'For parents'} description={isTh ? 'สิ่งที่ลูกของคุณจะได้รับและข้อมูลความปลอดภัย' : 'What your child will experience and safety information'}>
   <Hero
     variant="small"
@@ -38,16 +37,16 @@ const faqs = [
   <Section>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       {reassurance.map((r) => (
-        <div class="bg-rice-100 p-6 rounded-lg">
-          <h3 class="font-display text-xl font-semibold text-teak-900 mb-2">{r.title}</h3>
-          <p class="text-teak-700">{r.body}</p>
+        <div class="bg-canvas-parchment p-6 rounded-lg border border-hairline">
+          <h3 class="text-body-strong text-ink mb-2">{r.title}</h3>
+          <p class="text-body text-ink-muted-80">{r.body}</p>
         </div>
       ))}
     </div>
   </Section>
 
-  <Section bg="rice-100">
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">FAQ</h2>
+  <Section bg="parchment">
+    <h2 class="text-display-md text-ink mb-8">FAQ</h2>
     <FAQAccordion items={faqs} />
   </Section>
 

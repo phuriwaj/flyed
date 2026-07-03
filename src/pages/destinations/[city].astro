@@ -68,11 +68,11 @@ const testimonial = {
 
   <Section>
     <div class="prose prose-lg max-w-prose mx-auto">
-      <p class="text-teak-700 text-lg leading-relaxed">{entry.data.intro}</p>
+      <p class="text-ink-muted-80 text-lg leading-relaxed">{entry.data.intro}</p>
     </div>
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'ทริปที่เราจัดที่นี่' : 'Trips we run here'}</h2>
     {matchingItineraries.length > 0 ? (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -91,37 +91,37 @@ const testimonial = {
         ))}
       </div>
     ) : (
-      <p class="text-teak-700">{isTh ? 'ยังไม่มีโปรแกรมสำเร็จรูป แต่เราสามารถออกแบบให้' : 'No fixed itinerary yet — we can design one for your group.'}</p>
+      <p class="text-ink-muted-80">{isTh ? 'ยังไม่มีโปรแกรมสำเร็จรูป แต่เราสามารถออกแบบให้' : 'No fixed itinerary yet — we can design one for your group.'}</p>
     )}
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <TestimonialCard {...testimonial} />
   </Section>
 
   <Section>
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'ข้อมูลการเดินทาง' : 'Travel logistics'}</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-rice-100 p-6 rounded-lg">
-        <h3 class="font-semibold text-teak-900 mb-2">{isTh ? 'ช่วงเวลาที่ดี' : 'Best months'}</h3>
-        <p class="text-teak-700">{entry.data.bestMonths.join(', ')}</p>
+      <div class="bg-canvas-parchment p-6 rounded-lg">
+        <h3 class="font-semibold text-ink mb-2">{isTh ? 'ช่วงเวลาที่ดี' : 'Best months'}</h3>
+        <p class="text-ink-muted-80">{entry.data.bestMonths.join(', ')}</p>
       </div>
-      <div class="bg-rice-100 p-6 rounded-lg">
-        <h3 class="font-semibold text-teak-900 mb-2">{isTh ? 'ประเภทที่เหมาะ' : 'Best for'}</h3>
+      <div class="bg-canvas-parchment p-6 rounded-lg">
+        <h3 class="font-semibold text-ink mb-2">{isTh ? 'ประเภทที่เหมาะ' : 'Best for'}</h3>
         <div class="flex flex-wrap gap-1">
           {entry.data.bestFor.map((cat) => (
-            <span class="text-xs bg-bamboo-700 text-rice-50 px-2 py-0.5 rounded">{dict.categories[cat]}</span>
+            <span class="text-fine-print bg-ink text-canvas px-2 py-0.5 rounded">{dict.categories[cat]}</span>
           ))}
         </div>
       </div>
-      <div class="bg-rice-100 p-6 rounded-lg">
-        <h3 class="font-semibold text-teak-900 mb-2">{isTh ? 'ภูมิภาค' : 'Region'}</h3>
-        <p class="text-teak-700">{entry.data.region}</p>
+      <div class="bg-canvas-parchment p-6 rounded-lg">
+        <h3 class="font-semibold text-ink mb-2">{isTh ? 'ภูมิภาค' : 'Region'}</h3>
+        <p class="text-ink-muted-80">{entry.data.region}</p>
       </div>
     </div>
   </Section>
 
-  <Section bg="rice-100">
+  <Section bg="parchment">
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">FAQ</h2>
     <FAQAccordion items={faqs} />
   </Section>

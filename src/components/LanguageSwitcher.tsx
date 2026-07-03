@@ -12,7 +12,7 @@ export default function LanguageSwitcher({ currentLocale, altPath, currentPathna
     <div className="relative" data-lang-switcher>
       <button
         onClick={() => setOpen(!open)}
-        className="px-2 py-1 text-sm font-medium text-teak-700 hover:text-bamboo-700 uppercase"
+        className="px-2 py-1 text-button-utility text-canvas/90 hover:text-canvas uppercase transition-colors duration-150"
         aria-expanded={open}
         aria-haspopup="listbox"
         aria-label="Switch language"
@@ -20,11 +20,11 @@ export default function LanguageSwitcher({ currentLocale, altPath, currentPathna
         {currentLocale}
       </button>
       {open && (
-        <ul role="listbox" className="absolute right-0 mt-1 bg-rice-50 border border-teak-500/20 rounded shadow-lg min-w-[6rem]">
+        <ul role="listbox" className="absolute right-0 mt-1 bg-canvas border border-hairline rounded-md min-w-[6rem]">
           <li>
             <a
               href={currentLocale === 'en' ? currentPathname : altPath}
-              className="block px-3 py-2 hover:bg-bamboo-100 no-underline text-teak-900"
+              className="block px-3 py-2 text-body text-ink hover:bg-canvas-parchment no-underline"
             >
               EN
             </a>
@@ -32,7 +32,7 @@ export default function LanguageSwitcher({ currentLocale, altPath, currentPathna
           <li>
             <a
               href={currentLocale === 'en' ? altPath : currentPathname}
-              className="block px-3 py-2 hover:bg-bamboo-100 no-underline text-teak-900"
+              className="block px-3 py-2 text-body text-ink hover:bg-canvas-parchment no-underline"
             >
               TH
             </a>

@@ -16,7 +16,6 @@ const prefix = isTh ? '/th' : '';
 const itineraries = await getCollection('itineraries');
 const published = itineraries.filter((i) => i.data.published);
 ---
-
 <PageLayout title={isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'} description={isTh ? 'โปรแกรมทริปทั้งหมดของเรา' : 'All our sample trip itineraries'}>
   <Hero
     variant="small"

@@ -18,8 +18,8 @@
 interface Props {
   src: string;
   alt: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
   class?: string;
@@ -27,19 +27,23 @@ interface Props {
   variants?: number[];
   /** Round to nearest viewport width. */
   sizes?: string;
+  widths?: number[];
 }
 
 const {
   src,
   alt,
-  width,
-  height,
+  width = 1600,
+  height = 1000,
   loading = 'lazy',
   fetchpriority = 'auto',
   class: className = '',
-  variants = [400, 800, 1200, 1600],
+  variants,
+  widths,
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
 } = Astro.props;
+
+const resolvedVariants = variants ?? widths ?? [400, 800, 1200, 1600];
 
 // Build srcset from Unsplash CDN-style images; for local /public/images
 // we just point at the same file (no resize pipeline wired in this MVP).
@@ -51,7 +55,7 @@ const buildSrc = (variantWidth: number) => {
   return src;
 };
 
-const srcset = variants.map((v) => `${buildSrc(v)} ${v}w`).join(', ');
+const srcset = resolvedVariants.map((v) => `${buildSrc(v)} ${v}w`).join(', ');
 ---
 
 <img
