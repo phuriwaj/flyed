@@ -16,6 +16,7 @@ const { title, description, ogImage, noindex, hideHeader, hideFooter } = Astro.p
 ---
 
 <BaseLayout title={title} description={description} ogImage={ogImage} noindex={noindex}>
+  <a href="#main-content" class="skip-link">Skip to content</a>
   {!hideHeader && <Header />}
   <main id="main-content">
     <slot />
