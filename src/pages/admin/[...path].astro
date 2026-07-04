@@ -1,3 +1,11 @@
+---
+// Admin catch-all: serves the Decap CMS shell at any /admin/* path.
+// Marked prerender = false so the Worker renders it at request time rather
+// than requiring getStaticPaths() under output: 'static'. Phase 1 Task 1.6
+// will replace this with public/admin/index.html and remove the catch-all.
+export const prerender = false;
+---
+
 <!doctype html>
 <html lang="en">
   <head>

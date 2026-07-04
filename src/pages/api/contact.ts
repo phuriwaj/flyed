@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
 import { z } from 'zod';
 
+export const prerender = false;
+
 const schema = z.object({
   name: z.string().min(2),
   email: z.string().email(),

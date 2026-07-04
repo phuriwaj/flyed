@@ -11,13 +11,10 @@ import partytown from '@astrojs/partytown';
 import react from '@astrojs/react';
 import cloudflare from '@astrojs/cloudflare';
 
-// https://astro.build/config
-// NOTE: output: 'server' is required for /api/* SSR endpoints. Every static
-// page (e.g. src/pages/about.astro, src/pages/th/about.astro, src/pages/blog/[slug].astro)
-// MUST declare `export const prerender = true;` in its frontmatter, otherwise
-// it will be served by the SSR worker instead of being statically generated
-// for upload to Cloudflare Pages. APIs under src/pages/api/* are the only
-// routes that should be SSR.
+// `output: 'static'` makes every page pre-render at build time. Routes that
+// genuinely need a runtime (currently src/pages/api/*.ts) opt in via
+// `export const prerender = false;` per-file. The Cloudflare adapter is
+// retained so per-route SSR endpoints still deploy as Workers functions.
 
 // Cloudflare Pages directory-search 404: a request to /th/foo with no match
 // searches upward for 404.html. Astro emits /th/404/index.html but not
@@ -42,7 +39,7 @@ const th404Copy = () => ({
 
 export default defineConfig({
   site: 'https://flyed.dev',
-  output: 'server',
+  output: 'static',
   adapter: cloudflare({}),
   i18n: {
     defaultLocale: 'en',
