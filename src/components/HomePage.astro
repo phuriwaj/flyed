@@ -14,7 +14,7 @@ import PersonaGrid from '@/components/PersonaGrid.astro';
 import StatsBar from '@/components/StatsBar.astro';
 import BadgeRow from '@/components/BadgeRow.astro';
 import TestimonialCard from '@/components/TestimonialCard.astro';
-import SmartImage from '@/components/SmartImage.astro';
+import { Image } from 'astro:assets';
 import { getDict } from '@/i18n';
 import { getCollection } from 'astro:content';
 
@@ -104,11 +104,14 @@ const whyBlocks = [
   {/* Hero tile — edge-to-edge photography, no gradient */}
   <ServiceTile surface="ink" ariaLabel="Hero">
     <div class="relative w-full h-[80vh] min-h-[600px] -my-12 md:-my-20">
-      <SmartImage
+      <Image
         src="/images/hero/home-hero.jpg"
         alt="Students hiking a forested ridge at golden hour in northern Thailand"
+        width={2400}
+        height={1350}
         widths={[800, 1200, 1800, 2400]}
         sizes="100vw"
+        format="avif"
         loading="eager"
         fetchpriority="high"
         class="absolute inset-0 w-full h-full object-cover"

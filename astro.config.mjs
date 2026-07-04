@@ -40,7 +40,12 @@ const th404Copy = () => ({
 export default defineConfig({
   site: 'https://flyed.dev',
   output: 'static',
-  adapter: cloudflare({}),
+  adapter: cloudflare({
+    // Image service mode: see `image:` block below for why `passthrough` is
+    // the only choice that does anything (any other mode is silently
+    // downgraded by @astrojs/cloudflare when src isn't ESM-imported).
+    imageService: 'passthrough',
+  }),
   env: {
     schema: {
       RESEND_API_KEY: { type: 'string', context: 'server', access: 'secret', optional: true },
@@ -59,6 +64,14 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
   },
+  // NOTE: do NOT set `image.service: { entrypoint: 'astro/assets/services/sharp' }`
+  // here. The Cloudflare adapter silently downgrades any non-adapter-managed
+  // service to `passthrough` and prints a warning. Image-service config lives
+  // on the adapter call (see above). When images eventually move from
+  // `public/images/` to `src/assets/` and get ESM-imported, switching the
+  // adapter's `imageService` from `'passthrough'` to `'compile'` is the
+  // single change that unlocks build-time AVIF/WebP variants in
+  // `dist/client/_astro/`.
   vite: {
     plugins: [tailwindcss()],
     resolve: {

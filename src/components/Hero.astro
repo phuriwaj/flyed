@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import ButtonPrimary from './ButtonPrimary.astro';
 import ButtonSecondaryPill from './ButtonSecondaryPill.astro';
 
@@ -18,15 +19,18 @@ const isSmall = variant === 'small';
 ---
 
 <section class={`relative ${isSmall ? 'h-[40vh] min-h-[320px]' : 'h-[85vh] min-h-[600px]'} w-full overflow-hidden bg-ink`}>
-  <img
+  <Image
     src={imageSrc}
     alt={imageAlt}
-    class="absolute inset-0 w-full h-full object-cover"
+    width={2400}
+    height={1350}
+    widths={[800, 1200, 1800, 2400]}
+    sizes="100vw"
+    format="avif"
     loading="eager"
     fetchpriority="high"
     decoding="async"
-    width={2400}
-    height={1350}
+    class="absolute inset-0 w-full h-full object-cover"
   />
 
   <div class={`relative z-10 max-w-6xl mx-auto px-4 md:px-8 flex flex-col justify-end ${isSmall ? 'pb-12' : 'pb-20'} h-full text-canvas`}>
