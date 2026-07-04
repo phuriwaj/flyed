@@ -26,6 +26,29 @@
 /destinations/*
   Cache-Control: public, max-age=3600, must-revalidate
 
+# Content Security Policy — locks down which sources scripts, styles, images, etc.
+# can be loaded from. Threats blocked: cross-site scripting (XSS), data exfiltration,
+# clickjacking via frame ancestors we didn't list, and unauthorized form submission.
+#
+# Notes on the individual directives:
+#   - default-src 'self' — fallback for any directive we don't set.
+#   - script-src needs 'unsafe-inline' for Astro's <ClientRouter /> view-transition
+#     inline bootstrap and the JSON-LD <script type="application/ld+json"> blocks.
+#     We accept this tradeoff because the entire app is server-rendered at build
+#     time — there is no user-supplied markup that could inject inline scripts.
+#   - style-src 'unsafe-inline' for scoped <style> blocks and inline style="..."
+#     attributes (Image components, etc.).
+#   - img-src allows images.unsplash.com (SmartImage.astro remote-host branch).
+#   - connect-src allows the Resend API (src/pages/api/enquiry.ts). Workers.dev
+#     would be needed for CF Workers Logs UI; not currently consumed by the UI.
+#   - frame-ancestors 'none' (defence in depth alongside X-Frame-Options).
+#   - base-uri 'self' prevents <base href> injection attacks.
+#   - form-action 'self' restricts where the contact / enquiry / newsletter forms
+#     can post. Decap CMS at /admin/* is same-origin, so this is safe.
+#   - object-src 'none' blocks <object>, <embed>, <applet>.
+#   - upgrade-insecure-requests upgrades any http:// subresource to https://.
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://images.unsplash.com; connect-src 'self' https://api.resend.com; font-src 'self' data:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests
+
 # Security headers for everything
 /*
   X-Content-Type-Options: nosniff
