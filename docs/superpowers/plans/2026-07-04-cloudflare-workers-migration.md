@@ -251,7 +251,7 @@ Expected: build succeeds, deploy succeeds, you get a `flyed.<account-subdomain>.
 
 If the build fails with "Cannot find wrangler.toml": the renamed JSONC wasn't picked up. Wait 30s and retry — sometimes Workers Builds caches the repo list. If it still fails after a retry, check the build log for the specific path it's looking for and confirm `wrangler.jsonc` is at the repo root.
 
-If the deploy fails with "main entry not found": the Astro adapter didn't emit `dist/_worker.js/index.js`. Run `npm run build` locally and check `ls dist/_worker.js/`.
+If the deploy fails with `Invalid _redirects configuration: Line 21: Infinite loop detected in this rule.`: the SPA-fallback rule `/admin/*    /admin/index.html    200` in `public/_redirects` is not allowed by Workers' stricter `_redirects` parser. Delete that rule (commit `9020fa4` already does this) — the admin shell is served by the Worker via `src/pages/admin/[...path].astro`, no redirect needed. Push the fix and re-deploy.
 
 - [ ] **Step 8: Verify the live site**
 
