@@ -9,7 +9,7 @@ import { getCollection } from 'astro:content';
 import type { GetStaticPathsResult } from 'astro';
 
 export async function getStaticPaths({ paginate }: { paginate: Function }) {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => data.locale === 'en' && !data.draft);
   posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
   // Tag filter chips must be GLOBAL across all pagination pages, not derived
   // from page.data — otherwise /blog and /blog/2 show different chips.

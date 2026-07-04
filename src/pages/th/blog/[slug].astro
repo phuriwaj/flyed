@@ -11,14 +11,14 @@ import { getDict } from '@/i18n';
 import { getCollection, type CollectionEntry, render, getEntry } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blogTh', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => data.locale === 'th' && !data.draft);
   return posts.map((entry) => ({
-    params: { slug: entry.id.replace(/\.en\.mdx$|\.th\.mdx$|\.mdx?$/, '') },
+    params: { slug: entry.id.replace(/\.mdx?$/, '') },
     props: { entry },
   }));
 }
 
-interface Props { entry: CollectionEntry<'blogTh'>; }
+interface Props { entry: CollectionEntry<'blog'>; }
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
@@ -33,7 +33,7 @@ const dateStr = entry.data.pubDate.toLocaleDateString('en-US', { year: 'numeric'
 
 const author = await getEntry(entry.data.author);
 
-const relatedPosts = (await getCollection('blog', ({ data }) => !data.draft))
+const relatedPosts = (await getCollection('blog', ({ data }) => data.locale === 'th' && !data.draft))
   .filter((p) => p.id !== entry.id && p.data.tags.some((t) => entry.data.tags.includes(t)))
   .slice(0, 3);
 

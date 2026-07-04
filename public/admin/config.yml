@@ -42,6 +42,7 @@ collections:
     media_folder: "/images/uploads/blog"
     public_folder: "/images/uploads/blog"
     fields:
+      - { label: "Locale", name: "locale", widget: "select", options: ["en", "th"], default: "en", hint: "Always en for this collection (English posts). Decap writes one file per locale; the TH collection below produces the Thai version." }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text", pattern: ["^.{1,180}$", "Max 180 chars"] }
       - { label: "Publish date", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
@@ -69,6 +70,7 @@ collections:
     media_folder: "/images/uploads/blog"
     public_folder: "/images/uploads/blog"
     fields:
+      - { label: "ภาษา (Locale)", name: "locale", widget: "select", options: ["en", "th"], default: "th", hint: "Always th for this collection (Thai posts). Decap writes one file per locale; the EN collection above produces the English version." }
       - { label: "หัวข้อ (Title)", name: "title", widget: "string" }
       - { label: "คำอธิบาย (Description)", name: "description", widget: "text", pattern: ["^.{1,180}$", "Max 180 chars"] }
       - { label: "วันที่เผยแพร่", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
