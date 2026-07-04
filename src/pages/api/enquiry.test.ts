@@ -4,13 +4,15 @@ import { POST } from './enquiry';
 global.fetch = vi.fn().mockResolvedValue(new Response('{}', { status: 200 }));
 
 describe('POST /api/enquiry', () => {
+  const logger = { info: () => {}, warn: () => {}, error: () => {} };
+
   it('rejects invalid payload with 422', async () => {
     const req = new Request('http://localhost/api/enquiry', {
       method: 'POST',
       body: JSON.stringify({ schoolName: 'X' }),
       headers: { 'Content-Type': 'application/json' },
     });
-    const res = await POST({ request: req } as any);
+    const res = await POST({ request: req, logger } as any);
     expect(res.status).toBe(422);
   });
 
@@ -31,7 +33,7 @@ describe('POST /api/enquiry', () => {
       }),
       headers: { 'Content-Type': 'application/json' },
     });
-    const res = await POST({ request: req } as any);
+    const res = await POST({ request: req, logger } as any);
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.ok).toBe(true);
