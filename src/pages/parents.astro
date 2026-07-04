@@ -1,57 +1,8 @@
 ---
 export const prerender = true;
-import PageLayout from '@/layouts/PageLayout.astro';
-import Hero from '@/components/Hero.astro';
-import Section from '@/components/Section.astro';
-import CTASection from '@/components/CTASection.astro';
-import FAQAccordion from '@/components/FAQAccordion.astro';
-import { getLocale, getDict } from '@/i18n';
+import ParentsPage from '@/components/ParentsPage.astro';
+import { getLocale } from '@/i18n';
 
 const locale = getLocale(Astro.url);
-const dict = getDict(locale);
-const isTh = locale === 'th';
-const prefix = isTh ? '/th' : '';
-
-const reassurance = [
-  { title: '24/7 in-country support', body: 'A trip director is on call the entire time your child is in Thailand. Direct mobile number shared before departure.' },
-  { title: 'Insurance included', body: 'Comprehensive travel and medical insurance covers every participant. Details in your pre-departure pack.' },
-  { title: 'Accommodation vetted', body: 'All homestays and hotels are inspected annually. Student-only floors where possible.' },
-  { title: 'Daily check-ins', body: 'Trip director sends daily photo-and-summary updates to the lead teacher who shares with parents.' },
-];
-
-const faqs = [
-  { q: 'How will I contact my child in an emergency?', a: 'You will have the trip director\'s 24/7 number. In a real emergency, our Bangkok office also responds within minutes.' },
-  { q: 'What if my child has dietary requirements?', a: 'We collect dietary and allergy data during booking and confirm with every caterer and homestay.' },
-  { q: 'What medical support is available?', a: 'Every trip carries a first-aid-trained guide. Hospital partnerships in Bangkok, Chiang Mai, and Phuket.' },
-];
 ---
-<PageLayout title={isTh ? 'สำหรับผู้ปกครอง' : 'For parents'} description={isTh ? 'สิ่งที่ลูกของคุณจะได้รับและข้อมูลความปลอดภัย' : 'What your child will experience and safety information'}>
-  <Hero
-    variant="small"
-    headline={isTh ? 'สำหรับผู้ปกครอง' : 'For parents'}
-    sub={isTh ? 'คำตอบสำหรับคำถามที่ผู้ปกครองถามบ่อยที่สุด' : 'Answers to the questions parents ask most'}
-    imageSrc="/images/hero/parents-hero.jpg"
-    imageAlt="Parent and child looking at trip photos"
-  />
-
-  <Section>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {reassurance.map((r) => (
-        <div class="bg-canvas-parchment p-6 rounded-lg border border-hairline">
-          <h3 class="text-body-strong text-ink mb-2">{r.title}</h3>
-          <p class="text-body text-ink-muted-80">{r.body}</p>
-        </div>
-      ))}
-    </div>
-  </Section>
-
-  <Section bg="parchment">
-    <h2 class="text-display-md text-ink mb-8">FAQ</h2>
-    <FAQAccordion items={faqs} />
-  </Section>
-
-  <CTASection
-    headline={isTh ? 'มีคำถามเพิ่มเติม?' : 'Have more questions?'}
-    primaryCta={{ href: `${prefix}/contact`, label: dict.nav.contact }}
-  />
-</PageLayout>
+<ParentsPage locale={locale} />
