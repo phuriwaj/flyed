@@ -13,6 +13,7 @@ import CTASection from '@/components/CTASection.astro';
 import BadgeRow from '@/components/BadgeRow.astro';
 import PersonaGrid from '@/components/PersonaGrid.astro';
 import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
 
 export const locale = 'th';
 const dict = getDict('th');
@@ -26,14 +27,17 @@ const featuredDestinations = [
   { slug: 'kanchanaburi', name: 'Kanchanaburi', tagline: 'WWII history along the River Kwai', imageSrc: '/images/destinations/kanchanaburi-hero.jpg' },
 ];
 
-const categories = [
-  { slug: 'service-learning', title: dict.categories['service-learning'], description: 'Curriculum-linked volunteer programs', icon: '🤝', itineraryCount: 2 },
-  { slug: 'cultural-heritage', title: dict.categories['cultural-heritage'], description: 'Temples, homestays, Isan villages', icon: '🏛️', itineraryCount: 1 },
-  { slug: 'stem-environmental', title: dict.categories['stem-environmental'], description: 'Marine, jungle, and conservation', icon: '🔬', itineraryCount: 2 },
-  { slug: 'sports-adventure', title: dict.categories['sports-adventure'], description: 'Muay Thai, sailing, diving', icon: '⛵', itineraryCount: 3 },
-  { slug: 'language-immersion', title: dict.categories['language-immersion'], description: 'Thai language and homestay', icon: '🗣️', itineraryCount: 1 },
-  { slug: 'history-heritage', title: dict.categories['history-heritage'], description: 'WWII, Ayutthaya, Mekong history', icon: '📜', itineraryCount: 1 },
-];
+const categoryEntries = (await getCollection('categories')).sort(
+  (a, b) => a.data.titleTh.localeCompare(b.data.titleTh)
+);
+
+const categories = categoryEntries.map((entry) => ({
+  slug: entry.data.slug,
+  title: entry.data.titleTh,
+  description: entry.data.description,
+  icon: entry.data.icon,
+  itineraryCount: entry.data.itineraryCount,
+}));
 
 const stats = [
   { value: 240, suffix: '+', label: dict.home.stats_schools },

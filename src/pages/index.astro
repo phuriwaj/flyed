@@ -13,6 +13,7 @@ import BadgeRow from '@/components/BadgeRow.astro';
 import TestimonialCard from '@/components/TestimonialCard.astro';
 import SmartImage from '@/components/SmartImage.astro';
 import { getLocale, getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
 
 const locale = getLocale(Astro.url);
 const dict = getDict(locale);
@@ -26,14 +27,17 @@ const featuredDestinations = [
   { slug: 'kanchanaburi', name: 'Kanchanaburi', tagline: 'WWII history along the River Kwai', imageSrc: '/images/destinations/kanchanaburi-hero.jpg' },
 ];
 
-const categories = [
-  { slug: 'service-learning', title: dict.categories['service-learning'], description: 'Curriculum-linked volunteer programs', imageSrc: '/images/categories/service-learning-hero.jpg', itineraryCount: 2 },
-  { slug: 'cultural-heritage', title: dict.categories['cultural-heritage'], description: 'Temples, homestays, Isan villages', imageSrc: '/images/categories/cultural-heritage-hero.jpg', itineraryCount: 1 },
-  { slug: 'stem-environmental', title: dict.categories['stem-environmental'], description: 'Marine, jungle, and conservation', imageSrc: '/images/categories/stem-environmental-hero.jpg', itineraryCount: 2 },
-  { slug: 'sports-adventure', title: dict.categories['sports-adventure'], description: 'Muay Thai, sailing, diving', imageSrc: '/images/categories/sports-adventure-hero.jpg', itineraryCount: 3 },
-  { slug: 'language-immersion', title: dict.categories['language-immersion'], description: 'Thai language and homestay', imageSrc: '/images/categories/language-immersion-hero.jpg', itineraryCount: 1 },
-  { slug: 'history-heritage', title: dict.categories['history-heritage'], description: 'WWII, Ayutthaya, Mekong history', imageSrc: '/images/categories/history-heritage-hero.jpg', itineraryCount: 1 },
-];
+const categoryEntries = (await getCollection('categories')).sort(
+  (a, b) => a.data.title.localeCompare(b.data.title)
+);
+
+const categories = categoryEntries.map((entry) => ({
+  slug: entry.data.slug,
+  title: entry.data.title,
+  description: entry.data.description,
+  imageSrc: `/images/categories/${entry.data.slug}-hero.jpg`,
+  itineraryCount: entry.data.itineraryCount,
+}));
 
 const stats = [
   { value: 240, suffix: '+', label: dict.home.stats_schools },
