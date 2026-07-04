@@ -112,39 +112,3 @@ jobs:
           LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.sha }}
           LHCI_BUILD_CONTEXT__COMMIT_TIME: ${{ github.event.head_commit.timestamp }}
 
-  deploy:
-    name: Deploy to Cloudflare Pages
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    # Lighthouse currently reports quality regressions that pre-date the
-    # design system refresh (heading-order, LCP not prioritized, etc.).
-    # They're still surfaced via the lighthouse job's assertions — only
-    # the deploy gate is loosened until those are addressed.
-    needs: [lint-build-test, e2e]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    environment:
-      name: production
-      url: ${{ steps.deploy.outputs.deployment-url }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build
-        run: npm run build
-
-      - name: Publish to Cloudflare Pages
-        id: deploy
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: flyed
-          directory: dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
