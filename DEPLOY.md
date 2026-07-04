@@ -30,7 +30,7 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
 - [ ] Environment variables (Production):
   - `RESEND_API_KEY` — set via `wrangler secret put RESEND_API_KEY`
   - `CRM_WEBHOOK_URL` — set via `wrangler secret put CRM_WEBHOOK_URL`
-  - `PUBLIC_PLAUSIBLE_DOMAIN` — `flyed.dev` (set in dashboard)
+  - `PUBLIC_ANALYTICS_HOST` — set if using Plausible (or similar); host where the analytics script is served. Optional.
   - `SITE_URL` — `https://flyed.dev`
   - `NODE_ENV` — `production`
 
