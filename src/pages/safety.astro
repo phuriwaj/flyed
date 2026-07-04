@@ -1,59 +1,8 @@
 ---
 export const prerender = true;
-import PageLayout from '@/layouts/PageLayout.astro';
-import Hero from '@/components/Hero.astro';
-import Section from '@/components/Section.astro';
-import CTASection from '@/components/CTASection.astro';
-import FAQAccordion from '@/components/FAQAccordion.astro';
-import { getLocale, getDict } from '@/i18n';
+import SafetyPage from '@/components/SafetyPage.astro';
+import { getLocale } from '@/i18n';
 
 const locale = getLocale(Astro.url);
-const dict = getDict(locale);
-const isTh = locale === 'th';
-const prefix = isTh ? '/th' : '';
-
-const items = [
-  { title: '24/7 in-country support', body: 'A Bangkok-based operations team and Chiang Mai trip directors on standby every hour of every trip.' },
-  { title: 'Pre-departure risk assessment', body: 'PDF sent within 48 hours of booking. Covers medical, transport, activity, environmental, and political risks.' },
-  { title: 'Comprehensive insurance', body: 'Travel and medical insurance for every participant. Policy document shared before departure.' },
-  { title: 'Vetted local partners', body: 'Hotels, homestays, transport providers, and activity operators audited annually against our safety checklist.' },
-  { title: 'Hospital partnerships', body: 'Direct relationships with Bangkok Hospital, Chiang Mai Ram, and Bangkok Phuket Hospital for emergency coordination.' },
-  { title: 'Emergency protocols', body: 'Documented escalation paths, embassy contacts, evacuation procedures. Tested quarterly via tabletop exercises.' },
-];
-
-const faqs = [
-  { q: 'How do you handle medical emergencies?', a: 'Trip director calls our 24/7 ops line; we coordinate with hospital partners and the school\'s emergency contact within minutes.' },
-  { q: 'What is your staff-to-student ratio?', a: '1:8 for general travel, 1:6 for water-based activities, 1:4 for diving. Always at or below school requirements.' },
-  { q: 'Are your guides first-aid trained?', a: 'Yes — all lead guides hold Wilderness First Aid or higher certification, refreshed annually.' },
-];
 ---
-<PageLayout title={isTh ? 'ความปลอดภัย' : 'Safety'} description={isTh ? 'มาตรการความปลอดภัยของเรา' : 'Our safety and risk-management protocols'}>
-  <Hero
-    variant="small"
-    headline={isTh ? 'ความปลอดภัย' : 'Safety'}
-    sub={isTh ? 'มาตรฐานที่โรงเรียนไว้วางใจ' : 'Standards schools trust'}
-    imageSrc="/images/hero/safety-hero.jpg"
-    imageAlt="Safety briefing"
-  />
-
-  <Section>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      {items.map((i) => (
-        <div class="bg-canvas-parchment p-6 rounded-lg border border-hairline">
-          <h3 class="text-body-strong text-ink mb-2">{i.title}</h3>
-          <p class="text-body text-ink-muted-80">{i.body}</p>
-        </div>
-      ))}
-    </div>
-  </Section>
-
-  <Section bg="parchment">
-    <h2 class="text-display-md text-ink mb-8">FAQ</h2>
-    <FAQAccordion items={faqs} />
-  </Section>
-
-  <CTASection
-    headline={isTh ? 'ขอเอกสารประเมินความเสี่ยง' : 'Request risk-assessment documents'}
-    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
-  />
-</PageLayout>
+<SafetyPage locale={locale} />
