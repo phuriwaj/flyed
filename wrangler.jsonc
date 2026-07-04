@@ -10,13 +10,15 @@
   "vars": {
     "NODE_ENV": "production"
   },
-  // Durable lead capture (Task 3.2): persists enquiries to KV before
-  // downstream dispatch so a Resend/CRM failure doesn't lose the lead.
-  // The ids below are placeholders — replace before deploy with the output
-  // of:
-  //   npx wrangler kv namespace create LEADS_KV
-  //   npx wrangler kv namespace create LEADS_KV --preview
+  // KV bindings — both ids below are placeholders. Replace before deploy
+  // with the output of `npx wrangler kv namespace create <BINDING>` (and
+  // the --preview variant) for each.
   "kv_namespaces": [
+    {
+      "binding": "RATE_LIMIT_KV",
+      "id": "00000000000000000000000000000001",
+      "preview_id": "000000000000000000000000000000a1"
+    },
     {
       "binding": "LEADS_KV",
       "id": "00000000000000000000000000000002",
@@ -26,12 +28,5 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
-  },
-  "kv_namespaces": [
-    {
-      "binding": "RATE_LIMIT_KV",
-      "id": "00000000000000000000000000000001",
-      "preview_id": "000000000000000000000000000000a1"
-    }
-  ]
+  }
 }

@@ -24,11 +24,11 @@ export const POST: APIRoute = async (ctx) => {
   // attaches the client IP as `cf-connecting-ip`; fall back to `unknown` in
   // non-CF environments (local astro dev, vitest).
   const ip = request.headers.get('cf-connecting-ip') ?? 'unknown';
-  const kv = (locals as { runtime?: { env?: { RATE_LIMIT_KV?: unknown } } } | undefined)?.runtime
+  const rateLimitKv = (locals as { runtime?: { env?: { RATE_LIMIT_KV?: unknown } } } | undefined)?.runtime
     ?.env?.RATE_LIMIT_KV as Parameters<typeof rateLimited>[0]['kv'];
   const limit = await rateLimited({
     ip,
-    kv,
+    kv: rateLimitKv,
     max: 5,
     windowMs: 60_000,
   });
@@ -46,10 +46,10 @@ export const POST: APIRoute = async (ctx) => {
   // 0. Persist to KV before downstream dispatch so a Resend/CRM failure
   // doesn't lose the lead. `locals` is absent in unit tests; in local dev
   // the binding is also absent (no wrangler runtime) — both fall through.
-  const kv = (locals as any)?.runtime?.env?.LEADS_KV;
-  if (kv) {
+  const leadsKv = (locals as any)?.runtime?.env?.LEADS_KV;
+  if (leadsKv) {
     try {
-      await kv.put(
+      await leadsKv.put(
         enquiryId,
         JSON.stringify({ enquiry, createdAt: new Date().toISOString() }),
         { expirationTtl: 60 * 60 * 24 * 30 }, // 30d retry window
@@ -102,7 +102,7 @@ export const POST: APIRoute = async (ctx) => {
   // `durable` reflects whether the KV binding was present — i.e. whether the
   // lead was persisted durably. The KV write itself is wrapped in try/catch
   // and never blocks this response.
-  return new Response(JSON.stringify({ ok: true, enquiryId, durable: Boolean(kv) }), {
+  return new Response(JSON.stringify({ ok: true, enquiryId, durable: Boolean(leadsKv) }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
