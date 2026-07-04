@@ -8,7 +8,7 @@ import { getLocale } from '@/i18n';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => data.locale === 'en' && !data.draft);
   const tags = Array.from(new Set(posts.flatMap((p) => p.data.tags)));
   return tags.map((tag) => {
     const tagPosts = posts.filter((p) =>

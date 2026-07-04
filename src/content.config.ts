@@ -1,15 +1,5 @@
 import { defineCollection, reference, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import type { Loader } from 'astro/loaders';
-
-function emptyLoader(): Loader {
-  return {
-    name: 'empty',
-    load: async ({ store }) => {
-      store.clear();
-    },
-  };
-}
 
 const categoryEnum = z.enum([
   'service-learning',
@@ -20,24 +10,19 @@ const categoryEnum = z.enum([
   'history-heritage',
 ]);
 
+// Single locale-aware blog collection. EN and TH posts live side-by-side in
+// `src/content/blog/` (e.g. `article-1.en.mdx`, `article-1.th.mdx`) and are
+// distinguished by the `locale` field on each entry's frontmatter. Consumers
+// filter by `entry.data.locale` to render the right locale.
+//
+// Slug strategy: we keep the existing `.en` / `.th` filename suffix in the
+// generated entry id (`article-1.en`, `article-1.th`), so URL paths remain
+// stable for both locales. Decap CMS continues to write one file per locale
+// (`<slug>.en.mdx`, `<slug>.th.mdx`) so editors don't see a UX change.
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.en.mdx', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
-    title: z.string().max(120),
-    description: z.string().max(180),
-    pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    author: reference('team'),
-    tags: z.array(z.enum(['Service','Cultural','STEM','Sports','Language','History','Curriculum','Safety','Brand','Educator'])),
-    heroImage: z.string(),
-    relatedItineraries: z.array(reference('itineraries')).default([]),
-    draft: z.boolean().default(false),
-  }),
-});
-
-const blogTh = defineCollection({
-  loader: glob({ pattern: '**/*.th.mdx', base: './src/content/blog' }),
-  schema: z.object({
+    locale: z.enum(['en', 'th']),
     title: z.string().max(120),
     description: z.string().max(180),
     pubDate: z.coerce.date(),
@@ -111,4 +96,4 @@ const team = defineCollection({
   }),
 });
 
-export const collections = { blog, blogTh, itineraries, destinations, categories, team };
+export const collections = { blog, itineraries, destinations, categories, team };
