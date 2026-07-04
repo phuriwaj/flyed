@@ -4,6 +4,12 @@
 # Specific API catches first (must precede catch-all)
 /api/* /api/:splat 200
 
+# /admin: map to the static shell. Cloudflare Pages auto-serves
+# /admin/index.html for /admin and /admin/ (directory index). Without
+# the explicit /admin rule, the trailing-slash rule below would redirect
+# /admin <-> /admin/ infinitely.
+/admin /admin/index.html 200
+
 # Trailing slash removal (specific)
 /*/ /:splat 301
 
@@ -17,8 +23,9 @@
 # (No catch-all 404 redirect — Cloudflare Pages serves /404.html from
 # src/pages/404.astro automatically for unmatched paths)
 
-# Decap CMS admin: served by the Worker from src/pages/admin/[...path].astro
-# (which renders the same HTML the SPA fallback would have served). Workers
-# routes /admin/* via the catch-all in the Astro adapter, so no static
-# redirect rule is needed and Workers' stricter _redirects parser would
-# reject it as an infinite loop.
+# Decap CMS admin: served as a static asset from public/admin/index.html
+# (Workers serves it from the ASSETS binding; no Worker function invocation
+# for the shell HTML). No SPA fallback redirect is needed — visiting /admin
+# resolves to /admin/index.html directly. Nested /admin/foo/bar paths do
+# not auto-fall back to /admin/index.html under the Workers static-asset
+# binding, so only /admin and /admin/index.html are reachable.
