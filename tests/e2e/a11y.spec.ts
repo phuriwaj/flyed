@@ -19,8 +19,6 @@ for (const { path, name } of PAGES) {
     await page.goto(path);
     const results = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-      // Exclude color-contrast on hero gradient overlays (intentional brand styling)
-      .disableRules(['color-contrast'])
       .analyze();
 
     const critical = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
