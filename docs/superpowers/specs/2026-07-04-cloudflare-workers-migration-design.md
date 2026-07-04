@@ -42,7 +42,7 @@ The new preferred format is `wrangler.jsonc`. Move:
   "name": "flyed",
   "compatibility_date": "2026-06-01",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "./dist/_worker.js/index.js",
+  "main": "@astrojs/cloudflare/entrypoints/server",
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist"

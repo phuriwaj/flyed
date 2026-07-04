@@ -15,7 +15,7 @@
 - **Astro 7 + `@astrojs/cloudflare@14`** targets Cloudflare Workers only (Pages support removed in adapter v13). No fallback.
 - **`compatibility_date = "2026-06-01"`** — must match across `wrangler.jsonc` and Cloudflare dashboard Workers project config.
 - **`compatibility_flags = ["nodejs_compat"]`** — required because API endpoints use Node built-ins (`node:fs`, `node:crypto`).
-- **Worker entry:** `dist/_worker.js/index.js` (emitted by `@astrojs/cloudflare` adapter when Workers Builds runs `npm run build`).
+- **Worker entry:** `"@astrojs/cloudflare/entrypoints/server"` — the package import specifier. Wrangler resolves it at deploy time; the Vite plugin auto-rewrites the emitted `dist/server/wrangler.json` to point at the bundled `entry.mjs`. Do NOT set this to a `./dist/_worker.js/...` path — that fails the Vite pre-build validation because the file doesn't exist yet.
 - **Static assets directory:** `./dist` (relative to repo root). The `ASSETS` binding in Workers reads this.
 - **No source-code changes.** `src/`, `astro.config.mjs`, and the `th-404-copy` Vite plugin remain unchanged.
 - **`flyed.pages.dev` Pages project will be deleted manually** by the user after first successful Workers deploy. This is the only irreversible step.
@@ -45,7 +45,7 @@ Create `/home/phurix/projects/flyed/wrangler.jsonc` with exactly this content:
   "name": "flyed",
   "compatibility_date": "2026-06-01",
   "compatibility_flags": ["nodejs_compat"],
-  "main": "./dist/_worker.js/index.js",
+  "main": "@astrojs/cloudflare/entrypoints/server",
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist"
@@ -183,10 +183,10 @@ No `needs:` line on the next line (lighthouse only depends on `lint-build-test`,
 
 Run:
 ```bash
-npx --yes yaml@2.5.0 /home/phurix/projects/flyed/.github/workflows/ci.yml > /dev/null && echo "valid"
+python3 -c "import yaml,sys; yaml.safe_load(open('/home/phurix/projects/flyed/.github/workflows/ci.yml')); print('valid')"
 ```
 
-Expected: prints `valid`. If it prints errors, the YAML is malformed and the deploy-job deletion left junk behind.
+Expected: prints `valid`. If it prints an error, the YAML is malformed and the deploy-job deletion left junk behind.
 
 - [ ] **Step 7: Commit**
 
