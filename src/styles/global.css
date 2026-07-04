@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @theme {
   /* Surfaces — alternating canvas rhythm */
@@ -201,100 +202,6 @@
     body {
       line-height: 1.44;
     }
-  }
-}
-
-@layer components {
-  .prose {
-    max-width: 720px;
-    color: var(--color-ink);
-  }
-
-  .prose > * + * {
-    margin-top: 1.25em;
-  }
-
-  .prose h1 {
-    font-size: var(--text-lead);
-    line-height: var(--text-lead--line-height);
-    font-weight: var(--text-lead--font-weight);
-    letter-spacing: var(--text-lead--letter-spacing);
-    margin-top: 2em;
-  }
-
-  .prose h2 {
-    font-size: var(--text-tagline);
-    line-height: var(--text-tagline--line-height);
-    font-weight: var(--text-tagline--font-weight);
-    letter-spacing: var(--text-tagline--letter-spacing);
-    margin-top: 2em;
-  }
-
-  .prose h3 {
-    font-size: var(--text-body-strong);
-    line-height: var(--text-body-strong--line-height);
-    font-weight: var(--text-body-strong--font-weight);
-    letter-spacing: var(--text-body-strong--letter-spacing);
-    margin-top: 1.5em;
-  }
-
-  .prose p,
-  .prose li {
-    font-size: var(--text-body);
-    line-height: var(--text-body--line-height);
-    font-weight: var(--text-body--font-weight);
-    letter-spacing: var(--text-body--letter-spacing);
-  }
-
-  .prose a {
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .prose a:hover {
-    color: var(--color-primary-hover);
-  }
-
-  .prose blockquote {
-    border-left: 3px solid var(--color-divider-soft);
-    padding-left: 1.25em;
-    color: var(--color-ink-muted-80);
-    font-style: italic;
-  }
-
-  .prose code {
-    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-    font-size: 0.92em;
-    background: var(--color-canvas-parchment);
-    padding: 0.15em 0.4em;
-    border-radius: var(--radius-xs);
-  }
-
-  .prose pre {
-    background: var(--color-ink);
-    color: var(--color-canvas);
-    padding: 1.25em;
-    border-radius: var(--radius-md);
-    overflow-x: auto;
-  }
-
-  .prose pre code {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-  }
-
-  .prose hr {
-    border: 0;
-    border-top: 1px solid var(--color-hairline);
-    margin: 2.5em 0;
-  }
-
-  .prose img {
-    border-radius: var(--radius-md);
-    width: 100%;
-    height: auto;
   }
 }
 
