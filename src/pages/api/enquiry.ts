@@ -43,6 +43,26 @@ export const POST: APIRoute = async (ctx) => {
   const enquiry = result.data;
   const enquiryId = crypto.randomUUID();
 
+  // 0. Persist to KV before downstream dispatch so a Resend/CRM failure
+  // doesn't lose the lead. `locals` is absent in unit tests; in local dev
+  // the binding is also absent (no wrangler runtime) — both fall through.
+  const kv = (locals as any)?.runtime?.env?.LEADS_KV;
+  if (kv) {
+    try {
+      await kv.put(
+        enquiryId,
+        JSON.stringify({ enquiry, createdAt: new Date().toISOString() }),
+        { expirationTtl: 60 * 60 * 24 * 30 }, // 30d retry window
+      );
+    } catch (e) {
+      ctx.logger.error(
+        `LEADS_KV put failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`,
+      );
+    }
+  } else {
+    ctx.logger.warn(`LEADS_KV not bound; enquiry not durably persisted [enquiryId=${enquiryId}]`);
+  }
+
   // 1. Send email via Resend (best-effort; never blocks success)
   if (RESEND_API_KEY) {
     try {
@@ -78,8 +98,11 @@ export const POST: APIRoute = async (ctx) => {
     ctx.logger.warn(`CRM_WEBHOOK_URL not configured; skipping CRM [enquiryId=${enquiryId}]`);
   }
 
-  // 3. Always return success (we logged everything we could)
-  return new Response(JSON.stringify({ ok: true, enquiryId }), {
+  // 3. Always return success (we logged everything we could).
+  // `durable` reflects whether the KV binding was present — i.e. whether the
+  // lead was persisted durably. The KV write itself is wrapped in try/catch
+  // and never blocks this response.
+  return new Response(JSON.stringify({ ok: true, enquiryId, durable: Boolean(kv) }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
