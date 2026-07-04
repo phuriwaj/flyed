@@ -49,7 +49,7 @@ const subNavCategories = [
       </nav>
 
       <div class="flex items-center gap-3">
-        <LanguageSwitcher client:load currentLocale={locale} altPath={altPath} currentPathname={Astro.url.pathname} />
+        <LanguageSwitcher client:idle currentLocale={locale} altPath={altPath} currentPathname={Astro.url.pathname} />
         <button
           type="button"
           class="hidden md:inline-flex text-canvas/90 hover:text-canvas p-1.5"
