@@ -1,0 +1,38 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import EnquiryForm from '@/components/EnquiryForm.tsx';
+import { getDict } from '@/i18n';
+
+interface Props {
+  locale: 'en' | 'th';
+}
+
+const { locale } = Astro.props;
+const isTh = locale === 'th';
+const dict = getDict(locale);
+
+const params = Astro.url.searchParams;
+const defaults = {
+  subjects: params.get('category') ? [params.get('category')!] : [],
+  itinerary: params.get('itinerary') ?? undefined,
+  destinations: params.get('destination') ? [params.get('destination')!] : [],
+};
+---
+
+<PageLayout title={dict.enquire.title} description={dict.enquire.success}>
+  <Hero
+    variant="small"
+    headline={dict.enquire.title}
+    sub={isTh ? 'กรอกข้อมูล 6 ขั้นตอน เราจะติดต่อกลับภายใน 1 วันทำการ' : 'Six steps. We will reply within one business day.'}
+    imageSrc="/images/hero/enquire-hero.jpg"
+    imageAlt="Plan your trip"
+  />
+
+  <Section>
+    <div class="max-w-3xl mx-auto">
+      <EnquiryForm client:visible defaults={defaults} locale={locale} />
+    </div>
+  </Section>
+</PageLayout>

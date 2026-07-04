@@ -1,0 +1,88 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import ItineraryCard from '@/components/ItineraryCard.astro';
+import CTASection from '@/components/CTASection.astro';
+import FAQAccordion from '@/components/FAQAccordion.astro';
+import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  locale: 'en' | 'th';
+}
+
+const { locale } = Astro.props;
+const isTh = locale === 'th';
+const prefix = isTh ? '/th' : '';
+const dict = getDict(locale);
+
+const itineraries = await getCollection('itineraries');
+const featured = itineraries.filter((i) => i.data.published).slice(0, 3);
+
+const benefits = [
+  { title: 'Curriculum-mapped', body: 'Pre-trip curriculum pack with learning outcomes, suggested pre-reading, and post-trip assessment template.' },
+  { title: 'Co-design welcome', body: 'Adjust any itinerary with your flyed designer — typically 2–3 rounds to final.' },
+  { title: 'Free teacher place', body: 'One teacher place free per 10 paying students. Standard ratio coverage included.' },
+  { title: 'Risk assessment on request', body: 'Pre-departure risk assessment PDF sent within 48 hours.' },
+];
+
+const faqs = [
+  { q: 'How long does planning take?', a: 'From first enquiry to departure: typically 4–9 months. Shorter lead times possible.' },
+  { q: 'Can I bring more than one teacher?', a: 'Yes — most groups send 2–4 teachers. We discount additional teacher places.' },
+  { q: 'Do you help with parent communication?', a: 'Yes — sample parent letter, info pack, and FAQ templates provided.' },
+];
+---
+
+<PageLayout
+  title={isTh ? 'สำหรับครู' : 'For educators'}
+  description={isTh ? 'ทรัพยากรและข้อมูลสำหรับครูผู้นำทริป' : 'Resources and information for teacher trip leaders'}
+>
+  <Hero
+    variant="small"
+    headline={isTh ? 'สำหรับครู' : 'For educators'}
+    sub={isTh ? 'ทรัพยากรในการวางแผนทริปของคุณ' : 'Resources to plan your trip'}
+    imageSrc="/images/hero/educators-hero.jpg"
+    imageAlt="Teacher and students in classroom planning"
+  />
+
+  <Section>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {benefits.map((b) => (
+        <div class="bg-canvas-parchment p-6 rounded-lg border border-hairline">
+          <h3 class="text-body-strong text-ink mb-2">{b.title}</h3>
+          <p class="text-body text-ink-muted-80">{b.body}</p>
+        </div>
+      ))}
+    </div>
+  </Section>
+
+  <Section bg="parchment">
+    <h2 class="text-display-md text-ink mb-8">{isTh ? 'ทริปแนะนำ' : 'Suggested trips'}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {featured.map((itin) => (
+        <ItineraryCard
+          slug={itin.data.slug}
+          title={itin.data.title}
+          category={itin.data.category}
+          destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+          days={itin.data.days}
+          priceFrom={itin.data.priceFrom}
+          currency={itin.data.currency}
+          heroImage={itin.data.heroImage}
+          ageBand={itin.data.ageBand}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <Section>
+    <h2 class="text-display-md text-ink mb-8">FAQ</h2>
+    <FAQAccordion items={faqs} />
+  </Section>
+
+  <CTASection
+    headline={isTh ? 'คุยกับดีไซเนอร์ของเรา' : 'Talk to a designer'}
+    primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
+  />
+</PageLayout>
