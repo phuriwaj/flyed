@@ -146,9 +146,12 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
         type={type}
         value={(data[name] as string) ?? ''}
         onChange={(e) => setData((d) => ({ ...d, [name]: e.target.value }))}
+        aria-invalid={Boolean(errors[name]) || undefined}
+        aria-describedby={errors[name] ? `${name}-error` : undefined}
+        aria-required={required || undefined}
         className={inputClass}
       />
-      {errors[name] && <span className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors[name]}</span>}
+      {errors[name] && <span id={`${name}-error`} role="alert" className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors[name]}</span>}
     </label>
   );
 
@@ -191,7 +194,7 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
               </label>
             ))}
           </div>
-          {errors.subjects && <span className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors.subjects}</span>}
+          {errors.subjects && <span id="subjects-error" role="alert" className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors.subjects}</span>}
         </div>
       )}
 
@@ -241,7 +244,7 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
         </div>
       )}
 
-      {submitError && <p className="text-caption text-[color:var(--color-alert-red)]">{submitError}</p>}
+      {submitError && <p role="status" aria-live="polite" className="text-caption text-[color:var(--color-alert-red)]">{submitError}</p>}
 
       <div className="flex justify-between gap-3">
         {step > 0 && (
