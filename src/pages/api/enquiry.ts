@@ -4,7 +4,8 @@ import { enquirySchema } from '@/components/EnquiryForm';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async (ctx) => {
+  const { request } = ctx;
   let body: unknown;
   try {
     body = await request.json();
@@ -34,10 +35,10 @@ export const POST: APIRoute = async ({ request }) => {
         }),
       });
     } catch (e) {
-      console.error('Resend failed', e);
+      ctx.logger.error(`Resend delivery failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`);
     }
   } else {
-    console.warn('RESEND_API_KEY not set — skipping email send');
+    ctx.logger.warn(`RESEND_API_KEY not configured; skipping email send [enquiryId=${enquiryId}]`);
   }
 
   // 2. POST to CRM webhook (best-effort)
@@ -49,10 +50,10 @@ export const POST: APIRoute = async ({ request }) => {
         body: JSON.stringify({ ...enquiry, enquiryId }),
       });
     } catch (e) {
-      console.error('CRM webhook failed', e);
+      ctx.logger.error(`CRM webhook failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`);
     }
   } else {
-    console.warn('CRM_WEBHOOK_URL not set — skipping CRM');
+    ctx.logger.warn(`CRM_WEBHOOK_URL not configured; skipping CRM [enquiryId=${enquiryId}]`);
   }
 
   // 3. Always return success (we logged everything we could)
