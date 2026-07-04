@@ -13,5 +13,12 @@
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "RATE_LIMIT_KV",
+      "id": "00000000000000000000000000000001",
+      "preview_id": "000000000000000000000000000000a1"
+    }
+  ]
 }

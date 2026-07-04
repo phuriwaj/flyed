@@ -1,11 +1,12 @@
 import type { APIRoute } from 'astro';
 import { RESEND_API_KEY, CRM_WEBHOOK_URL, ENQUIRY_TO_EMAIL } from 'astro:env/server';
 import { enquirySchema } from '@/components/EnquiryForm';
+import { rateLimited } from '@/lib/rate-limit';
 
 export const prerender = false;
 
 export const POST: APIRoute = async (ctx) => {
-  const { request } = ctx;
+  const { request, locals } = ctx;
   let body: unknown;
   try {
     body = await request.json();
@@ -16,6 +17,27 @@ export const POST: APIRoute = async (ctx) => {
   const result = enquirySchema.safeParse(body);
   if (!result.success) {
     return new Response(JSON.stringify({ ok: false, error: 'Validation failed', issues: result.error.issues }), { status: 422 });
+  }
+
+  // Rate-limit AFTER validation (junk requests don't burn KV ops) and BEFORE
+  // generating an enquiryId or dispatching to Resend/CRM. Cloudflare Workers
+  // attaches the client IP as `cf-connecting-ip`; fall back to `unknown` in
+  // non-CF environments (local astro dev, vitest).
+  const ip = request.headers.get('cf-connecting-ip') ?? 'unknown';
+  const kv = (locals as { runtime?: { env?: { RATE_LIMIT_KV?: unknown } } } | undefined)?.runtime
+    ?.env?.RATE_LIMIT_KV as Parameters<typeof rateLimited>[0]['kv'];
+  const limit = await rateLimited({
+    ip,
+    kv,
+    max: 5,
+    windowMs: 60_000,
+  });
+  if (!limit.allowed) {
+    ctx.logger.warn(`Rate limit exceeded [ip=${ip}]`);
+    return new Response(JSON.stringify({ ok: false, error: 'Rate limit exceeded' }), {
+      status: 429,
+      headers: { 'Retry-After': String(limit.retryAfterSec) },
+    });
   }
 
   const enquiry = result.data;
