@@ -1,11 +1,8 @@
 import type { APIRoute } from 'astro';
+import { RESEND_API_KEY, CRM_WEBHOOK_URL, ENQUIRY_TO_EMAIL } from 'astro:env/server';
 import { enquirySchema } from '@/components/EnquiryForm';
 
 export const prerender = false;
-
-const RESEND_API_KEY = import.meta.env.RESEND_API_KEY;
-const CRM_WEBHOOK_URL = import.meta.env.CRM_WEBHOOK_URL;
-const ENQUIRY_TO_EMAIL = import.meta.env.ENQUIRY_TO_EMAIL ?? 'sales@flyed.dev';
 
 export const POST: APIRoute = async ({ request }) => {
   let body: unknown;

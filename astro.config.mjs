@@ -41,6 +41,14 @@ export default defineConfig({
   site: 'https://flyed.dev',
   output: 'static',
   adapter: cloudflare({}),
+  env: {
+    schema: {
+      RESEND_API_KEY: { type: 'string', context: 'server', access: 'secret', optional: true },
+      CRM_WEBHOOK_URL: { type: 'string', context: 'server', access: 'secret', optional: true },
+      ENQUIRY_TO_EMAIL: { type: 'string', context: 'server', access: 'public', default: 'sales@flyed.dev' },
+      PUBLIC_ANALYTICS_HOST: { type: 'string', context: 'client', access: 'public', optional: true },
+    },
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'th'],

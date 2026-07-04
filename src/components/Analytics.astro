@@ -1,5 +1,7 @@
 ---
-const host = import.meta.env.PUBLIC_ANALYTICS_HOST;
+import { PUBLIC_ANALYTICS_HOST } from 'astro:env/client';
+
+const host = PUBLIC_ANALYTICS_HOST;
 if (!host) {
   // No analytics configured — render nothing
 }
