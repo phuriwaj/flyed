@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { SEO } from 'astro-seo';
+import { ClientRouter } from 'astro:transitions';
 import Analytics from '@/components/Analytics.astro';
 
 interface Props {
@@ -85,6 +86,7 @@ const orgLd = {
 
     <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
     <slot name="head" />
+    <ClientRouter />
   </head>
   <body>
     <slot />

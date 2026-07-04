@@ -9,7 +9,7 @@ const prefix = isTh ? '/th' : '';
 const year = new Date().getFullYear();
 ---
 
-<footer class="bg-canvas-parchment text-ink-muted-80 mt-20">
+<footer transition:persist transition:name="site-footer" class="bg-canvas-parchment text-ink-muted-80 mt-20">
   <div class="max-w-7xl mx-auto px-4 md:px-8 py-16 grid grid-cols-2 md:grid-cols-4 gap-8">
     <div>
       <h4 class="text-caption-strong text-ink mb-3">{dict.footer.company}</h4>
