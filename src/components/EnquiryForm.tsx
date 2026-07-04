@@ -176,7 +176,12 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
       {step === 1 && (
         <div>
           <span className="text-caption-strong text-ink">{locale === 'th' ? 'วิชาที่สนใจ' : 'Subjects of interest'} *</span>
-          <div className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div
+            role="group"
+            aria-invalid={Boolean(errors.subjects) || undefined}
+            aria-describedby={errors.subjects ? 'subjects-error' : undefined}
+            className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2"
+          >
             {categoryOptions.map((c) => (
               <label key={c.value} className="flex items-center gap-2 text-body text-ink">
                 <input
