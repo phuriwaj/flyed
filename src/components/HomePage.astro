@@ -1,0 +1,252 @@
+---
+/**
+ * HomePage — single source of truth for the marketing home page.
+ * Used by both `src/pages/index.astro` (EN) and `src/pages/th/index.astro` (TH).
+ * The locale is passed in by the caller so this component has no URL awareness.
+ */
+import type { Locale } from '@/i18n';
+import PageLayout from '@/layouts/PageLayout.astro';
+import ServiceTile from '@/components/ServiceTile.astro';
+import ServiceUtilityCard from '@/components/ServiceUtilityCard.astro';
+import ButtonPrimary from '@/components/ButtonPrimary.astro';
+import ButtonSecondaryPill from '@/components/ButtonSecondaryPill.astro';
+import PersonaGrid from '@/components/PersonaGrid.astro';
+import StatsBar from '@/components/StatsBar.astro';
+import BadgeRow from '@/components/BadgeRow.astro';
+import TestimonialCard from '@/components/TestimonialCard.astro';
+import SmartImage from '@/components/SmartImage.astro';
+import { getDict } from '@/i18n';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = getDict(locale);
+const isTh = locale === 'th';
+const prefix = isTh ? '/th' : '';
+
+const featuredDestinations = [
+  { slug: 'chiang-mai', name: 'Chiang Mai', tagline: 'Service learning in the highlands', imageSrc: '/images/destinations/chiang-mai-hero.jpg' },
+  { slug: 'phuket', name: 'Phuket', tagline: 'Marine science on the Andaman', imageSrc: '/images/destinations/phuket-hero.jpg' },
+  { slug: 'bangkok', name: 'Bangkok', tagline: 'Culture and history in the capital', imageSrc: '/images/destinations/bangkok-hero.jpg' },
+  { slug: 'kanchanaburi', name: 'Kanchanaburi', tagline: 'WWII history along the River Kwai', imageSrc: '/images/destinations/kanchanaburi-hero.jpg' },
+];
+
+const categoryEntries = (await getCollection('categories')).sort((a, b) => {
+  const aTitle = isTh ? a.data.titleTh : a.data.title;
+  const bTitle = isTh ? b.data.titleTh : b.data.title;
+  return aTitle.localeCompare(bTitle);
+});
+
+const categories = categoryEntries.map((entry) => ({
+  slug: entry.data.slug,
+  title: isTh ? entry.data.titleTh : entry.data.title,
+  description: entry.data.description,
+  imageSrc: `/images/categories/${entry.data.slug}-hero.jpg`,
+  itineraryCount: entry.data.itineraryCount,
+}));
+
+const stats = [
+  { value: 240, suffix: '+', label: dict.home.stats_schools },
+  { value: 12, label: dict.home.stats_destinations },
+  { value: 98, suffix: '%', label: dict.home.stats_rebook },
+  { value: 14, label: dict.home.stats_years },
+];
+
+const personas = [
+  { label: isTh ? 'ฉันเป็นครู' : "I'm a teacher", href: `${prefix}/educators`, description: isTh ? 'วางแผนทริปที่สอดคล้องหลักสูตร' : 'Plan curriculum-aligned trips', icon: '👩‍🏫' },
+  { label: isTh ? 'ฉันเป็นผู้ปกครอง' : "I'm a parent", href: `${prefix}/parents`, description: isTh ? 'ดูว่าลูกของคุณจะได้สัมผัสอะไร' : 'See what your child experiences', icon: '👨‍👩‍👧' },
+  { label: isTh ? 'ฉันทำโรงเรียน' : 'I run a school', href: `${prefix}/schools`, description: isTh ? 'การจองแบบกลุ่มและการประเมินความเสี่ยง' : 'Group bookings & risk assessment', icon: '🏫' },
+];
+
+const testimonials = [
+  { quote: 'Our Chiang Mai service week changed how our IB students think about themselves. We rebooked within a month.', author: 'Sarah Whitfield', role: 'Head of Year 11', school: 'Auckland International School' },
+  { quote: 'Risk assessment was the cleanest I have seen from an Asian operator. Communication was flawless.', author: 'James O\'Connor', role: 'Vice Principal', school: 'Berkhamsted School' },
+  { quote: 'Our students came back speaking Thai, cooking pad krapow, and planning their return.', author: 'Anika Patel', role: 'MYP Coordinator', school: 'Singapore American School' },
+];
+
+const featuredItineraries = [
+  { slug: 'northern-thailand-service-week', title: 'Northern Thailand Service Week', destinations: 'Chiang Mai · Chiang Rai', days: 7, priceFrom: 1850, currency: 'USD', imageSrc: '/images/itineraries/northern-thailand-service-week-hero.jpg' },
+  { slug: 'andaman-marine-biology', title: 'Marine Biology in the Andaman', destinations: 'Phuket · Krabi', days: 5, priceFrom: 1450, currency: 'USD', imageSrc: '/images/itineraries/andaman-marine-biology-hero.jpg' },
+  { slug: 'ayutthaya-kanchanaburi-history-loop', title: 'Ayutthaya & Kanchanaburi History Loop', destinations: 'Ayutthaya · Kanchanaburi', days: 6, priceFrom: 1650, currency: 'USD', imageSrc: '/images/itineraries/ayutthaya-kanchanaburi-hero.jpg' },
+];
+
+const badges = [
+  { name: 'TAT Licensed', imageSrc: '/images/badges/tat.svg' },
+  { name: 'TEATA Member', imageSrc: '/images/badges/teata.svg' },
+  { name: 'GSTC Certified', imageSrc: '/images/badges/gstc.svg' },
+  { name: 'IATAN Accredited', imageSrc: '/images/badges/iatan.svg' },
+];
+
+const whyBlocks = [
+  {
+    title: isTh ? 'สอดคล้องหลักสูตร' : 'Curriculum-aligned',
+    body: isTh ? 'IB MYP/DP, IGCSE, A-Level, AP — ทุกทริปเชื่อมโยงกับผลการเรียนรู้' : 'IB MYP/DP, IGCSE, A-Level, AP — every trip maps to learning outcomes.',
+  },
+  {
+    title: isTh ? 'ไกด์ท้องถิ่นผู้เชี่ยวชาญ' : 'Local expert guides',
+    body: isTh ? 'ครูไทยและไกด์มีใบอนุญาตทุกทริป' : 'Thai educators and licensed guides on every departure.',
+  },
+  {
+    title: isTh ? 'ความปลอดภัย 24/7' : '24/7 safety',
+    body: isTh ? 'ทีมปฏิบัติการในประเทศและพันธมิตรโรงพยาบาล' : 'In-country operations team and hospital partnerships.',
+  },
+  {
+    title: isTh ? 'ดำเนินงานอย่างจริยธรรม' : 'Ethical operations',
+    body: isTh ? 'สอดคล้อง GSTC จ่ายค่าตอบแทนยุติธรรม มาตรฐานสวัสดิภาพสัตว์' : 'GSTC-aligned, fair-pay local teams, animal-welfare standards.',
+  },
+];
+---
+
+<PageLayout title={dict.home.hero_headline} description={dict.home.hero_sub}>
+  {/* Hero tile — edge-to-edge photography, no gradient */}
+  <ServiceTile surface="ink" ariaLabel="Hero">
+    <div class="relative w-full h-[80vh] min-h-[600px] -my-12 md:-my-20">
+      <SmartImage
+        src="/images/hero/home-hero.jpg"
+        alt="Students hiking a forested ridge at golden hour in northern Thailand"
+        widths={[800, 1200, 1800, 2400]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 flex flex-col justify-end">
+        <div class="max-w-6xl mx-auto w-full px-4 md:px-8 pb-12 md:pb-20">
+          <h1 class="text-display-md md:text-hero-display text-canvas max-w-3xl">
+            {dict.home.hero_headline}
+          </h1>
+          <p class="mt-4 text-lead text-canvas/85 max-w-2xl">{dict.home.hero_sub}</p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <ButtonPrimary href={`${prefix}/enquire`}>{dict.home.cta_primary}</ButtonPrimary>
+            <ButtonSecondaryPill href={`${prefix}/itineraries`} class="!text-canvas !border-canvas hover:!bg-canvas/10">
+              {dict.home.cta_secondary}
+            </ButtonSecondaryPill>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ServiceTile>
+
+  {/* Persona grid */}
+  <ServiceTile surface="canvas" ariaLabel="Personas">
+    <h2 class="sr-only">{isTh ? 'คุณคือใคร' : 'Who are you planning for?'}</h2>
+    <PersonaGrid items={personas} />
+  </ServiceTile>
+
+  {/* Stats + badges — dark tile */}
+  <ServiceTile surface="tile-1" ariaLabel="Stats and accreditations">
+    <div class="text-center mb-12">
+      <h2 class="text-display-md text-canvas">{isTh ? 'ความไว้วางใจจากโรงเรียนทั่วโลก' : 'Trusted by schools worldwide'}</h2>
+    </div>
+    <StatsBar stats={stats} variant="dark" />
+    <div class="mt-16">
+      <BadgeRow badges={badges} />
+    </div>
+  </ServiceTile>
+
+  {/* Featured destinations */}
+  <ServiceTile surface="canvas" ariaLabel="Featured destinations">
+    <div class="text-center mb-12">
+      <h2 class="text-display-md text-ink">{isTh ? 'จุดหมายเด่น' : 'Featured destinations'}</h2>
+      <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'สี่เมืองที่ครูจองบ่อยที่สุด' : 'Four of the cities teachers book most often'}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {featuredDestinations.map((d) => (
+        <ServiceUtilityCard
+          href={`${prefix}/destinations/${d.slug}`}
+          imageSrc={d.imageSrc}
+          imageAlt={d.name}
+          title={d.name}
+          meta={d.tagline}
+          cta={isTh ? 'สำรวจ' : 'Explore'}
+        />
+      ))}
+    </div>
+    <div class="text-center mt-12">
+      <ButtonSecondaryPill href={`${prefix}/destinations`}>
+        {isTh ? 'ดูจุดหมายทั้งหมด' : 'View all destinations'}
+      </ButtonSecondaryPill>
+    </div>
+  </ServiceTile>
+
+  {/* Trip categories — category overview per tile */}
+  <ServiceTile surface="parchment" ariaLabel="Trip categories">
+    <div class="text-center mb-12">
+      <h2 class="text-display-md text-ink">{isTh ? 'ประเภททริป' : 'Trip categories'}</h2>
+      <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'เลือกตามสิ่งที่นักเรียนจะได้เรียนรู้' : 'Choose by what your students will learn'}</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {categories.map((c) => (
+        <ServiceUtilityCard
+          href={`${prefix}/trips/${c.slug}`}
+          imageSrc={c.imageSrc}
+          imageAlt={c.title}
+          title={c.title}
+          meta={`${c.description} · ${c.itineraryCount} ${c.itineraryCount === 1 ? 'trip' : 'trips'}`}
+          cta={isTh ? 'ดูทริป' : 'View trips'}
+        />
+      ))}
+    </div>
+  </ServiceTile>
+
+  {/* Sample itineraries */}
+  <ServiceTile surface="canvas" ariaLabel="Sample itineraries">
+    <div class="text-center mb-12">
+      <h2 class="text-display-md text-ink">{isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}</h2>
+      <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'ทริปที่ครูนิยมจอง' : 'Trips teachers rebook most often'}</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {featuredItineraries.map((i) => (
+        <ServiceUtilityCard
+          href={`${prefix}/itineraries/${i.slug}`}
+          imageSrc={i.imageSrc}
+          imageAlt={i.title}
+          title={i.title}
+          meta={`${i.destinations} · ${i.days} days · from ${i.currency} ${i.priceFrom.toLocaleString()}`}
+          cta={isTh ? 'ดูรายละเอียด' : 'View details'}
+        />
+      ))}
+    </div>
+  </ServiceTile>
+
+  {/* Why flyed */}
+  <ServiceTile surface="parchment" ariaLabel="Why flyed">
+    <div class="text-center mb-12">
+      <h2 class="text-display-md text-ink">{isTh ? 'ทำไมต้อง flyed' : 'Why flyed'}</h2>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      {whyBlocks.map((b) => (
+        <div>
+          <h3 class="text-body-strong text-ink mb-2">{b.title}</h3>
+          <p class="text-body text-ink-muted-80">{b.body}</p>
+        </div>
+      ))}
+    </div>
+  </ServiceTile>
+
+  {/* Testimonials — dark tile */}
+  <ServiceTile surface="tile-1" ariaLabel="Testimonials">
+    <div class="text-center mb-12">
+      <h2 class="text-display-md text-canvas">{isTh ? 'ครูพูดถึงเรา' : 'What teachers say'}</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {testimonials.map((t) => <TestimonialCard {...t} />)}
+    </div>
+  </ServiceTile>
+
+  {/* Final CTA — dark tile */}
+  <ServiceTile surface="ink" ariaLabel="Plan a trip">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-display-md text-canvas">{isTh ? 'พร้อมวางแผนทริปหรือยัง?' : 'Ready to plan your trip?'}</h2>
+      <p class="mt-4 text-lead text-canvas/80">
+        {isTh ? 'บอกเราเกี่ยวกับกลุ่มของคุณ แล้วเราจะออกแบบทริปให้ภายใน 5 วันทำการ' : 'Tell us about your group and we will design a trip within 5 business days.'}
+      </p>
+      <div class="mt-8 flex justify-center">
+        <ButtonPrimary href={`${prefix}/enquire`}>{dict.nav.enquire}</ButtonPrimary>
+      </div>
+    </div>
+  </ServiceTile>
+</PageLayout>
