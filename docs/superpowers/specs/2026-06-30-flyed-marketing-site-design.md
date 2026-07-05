@@ -7,6 +7,12 @@
 
 ---
 
+# Updated 2026-07-05 — persistence and blog model sections brought in line with current implementation
+
+The persistence and blog content-model sections below (§8.2 and §8.4) describe the as-implemented behavior at branch tip `bc0995c`. Earlier text referred to "Astro DB" and a two-collection blog (`blog` + `blogTh`); both are stale. See `docs/architecture/overview.md`, `docs/data/database-design.md`, and `docs/data/data-dictionary.md` for the canonical current-state references.
+
+---
+
 ## 1. Problem & Goals
 
 flyed is an inbound educational-travel operator bringing international school groups to Thailand. The marketing site must (a) generate qualified B2B enquiries from international schools, Thai international schools, and the parents of traveling students; (b) rank in organic search for "Thailand school trip" keywords; and (c) reassure risk-conscious school administrators through transparent curriculum alignment, safety, and accreditation signals.
@@ -301,14 +307,17 @@ docs/
 
 ### 8.2 Content collection schemas (excerpt)
 
+**Updated 2026-07-05:** the original spec described a single `blog` collection for EN content; a parallel `blogTh` collection was briefly introduced and then merged. The current implementation (`src/content.config.ts`) is a single `blog` collection keyed by file name, with a `locale` field on the front-matter that discriminates EN vs TH entries:
+
 ```ts
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     description: z.string().max(180),
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
+    locale: z.enum(['en', 'th']),
     author: reference('team'),
     tags: z.array(z.enum([...10 tags])),
     heroImage: z.string(),
@@ -318,7 +327,9 @@ const blog = defineCollection({
 });
 ```
 
-Analogous schemas for `itineraries`, `destinations`, `categories`, `team`, `testimonials`.
+Editor pattern: locale variants are sibling files with the same slug — `<slug>.en.mdx` and `<slug>.th.mdx` — and a typo in `data.locale` silently hides a post from both locales (flagged as F-I18N-BLOG-001 in `docs/data/database-design.md`).
+
+Analogous schemas for `itineraries`, `destinations`, `categories`, `team`. The `testimonials` collection is not in use; testimonials are inlined on the home page (see `DEPLOY.md` "Known post-launch items").
 
 ### 8.3 i18n
 
@@ -326,16 +337,19 @@ Astro built-in i18n: `defaultLocale: 'en'`, `locales: ['en','th']`. Locale-prefi
 
 ### 8.4 Enquiry data flow
 
+**Updated 2026-07-05:** the original spec described Astro DB row writes as the durable layer. Astro DB was never wired. The current implementation uses two Cloudflare KV namespaces declared in `wrangler.jsonc` and bound to the runtime:
+
 ```
 /enquire → POST /api/enquiry
   → zod validation
-  → Resend email (env: RESEND_API_KEY)
+  → IP-chain sliding-window rate limit (RATE_LIMIT_KV; src/lib/rate-limit.ts)
+  → durable write to LEADS_KV (key: UUID v4; value: full enquiry; TTL: 30 days)
+  → Resend email (env: RESEND_API_KEY; src/pages/api/enquiry.ts)
   → CRM webhook POST (env: CRM_WEBHOOK_URL)
-  → Astro DB row write (env: ASTRO_DB_REMOTE_URL)
-  → { ok: true, enquiryId } → confirmation page
+  → { ok: true, enquiryId, durable } → confirmation page
 ```
 
-Failure mode: log to Astro DB even if email/CRM fails; never block user.
+Failure mode: if `LEADS_KV.put()` fails or the binding is missing, the handler still returns 200 with `durable: false` — the lead is then visible only via `ctx.logger.error` and the Workers request log. The recovery procedure for that case is documented in `docs/operations/runbooks/RB-leads-kv-failure.md`.
 
 ### 8.5 SEO
 

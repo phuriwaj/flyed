@@ -139,3 +139,5 @@ None. All design decisions are user-approved.
 ## Next Step
 
 Hand off to writing-plans skill to produce a step-by-step implementation plan.
+
+> **Status (2026-07-05):** Migration is complete and live. See [docs/operations/deployment.md](../../operations/deployment.md) for current operational state.
