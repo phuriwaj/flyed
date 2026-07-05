@@ -15,11 +15,28 @@ export default defineConfig({
   resolve: {
     alias: [
       { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
-      { find: /^astro:content$/, replacement: fileURLToPath(new URL('./tests/mocks/astro-content.ts', import.meta.url)) },
-      { find: /^astro:env\/server$/, replacement: fileURLToPath(new URL('./tests/mocks/astro-env.ts', import.meta.url)) },
-      { find: /^astro:env\/client$/, replacement: fileURLToPath(new URL('./tests/mocks/astro-env.ts', import.meta.url)) },
-      { find: /^astro:env$/, replacement: fileURLToPath(new URL('./tests/mocks/astro-env.ts', import.meta.url)) },
-      { find: /^virtual:astro:env\/schema$/, replacement: fileURLToPath(new URL('./tests/mocks/virtual-astro-env-schema.ts', import.meta.url)) },
+      {
+        find: /^astro:content$/,
+        replacement: fileURLToPath(new URL('./tests/mocks/astro-content.ts', import.meta.url)),
+      },
+      {
+        find: /^astro:env\/server$/,
+        replacement: fileURLToPath(new URL('./tests/mocks/astro-env.ts', import.meta.url)),
+      },
+      {
+        find: /^astro:env\/client$/,
+        replacement: fileURLToPath(new URL('./tests/mocks/astro-env.ts', import.meta.url)),
+      },
+      {
+        find: /^astro:env$/,
+        replacement: fileURLToPath(new URL('./tests/mocks/astro-env.ts', import.meta.url)),
+      },
+      {
+        find: /^virtual:astro:env\/schema$/,
+        replacement: fileURLToPath(
+          new URL('./tests/mocks/virtual-astro-env-schema.ts', import.meta.url),
+        ),
+      },
     ],
   },
 });

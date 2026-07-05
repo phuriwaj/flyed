@@ -28,19 +28,21 @@ const published = itineraries.filter((i) => i.data.published);
 
   <Section>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {published.map((itin) => (
-        <ItineraryCard
-          slug={itin.data.slug}
-          title={itin.data.title}
-          category={itin.data.category}
-          destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
-          days={itin.data.days}
-          priceFrom={itin.data.priceFrom}
-          currency={itin.data.currency}
-          heroImage={itin.data.heroImage}
-          ageBand={itin.data.ageBand}
-        />
-      ))}
+      {
+        published.map((itin) => (
+          <ItineraryCard
+            slug={itin.data.slug}
+            title={itin.data.title}
+            category={itin.data.category}
+            destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+            days={itin.data.days}
+            priceFrom={itin.data.priceFrom}
+            currency={itin.data.currency}
+            heroImage={itin.data.heroImage}
+            ageBand={itin.data.ageBand}
+          />
+        ))
+      }
     </div>
   </Section>
 

@@ -7,11 +7,4 @@ if (!host) {
 }
 ---
 
-{host && (
-  <script
-    type="text/partytown"
-    src={`${host}/script.js`}
-    data-domain="flyed.dev"
-    defer
-  />
-)}
+{host && <script type="text/partytown" src={`${host}/script.js`} data-domain="flyed.dev" defer />}

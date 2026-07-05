@@ -33,7 +33,12 @@ const postsWithMeta = posts.map((post) => ({
 ---
 
 <PageLayout title={`${tag} | บล็อก`} description={`โพสต์ที่ติดแท็ก ${tag}`}>
-  <Hero variant="small" headline={`แท็ก: ${tag}`} imageSrc="/images/hero/blog-hero.jpg" imageAlt="blog" />
+  <Hero
+    variant="small"
+    headline={`แท็ก: ${tag}`}
+    imageSrc="/images/hero/blog-hero.jpg"
+    imageAlt="blog"
+  />
   <Section>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {postsWithMeta.map((p) => <BlogCard {...p} />)}

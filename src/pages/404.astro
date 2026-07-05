@@ -4,12 +4,17 @@ import PageLayout from '@/layouts/PageLayout.astro';
 import ButtonPrimary from '@/components/ButtonPrimary.astro';
 const isTh = false;
 ---
+
 <PageLayout title={isTh ? 'ไม่พบหน้า' : 'Page not found'} description="404" noindex>
   <section class="py-32 text-center max-w-2xl mx-auto px-4">
     <h1 class="text-hero-display text-ink">404</h1>
-    <p class="mt-4 text-lead text-ink-muted-80">{isTh ? 'ไม่พบหน้าที่คุณกำลังมองหา' : "We couldn't find that page."}</p>
+    <p class="mt-4 text-lead text-ink-muted-80">
+      {isTh ? 'ไม่พบหน้าที่คุณกำลังมองหา' : "We couldn't find that page."}
+    </p>
     <div class="mt-8">
-      <ButtonPrimary href={isTh ? '/th' : '/'}>{isTh ? 'กลับหน้าแรก' : 'Back to home'}</ButtonPrimary>
+      <ButtonPrimary href={isTh ? '/th' : '/'}
+        >{isTh ? 'กลับหน้าแรก' : 'Back to home'}</ButtonPrimary
+      >
     </div>
   </section>
 </PageLayout>

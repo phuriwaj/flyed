@@ -20,7 +20,9 @@ export async function getStaticPaths() {
   }));
 }
 
-interface Props { entry: CollectionEntry<'categories'>; }
+interface Props {
+  entry: CollectionEntry<'categories'>;
+}
 const { entry } = Astro.props;
 const locale = getLocale(Astro.url);
 const dict = getDict(locale);
@@ -31,14 +33,25 @@ const allItineraries = await getCollection('itineraries');
 const matchingItineraries = allItineraries.filter((i) => i.data.category === entry.data.slug);
 
 const allDestinations = await getCollection('destinations');
-const matchingDestinations = allDestinations.filter((d) => d.data.bestFor.includes(entry.data.slug as any));
+const matchingDestinations = allDestinations.filter((d) =>
+  d.data.bestFor.includes(entry.data.slug as any),
+);
 
 const title = isTh ? entry.data.titleTh : entry.data.title;
 
 const faqs = [
-  { q: 'How do you align trips to our curriculum?', a: 'Every itinerary lists mapped learning outcomes for IB MYP, IB DP, IGCSE, A-Level, and AP.' },
-  { q: 'What is the typical group size?', a: 'School groups run 12–40 students plus 2–4 teachers.' },
-  { q: 'When is the best time to travel?', a: 'November through February is dry season. Each itinerary lists start months.' },
+  {
+    q: 'How do you align trips to our curriculum?',
+    a: 'Every itinerary lists mapped learning outcomes for IB MYP, IB DP, IGCSE, A-Level, and AP.',
+  },
+  {
+    q: 'What is the typical group size?',
+    a: 'School groups run 12–40 students plus 2–4 teachers.',
+  },
+  {
+    q: 'When is the best time to travel?',
+    a: 'November through February is dry season. Each itinerary lists start months.',
+  },
 ];
 
 const testimonial = {
@@ -61,59 +74,77 @@ const testimonial = {
   />
 
   <Section class="py-8">
-    <Breadcrumbs items={[
-      { label: dict.nav.home, href: prefix || '/' },
-      { label: dict.nav.trips, href: `${prefix}/trips` },
-      { label: title },
-    ]} />
+    <Breadcrumbs
+      items={[
+        { label: dict.nav.home, href: prefix || '/' },
+        { label: dict.nav.trips, href: `${prefix}/trips` },
+        { label: title },
+      ]}
+    />
   </Section>
 
   <Section>
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}</h2>
-    {matchingItineraries.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {matchingItineraries.map((itin) => (
-          <ItineraryCard
-            slug={itin.data.slug}
-            title={itin.data.title}
-            category={itin.data.category}
-            destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
-            days={itin.data.days}
-            priceFrom={itin.data.priceFrom}
-            currency={itin.data.currency}
-            heroImage={itin.data.heroImage}
-            ageBand={itin.data.ageBand}
-          />
-        ))}
-      </div>
-    ) : (
-      <p class="text-ink-muted-80">{isTh ? 'โปรแกรมตัวอย่างกำลังจะมาเร็วๆ นี้' : 'Sample itineraries for this category are coming soon. Get in touch to discuss a custom program.'}</p>
-    )}
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">
+      {isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}
+    </h2>
+    {
+      matchingItineraries.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {matchingItineraries.map((itin) => (
+            <ItineraryCard
+              slug={itin.data.slug}
+              title={itin.data.title}
+              category={itin.data.category}
+              destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+              days={itin.data.days}
+              priceFrom={itin.data.priceFrom}
+              currency={itin.data.currency}
+              heroImage={itin.data.heroImage}
+              ageBand={itin.data.ageBand}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="text-ink-muted-80">
+          {isTh
+            ? 'โปรแกรมตัวอย่างกำลังจะมาเร็วๆ นี้'
+            : 'Sample itineraries for this category are coming soon. Get in touch to discuss a custom program.'}
+        </p>
+      )
+    }
   </Section>
 
   <Section bg="parchment">
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'จุดหมายที่เหมาะกับหมวดนี้' : 'Works in these destinations'}</h2>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">
+      {isTh ? 'จุดหมายที่เหมาะกับหมวดนี้' : 'Works in these destinations'}
+    </h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      {matchingDestinations.map((dest) => (
-        <DestinationCard
-          slug={dest.data.slug}
-          name={isTh ? dest.data.nameTh : dest.data.name}
-          tagline={dest.data.tagline}
-          imageSrc={dest.data.heroImage}
-          bestFor={dest.data.bestFor as unknown as string[]}
-        />
-      ))}
+      {
+        matchingDestinations.map((dest) => (
+          <DestinationCard
+            slug={dest.data.slug}
+            name={isTh ? dest.data.nameTh : dest.data.name}
+            tagline={dest.data.tagline}
+            imageSrc={dest.data.heroImage}
+            bestFor={dest.data.bestFor as unknown as string[]}
+          />
+        ))
+      }
     </div>
   </Section>
 
   <Section>
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'สอดคล้องหลักสูตร' : 'Curriculum alignment'}</h2>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">
+      {isTh ? 'สอดคล้องหลักสูตร' : 'Curriculum alignment'}
+    </h2>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-      {['IB MYP', 'IB DP', 'IGCSE', 'A-Level', 'AP', 'GCSE'].map((c) => (
-        <div class="bg-canvas-parchment rounded-lg p-6 text-center">
-          <div class="font-display text-xl font-semibold text-ink">{c}</div>
-        </div>
-      ))}
+      {
+        ['IB MYP', 'IB DP', 'IGCSE', 'A-Level', 'AP', 'GCSE'].map((c) => (
+          <div class="bg-canvas-parchment rounded-lg p-6 text-center">
+            <div class="font-display text-xl font-semibold text-ink">{c}</div>
+          </div>
+        ))
+      }
     </div>
   </Section>
 
@@ -122,7 +153,9 @@ const testimonial = {
   </Section>
 
   <Section>
-    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'คำถามที่พบบ่อย' : 'FAQ'}</h2>
+    <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">
+      {isTh ? 'คำถามที่พบบ่อย' : 'FAQ'}
+    </h2>
     <FAQAccordion items={faqs} />
   </Section>
 

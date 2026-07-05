@@ -1,14 +1,29 @@
 ---
-interface Persona { label: string; href: string; description: string; icon: string; }
-interface Props { items: Persona[]; }
+interface Persona {
+  label: string;
+  href: string;
+  description: string;
+  icon: string;
+}
+interface Props {
+  items: Persona[];
+}
 const { items } = Astro.props;
 ---
+
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-  {items.map((p) => (
-    <a href={p.href} class="block bg-canvas border border-hairline rounded-lg p-8 text-center no-underline transition-colors duration-200 hover:border-ink-muted-40">
-      <div class="text-4xl mb-3" aria-hidden="true">{p.icon}</div>
-      <h3 class="text-body-strong text-ink">{p.label}</h3>
-      <p class="mt-2 text-body text-ink-muted-80">{p.description}</p>
-    </a>
-  ))}
+  {
+    items.map((p) => (
+      <a
+        href={p.href}
+        class="block bg-canvas border border-hairline rounded-lg p-8 text-center no-underline transition-colors duration-200 hover:border-ink-muted-40"
+      >
+        <div class="text-4xl mb-3" aria-hidden="true">
+          {p.icon}
+        </div>
+        <h3 class="text-body-strong text-ink">{p.label}</h3>
+        <p class="mt-2 text-body text-ink-muted-80">{p.description}</p>
+      </a>
+    ))
+  }
 </div>

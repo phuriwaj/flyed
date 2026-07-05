@@ -10,19 +10,35 @@ interface Props {
 const { slug, name, tagline, imageSrc, bestFor = [] } = Astro.props;
 const href = destinationPath(slug);
 ---
-<a href={href} class="group block bg-canvas border border-hairline rounded-lg overflow-hidden no-underline transition-colors duration-200 hover:border-ink-muted-40">
+
+<a
+  href={href}
+  class="group block bg-canvas border border-hairline rounded-lg overflow-hidden no-underline transition-colors duration-200 hover:border-ink-muted-40"
+>
   <div class="aspect-[4/3] overflow-hidden bg-canvas-parchment">
-    <img src={imageSrc} alt={name} class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" loading="lazy" decoding="async" width={800} height={600} />
+    <img
+      src={imageSrc}
+      alt={name}
+      class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+      loading="lazy"
+      decoding="async"
+      width={800}
+      height={600}
+    />
   </div>
   <div class="p-5">
     <h3 class="text-display-md text-ink group-hover:text-primary">{name}</h3>
     <p class="mt-2 text-body text-ink-muted-80">{tagline}</p>
-    {bestFor.length > 0 && (
-      <div class="mt-3 flex flex-wrap gap-1">
-        {bestFor.map((tag) => (
-          <span class="text-fine-print bg-canvas-parchment text-ink-muted-80 px-2 py-0.5 rounded-sm">{tag}</span>
-        ))}
-      </div>
-    )}
+    {
+      bestFor.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-1">
+          {bestFor.map((tag) => (
+            <span class="text-fine-print bg-canvas-parchment text-ink-muted-80 px-2 py-0.5 rounded-sm">
+              {tag}
+            </span>
+          ))}
+        </div>
+      )
+    }
   </div>
 </a>

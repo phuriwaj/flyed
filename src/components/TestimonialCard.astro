@@ -10,6 +10,7 @@ interface Props {
 const { quote, author, role, school, city, country } = Astro.props;
 const location = city && country ? `${school} · ${city}, ${country}` : school;
 ---
+
 <figure class="bg-surface-tile-2 p-6 rounded-lg h-full flex flex-col border border-divider-soft/10">
   <blockquote class="text-canvas flex-1">
     <p class="text-lead-airy leading-snug">&ldquo;{quote}&rdquo;</p>

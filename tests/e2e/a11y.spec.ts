@@ -21,7 +21,9 @@ for (const { path, name } of PAGES) {
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
       .analyze();
 
-    const critical = results.violations.filter((v) => v.impact === 'critical' || v.impact === 'serious');
+    const critical = results.violations.filter(
+      (v) => v.impact === 'critical' || v.impact === 'serious',
+    );
     if (critical.length > 0) {
       console.log(`${name} violations:`, critical.map((v) => `${v.id}:${v.impact}`).join(', '));
     }

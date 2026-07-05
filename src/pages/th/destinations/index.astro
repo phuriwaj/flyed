@@ -43,24 +43,27 @@ const regionLabel: Record<string, { en: string; th: string }> = {
     imageAlt="Map mosaic of Thailand destinations"
   />
 
-  {regionOrder.map((region) => (
-    grouped[region].length > 0 && (
-      <Section>
-        <h2 class="font-display text-3xl font-semibold mb-8">{regionLabel[region].th}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {grouped[region].map((dest) => (
-            <DestinationCard
-              slug={dest.data.slug}
-              name={dest.data.nameTh ?? dest.data.name}
-              tagline={dest.data.tagline}
-              imageSrc={dest.data.heroImage}
-              bestFor={dest.data.bestFor as unknown as string[]}
-            />
-          ))}
-        </div>
-      </Section>
+  {
+    regionOrder.map(
+      (region) =>
+        grouped[region].length > 0 && (
+          <Section>
+            <h2 class="font-display text-3xl font-semibold mb-8">{regionLabel[region].th}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {grouped[region].map((dest) => (
+                <DestinationCard
+                  slug={dest.data.slug}
+                  name={dest.data.nameTh ?? dest.data.name}
+                  tagline={dest.data.tagline}
+                  imageSrc={dest.data.heroImage}
+                  bestFor={dest.data.bestFor as unknown as string[]}
+                />
+              ))}
+            </div>
+          </Section>
+        ),
     )
-  ))}
+  }
 
   <CTASection
     headline="ยังไม่รู้จะไปไหน?"

@@ -17,8 +17,10 @@ async function main() {
   // The favicon is a 128x128 viewBox SVG. Inflate to a generous size for the OG card.
   const faviconSvg = await readFile(resolve(publicDir, 'favicon.svg'), 'utf8');
   // Strip the dark-mode media query and force a white fill so it pops on the dark BG.
-  const whiteFavicon = faviconSvg
-    .replace(/<style>[\s\S]*?<\/style>/, '<style>path { fill: #FFFFFF; }</style>');
+  const whiteFavicon = faviconSvg.replace(
+    /<style>[\s\S]*?<\/style>/,
+    '<style>path { fill: #FFFFFF; }</style>',
+  );
   const mark = await sharp(Buffer.from(whiteFavicon))
     .resize(360, 360, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .png()
@@ -35,7 +37,7 @@ async function main() {
         font-weight="700"
         letter-spacing="-6"
         fill="#FFFFFF">flyed</text>
-    </svg>`
+    </svg>`,
   );
   const wordmark = await sharp(wordmarkSvg)
     .resize({ width: 600, withoutEnlargement: true })

@@ -19,5 +19,4 @@ export const itineraryPath = (slug: string, locale?: Locale) =>
 export const blogPath = (slug: string, locale?: Locale) =>
   localizedPath(locale ?? 'en', `/blog/${slug}`);
 
-export const enquirePath = (locale?: Locale) =>
-  localizedPath(locale ?? 'en', '/enquire');
+export const enquirePath = (locale?: Locale) => localizedPath(locale ?? 'en', '/enquire');

@@ -19,8 +19,8 @@ i18n:
   default_locale: en
 
 # Media uploads: committed to the repo, served from /images/uploads.
-media_folder: "public/images/uploads"
-public_folder: "/images/uploads"
+media_folder: 'public/images/uploads'
+public_folder: '/images/uploads'
 
 # Custom preview iframe for live preview against CF Pages branch deploys.
 # See public/admin/preview.html.
@@ -29,74 +29,220 @@ display_url: https://flyed.dev
 logo_url: /logo.svg
 
 collections:
-  - name: "blog"
-    label: "Blog (English)"
-    label_singular: "Blog Post (EN)"
-    folder: "src/content/blog"
-    extension: "mdx"
+  - name: 'blog'
+    label: 'Blog (English)'
+    label_singular: 'Blog Post (EN)'
+    folder: 'src/content/blog'
+    extension: 'mdx'
     format: frontmatter
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}.en"
-    identifier_field: "title"
-    media_folder: "/images/uploads/blog"
-    public_folder: "/images/uploads/blog"
+    slug: '{{slug}}'
+    path: '{{slug}}.en'
+    identifier_field: 'title'
+    media_folder: '/images/uploads/blog'
+    public_folder: '/images/uploads/blog'
     fields:
-      - { label: "Locale", name: "locale", widget: "select", options: ["en", "th"], default: "en", hint: "Always en for this collection (English posts). Decap writes one file per locale; the TH collection below produces the Thai version." }
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text", pattern: ["^.{1,180}$", "Max 180 chars"] }
-      - { label: "Publish date", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "Updated date", name: "updatedDate", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "Author", name: "author", widget: "relation", collection: "team", search_fields: ["name"], value_field: "id", display_fields: ["name"] }
-      - { label: "Tags", name: "tags", widget: "select", multiple: true, options: ["Service", "Cultural", "STEM", "Sports", "Language", "History", "Curriculum", "Safety", "Brand", "Educator"] }
-      - { label: "Hero image", name: "heroImage", widget: "image", allow_multiple: false, media_library: { config: { max_file_size: 5242880 } } }
-      - { label: "Related itineraries", name: "relatedItineraries", widget: "relation", collection: "itineraries", search_fields: ["title"], value_field: "id", display_fields: ["title"], multiple: true, required: false }
-      - { label: "Draft", name: "draft", widget: "boolean", default: false, hint: "Hidden from production when true" }
-      - { label: "Body", name: "body", widget: "markdown" }
-    preview_path: "blog/{{slug}}"
-    preview_path_date_field: "pubDate"
-    preview_path_date_format: "YYYY-MM-DD"
+      - {
+          label: 'Locale',
+          name: 'locale',
+          widget: 'select',
+          options: ['en', 'th'],
+          default: 'en',
+          hint: 'Always en for this collection (English posts). Decap writes one file per locale; the TH collection below produces the Thai version.',
+        }
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - {
+          label: 'Description',
+          name: 'description',
+          widget: 'text',
+          pattern: ['^.{1,180}$', 'Max 180 chars'],
+        }
+      - {
+          label: 'Publish date',
+          name: 'pubDate',
+          widget: 'datetime',
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+        }
+      - {
+          label: 'Updated date',
+          name: 'updatedDate',
+          widget: 'datetime',
+          required: false,
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+        }
+      - {
+          label: 'Author',
+          name: 'author',
+          widget: 'relation',
+          collection: 'team',
+          search_fields: ['name'],
+          value_field: 'id',
+          display_fields: ['name'],
+        }
+      - {
+          label: 'Tags',
+          name: 'tags',
+          widget: 'select',
+          multiple: true,
+          options:
+            [
+              'Service',
+              'Cultural',
+              'STEM',
+              'Sports',
+              'Language',
+              'History',
+              'Curriculum',
+              'Safety',
+              'Brand',
+              'Educator',
+            ],
+        }
+      - {
+          label: 'Hero image',
+          name: 'heroImage',
+          widget: 'image',
+          allow_multiple: false,
+          media_library: { config: { max_file_size: 5242880 } },
+        }
+      - {
+          label: 'Related itineraries',
+          name: 'relatedItineraries',
+          widget: 'relation',
+          collection: 'itineraries',
+          search_fields: ['title'],
+          value_field: 'id',
+          display_fields: ['title'],
+          multiple: true,
+          required: false,
+        }
+      - {
+          label: 'Draft',
+          name: 'draft',
+          widget: 'boolean',
+          default: false,
+          hint: 'Hidden from production when true',
+        }
+      - { label: 'Body', name: 'body', widget: 'markdown' }
+    preview_path: 'blog/{{slug}}'
+    preview_path_date_field: 'pubDate'
+    preview_path_date_format: 'YYYY-MM-DD'
 
-  - name: "blog-th"
-    label: "Blog (ไทย)"
-    label_singular: "Blog Post (TH)"
-    folder: "src/content/blog"
-    extension: "mdx"
+  - name: 'blog-th'
+    label: 'Blog (ไทย)'
+    label_singular: 'Blog Post (TH)'
+    folder: 'src/content/blog'
+    extension: 'mdx'
     format: frontmatter
     create: true
-    slug: "{{slug}}"
-    path: "{{slug}}.th"
-    identifier_field: "title"
-    media_folder: "/images/uploads/blog"
-    public_folder: "/images/uploads/blog"
+    slug: '{{slug}}'
+    path: '{{slug}}.th'
+    identifier_field: 'title'
+    media_folder: '/images/uploads/blog'
+    public_folder: '/images/uploads/blog'
     fields:
-      - { label: "ภาษา (Locale)", name: "locale", widget: "select", options: ["en", "th"], default: "th", hint: "Always th for this collection (Thai posts). Decap writes one file per locale; the EN collection above produces the English version." }
-      - { label: "หัวข้อ (Title)", name: "title", widget: "string" }
-      - { label: "คำอธิบาย (Description)", name: "description", widget: "text", pattern: ["^.{1,180}$", "Max 180 chars"] }
-      - { label: "วันที่เผยแพร่", name: "pubDate", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "วันที่อัปเดต", name: "updatedDate", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false }
-      - { label: "ผู้เขียน (Author)", name: "author", widget: "relation", collection: "team", search_fields: ["name"], value_field: "id", display_fields: ["name"] }
-      - { label: "แท็ก (Tags)", name: "tags", widget: "select", multiple: true, options: ["Service", "Cultural", "STEM", "Sports", "Language", "History", "Curriculum", "Safety", "Brand", "Educator"] }
-      - { label: "รูปหน้าปก (Hero image)", name: "heroImage", widget: "image", allow_multiple: false, media_library: { config: { max_file_size: 5242880 } } }
-      - { label: "ทริปที่เกี่ยวข้อง (Related itineraries)", name: "relatedItineraries", widget: "relation", collection: "itineraries", search_fields: ["title"], value_field: "id", display_fields: ["title"], multiple: true, required: false }
-      - { label: "ฉบับร่าง (Draft)", name: "draft", widget: "boolean", default: false, hint: "ซ่อนจากเว็บไซต์เมื่อเปิดใช้" }
-      - { label: "เนื้อหา (Body)", name: "body", widget: "markdown" }
-    preview_path: "blog/{{slug}}"
-    preview_path_date_field: "pubDate"
-    preview_path_date_format: "YYYY-MM-DD"
+      - {
+          label: 'ภาษา (Locale)',
+          name: 'locale',
+          widget: 'select',
+          options: ['en', 'th'],
+          default: 'th',
+          hint: 'Always th for this collection (Thai posts). Decap writes one file per locale; the EN collection above produces the English version.',
+        }
+      - { label: 'หัวข้อ (Title)', name: 'title', widget: 'string' }
+      - {
+          label: 'คำอธิบาย (Description)',
+          name: 'description',
+          widget: 'text',
+          pattern: ['^.{1,180}$', 'Max 180 chars'],
+        }
+      - {
+          label: 'วันที่เผยแพร่',
+          name: 'pubDate',
+          widget: 'datetime',
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+        }
+      - {
+          label: 'วันที่อัปเดต',
+          name: 'updatedDate',
+          widget: 'datetime',
+          required: false,
+          date_format: 'YYYY-MM-DD',
+          time_format: false,
+        }
+      - {
+          label: 'ผู้เขียน (Author)',
+          name: 'author',
+          widget: 'relation',
+          collection: 'team',
+          search_fields: ['name'],
+          value_field: 'id',
+          display_fields: ['name'],
+        }
+      - {
+          label: 'แท็ก (Tags)',
+          name: 'tags',
+          widget: 'select',
+          multiple: true,
+          options:
+            [
+              'Service',
+              'Cultural',
+              'STEM',
+              'Sports',
+              'Language',
+              'History',
+              'Curriculum',
+              'Safety',
+              'Brand',
+              'Educator',
+            ],
+        }
+      - {
+          label: 'รูปหน้าปก (Hero image)',
+          name: 'heroImage',
+          widget: 'image',
+          allow_multiple: false,
+          media_library: { config: { max_file_size: 5242880 } },
+        }
+      - {
+          label: 'ทริปที่เกี่ยวข้อง (Related itineraries)',
+          name: 'relatedItineraries',
+          widget: 'relation',
+          collection: 'itineraries',
+          search_fields: ['title'],
+          value_field: 'id',
+          display_fields: ['title'],
+          multiple: true,
+          required: false,
+        }
+      - {
+          label: 'ฉบับร่าง (Draft)',
+          name: 'draft',
+          widget: 'boolean',
+          default: false,
+          hint: 'ซ่อนจากเว็บไซต์เมื่อเปิดใช้',
+        }
+      - { label: 'เนื้อหา (Body)', name: 'body', widget: 'markdown' }
+    preview_path: 'blog/{{slug}}'
+    preview_path_date_field: 'pubDate'
+    preview_path_date_format: 'YYYY-MM-DD'
 
-  - name: "team"
-    label: "Team"
-    label_singular: "Team Member"
-    folder: "src/content/team"
-    extension: "md"
+  - name: 'team'
+    label: 'Team'
+    label_singular: 'Team Member'
+    folder: 'src/content/team'
+    extension: 'md'
     format: frontmatter
     create: false
-    identifier_field: "name"
+    identifier_field: 'name'
     fields:
-      - { label: "Name", name: "name", widget: "string" }
-      - { label: "Role (EN)", name: "role", widget: "string" }
-      - { label: "Role (TH)", name: "roleTh", widget: "string", required: false }
-      - { label: "Bio", name: "bio", widget: "text", pattern: ["^.{1,400}$", "Max 400 chars"] }
-      - { label: "Photo", name: "photo", widget: "image" }
-      - { label: "Order", name: "order", widget: "number", value_type: "int", min: 1 }
+      - { label: 'Name', name: 'name', widget: 'string' }
+      - { label: 'Role (EN)', name: 'role', widget: 'string' }
+      - { label: 'Role (TH)', name: 'roleTh', widget: 'string', required: false }
+      - { label: 'Bio', name: 'bio', widget: 'text', pattern: ['^.{1,400}$', 'Max 400 chars'] }
+      - { label: 'Photo', name: 'photo', widget: 'image' }
+      - { label: 'Order', name: 'order', widget: 'number', value_type: 'int', min: 1 }

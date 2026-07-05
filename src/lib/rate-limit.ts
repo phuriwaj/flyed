@@ -36,9 +36,7 @@ export async function rateLimited(opts: RateLimitOptions): Promise<RateLimitResu
   const key = `rl:${opts.ip}`;
   const now = Date.now();
   const raw = await opts.kv.get(key);
-  const list = raw
-    ? (JSON.parse(raw) as number[]).filter((t) => now - t < opts.windowMs)
-    : [];
+  const list = raw ? (JSON.parse(raw) as number[]).filter((t) => now - t < opts.windowMs) : [];
 
   if (list.length >= opts.max) {
     const oldest = list[0];

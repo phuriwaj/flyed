@@ -18,7 +18,9 @@ export async function getStaticPaths() {
   }));
 }
 
-interface Props { entry: CollectionEntry<'blog'>; }
+interface Props {
+  entry: CollectionEntry<'blog'>;
+}
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
@@ -30,11 +32,17 @@ const prefix = isTh ? '/th' : '';
 const wordCount = entry.body?.split(/\s+/).length ?? 0;
 const readingMinutes = Math.max(1, Math.round(wordCount / 220));
 
-const dateStr = entry.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateStr = entry.data.pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 
 const author = await getEntry(entry.data.author);
 
-const relatedPosts = (await getCollection('blog', ({ data }) => data.locale === 'en' && !data.draft))
+const relatedPosts = (
+  await getCollection('blog', ({ data }) => data.locale === 'en' && !data.draft)
+)
   .filter((p) => p.id !== entry.id && p.data.tags.some((t) => entry.data.tags.includes(t)))
   .slice(0, 3);
 
@@ -46,11 +54,11 @@ const relatedItineraries = await Promise.all(
       // surface immediately instead of silently dropping the related-trips card.
       throw new Error(
         `Blog post "${entry.id}" references missing itinerary "${ref.id}". ` +
-        `Fix the relatedItineraries frontmatter in src/content/blog/${entry.id}.`
+          `Fix the relatedItineraries frontmatter in src/content/blog/${entry.id}.`,
       );
     }
     return itin;
-  })
+  }),
 );
 
 const articleLd = {
@@ -62,11 +70,19 @@ const articleLd = {
   ...(entry.data.updatedDate ? { dateModified: entry.data.updatedDate.toISOString() } : {}),
   author: { '@type': 'Person', name: author?.data?.name ?? 'flyed' },
   image: new URL(entry.data.heroImage, Astro.site).toString(),
-  publisher: { '@type': 'Organization', name: 'flyed', logo: { '@type': 'ImageObject', url: new URL('/logo.svg', Astro.site).toString() } },
+  publisher: {
+    '@type': 'Organization',
+    name: 'flyed',
+    logo: { '@type': 'ImageObject', url: new URL('/logo.svg', Astro.site).toString() },
+  },
 };
 ---
 
-<PageLayout title={entry.data.title} description={entry.data.description} ogImage={entry.data.heroImage}>
+<PageLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogImage={entry.data.heroImage}
+>
   <Hero
     variant="small"
     headline={entry.data.title}
@@ -76,11 +92,13 @@ const articleLd = {
   />
 
   <Section class="py-8">
-    <Breadcrumbs items={[
-      { label: dict.nav.home, href: prefix || '/' },
-      { label: dict.nav.blog, href: `${prefix}/blog` },
-      { label: entry.data.title },
-    ]} />
+    <Breadcrumbs
+      items={[
+        { label: dict.nav.home, href: prefix || '/' },
+        { label: dict.nav.blog, href: `${prefix}/blog` },
+        { label: entry.data.title },
+      ]}
+    />
   </Section>
 
   <Section>
@@ -88,53 +106,68 @@ const articleLd = {
       <Content />
     </article>
 
-    {entry.data.tags.length > 0 && (
-      <div class="max-w-prose mx-auto mt-12 flex flex-wrap gap-2">
-        {entry.data.tags.map((tag) => (
-          <a href={`${prefix}/blog/tag/${tag.toLowerCase()}`} class="text-xs bg-bamboo-100 text-bamboo-700 px-3 py-1 rounded no-underline">#{tag}</a>
-        ))}
-      </div>
-    )}
+    {
+      entry.data.tags.length > 0 && (
+        <div class="max-w-prose mx-auto mt-12 flex flex-wrap gap-2">
+          {entry.data.tags.map((tag) => (
+            <a
+              href={`${prefix}/blog/tag/${tag.toLowerCase()}`}
+              class="text-xs bg-bamboo-100 text-bamboo-700 px-3 py-1 rounded no-underline"
+            >
+              #{tag}
+            </a>
+          ))}
+        </div>
+      )
+    }
   </Section>
 
-  {relatedItineraries.length > 0 && (
-    <Section bg="parchment">
-      <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'ทริปที่เกี่ยวข้อง' : 'Related trips'}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {relatedItineraries.filter(Boolean).map((itin: any) => (
-          <ItineraryCard
-            slug={itin.data.slug}
-            title={itin.data.title}
-            category={itin.data.category}
-            destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
-            days={itin.data.days}
-            priceFrom={itin.data.priceFrom}
-            currency={itin.data.currency}
-            heroImage={itin.data.heroImage}
-            ageBand={itin.data.ageBand}
-          />
-        ))}
-      </div>
-    </Section>
-  )}
+  {
+    relatedItineraries.length > 0 && (
+      <Section bg="parchment">
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">
+          {isTh ? 'ทริปที่เกี่ยวข้อง' : 'Related trips'}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {relatedItineraries.filter(Boolean).map((itin: any) => (
+            <ItineraryCard
+              slug={itin.data.slug}
+              title={itin.data.title}
+              category={itin.data.category}
+              destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+              days={itin.data.days}
+              priceFrom={itin.data.priceFrom}
+              currency={itin.data.currency}
+              heroImage={itin.data.heroImage}
+              ageBand={itin.data.ageBand}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
 
-  {relatedPosts.length > 0 && (
-    <Section>
-      <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">{isTh ? 'อ่านต่อ' : 'Keep reading'}</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {relatedPosts.map((p) => (
-          <BlogCard
-            slug={p.id.replace(/\.mdx?$/, '')}
-            title={p.data.title}
-            description={p.data.description}
-            heroImage={p.data.heroImage}
-            pubDate={p.data.pubDate}
-            readingMinutes={Math.max(1, Math.round((p.body?.split(/\s+/).length ?? 0) / 220))}
-          />
-        ))}
-      </div>
-    </Section>
-  )}
+  {
+    relatedPosts.length > 0 && (
+      <Section>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">
+          {isTh ? 'อ่านต่อ' : 'Keep reading'}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {relatedPosts.map((p) => (
+            <BlogCard
+              slug={p.id.replace(/\.mdx?$/, '')}
+              title={p.data.title}
+              description={p.data.description}
+              heroImage={p.data.heroImage}
+              pubDate={p.data.pubDate}
+              readingMinutes={Math.max(1, Math.round((p.body?.split(/\s+/).length ?? 0) / 220))}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
 
   <CTASection
     headline={isTh ? 'พร้อมวางแผนหรือยัง?' : 'Ready to plan?'}

@@ -16,7 +16,11 @@ const prefix = isTh ? '/th' : '';
 const itineraries = await getCollection('itineraries');
 const published = itineraries.filter((i) => i.data.published);
 ---
-<PageLayout title={isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'} description={isTh ? 'โปรแกรมทริปทั้งหมดของเรา' : 'All our sample trip itineraries'}>
+
+<PageLayout
+  title={isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}
+  description={isTh ? 'โปรแกรมทริปทั้งหมดของเรา' : 'All our sample trip itineraries'}
+>
   <Hero
     variant="small"
     headline={isTh ? 'โปรแกรมตัวอย่าง' : 'Sample itineraries'}
@@ -27,25 +31,29 @@ const published = itineraries.filter((i) => i.data.published);
 
   <Section>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {published.map((itin) => (
-        <ItineraryCard
-          slug={itin.data.slug}
-          title={itin.data.title}
-          category={itin.data.category}
-          destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
-          days={itin.data.days}
-          priceFrom={itin.data.priceFrom}
-          currency={itin.data.currency}
-          heroImage={itin.data.heroImage}
-          ageBand={itin.data.ageBand}
-        />
-      ))}
+      {
+        published.map((itin) => (
+          <ItineraryCard
+            slug={itin.data.slug}
+            title={itin.data.title}
+            category={itin.data.category}
+            destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+            days={itin.data.days}
+            priceFrom={itin.data.priceFrom}
+            currency={itin.data.currency}
+            heroImage={itin.data.heroImage}
+            ageBand={itin.data.ageBand}
+          />
+        ))
+      }
     </div>
   </Section>
 
   <CTASection
     headline={isTh ? 'ต้องการทริปแบบกำหนดเอง?' : 'Want a custom trip?'}
-    sub={isTh ? 'เราสามารถผสมหมวดหมู่และจุดหมายเพื่อสร้างโปรแกรมเฉพาะกลุ่มของคุณ' : 'We can mix categories and destinations to create a program specific to your group.'}
+    sub={isTh
+      ? 'เราสามารถผสมหมวดหมู่และจุดหมายเพื่อสร้างโปรแกรมเฉพาะกลุ่มของคุณ'
+      : 'We can mix categories and destinations to create a program specific to your group.'}
     primaryCta={{ href: `${prefix}/enquire`, label: dict.nav.enquire }}
   />
 </PageLayout>

@@ -19,7 +19,7 @@ heroImage: /img/a.jpg
 
 # Post One Body
 
-English body content here.`
+English body content here.`,
   );
   writeFileSync(
     join(fixtureDir, 'post-two.mdx'),
@@ -30,7 +30,7 @@ pubDate: 2026-06-20
 heroImage: /img/b.jpg
 ---
 
-Body of post two.`
+Body of post two.`,
   );
 });
 

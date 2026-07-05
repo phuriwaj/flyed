@@ -16,17 +16,46 @@ const prefix = isTh ? '/th' : '';
 const dict = getDict(locale);
 
 const steps = [
-  { n: 1, title: 'Tell us about your group', body: 'Enquiry form — school name, group size, dates, subjects of interest, and any curriculum must-haves.' },
-  { n: 2, title: 'We design', body: 'A flyed designer proposes 2–3 itinerary drafts within 5 business days. We refine with you until it fits.' },
-  { n: 3, title: 'You review', body: 'Risk assessment, insurance, curriculum-fit documents, and full quote sent to your decision-makers.' },
-  { n: 4, title: 'You travel', body: 'Trip director, local guides, daily check-ins, 24/7 support. Parents get daily photo-and-summary updates.' },
-  { n: 5, title: 'We debrief', body: 'Post-trip curriculum pack, certificate of completion, and optional debrief call with your team.' },
+  {
+    n: 1,
+    title: 'Tell us about your group',
+    body: 'Enquiry form — school name, group size, dates, subjects of interest, and any curriculum must-haves.',
+  },
+  {
+    n: 2,
+    title: 'We design',
+    body: 'A flyed designer proposes 2–3 itinerary drafts within 5 business days. We refine with you until it fits.',
+  },
+  {
+    n: 3,
+    title: 'You review',
+    body: 'Risk assessment, insurance, curriculum-fit documents, and full quote sent to your decision-makers.',
+  },
+  {
+    n: 4,
+    title: 'You travel',
+    body: 'Trip director, local guides, daily check-ins, 24/7 support. Parents get daily photo-and-summary updates.',
+  },
+  {
+    n: 5,
+    title: 'We debrief',
+    body: 'Post-trip curriculum pack, certificate of completion, and optional debrief call with your team.',
+  },
 ];
 
 const faqs = [
-  { q: 'How far in advance should we book?', a: 'Ideal lead time is 6–9 months. We can accommodate shorter timelines for repeat schools and small groups.' },
-  { q: 'Who designs our itinerary?', a: 'A flyed designer (background in education or travel) and a Thailand-based curriculum specialist collaborate on every program.' },
-  { q: 'Can we customize after booking?', a: 'Yes — minor changes up to 30 days before departure are included. Major changes are quoted separately.' },
+  {
+    q: 'How far in advance should we book?',
+    a: 'Ideal lead time is 6–9 months. We can accommodate shorter timelines for repeat schools and small groups.',
+  },
+  {
+    q: 'Who designs our itinerary?',
+    a: 'A flyed designer (background in education or travel) and a Thailand-based curriculum specialist collaborate on every program.',
+  },
+  {
+    q: 'Can we customize after booking?',
+    a: 'Yes — minor changes up to 30 days before departure are included. Major changes are quoted separately.',
+  },
 ];
 ---
 
@@ -44,17 +73,19 @@ const faqs = [
 
   <Section>
     <div class="space-y-12">
-      {steps.map((s) => (
-        <div class="flex gap-6 items-start">
-          <div class="flex-shrink-0 w-16 h-16 rounded-full bg-primary text-canvas flex items-center justify-center text-display-md font-semibold">
-            {s.n}
+      {
+        steps.map((s) => (
+          <div class="flex gap-6 items-start">
+            <div class="flex-shrink-0 w-16 h-16 rounded-full bg-primary text-canvas flex items-center justify-center text-display-md font-semibold">
+              {s.n}
+            </div>
+            <div>
+              <h3 class="text-display-md text-ink">{s.title}</h3>
+              <p class="mt-2 text-body text-ink-muted-80">{s.body}</p>
+            </div>
           </div>
-          <div>
-            <h3 class="text-display-md text-ink">{s.title}</h3>
-            <p class="mt-2 text-body text-ink-muted-80">{s.body}</p>
-          </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </Section>
 

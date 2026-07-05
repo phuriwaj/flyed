@@ -6,13 +6,33 @@ describe('MegaMenu.astro', () => {
   const src = readFileSync(resolve(__dirname, './MegaMenu.astro'), 'utf8');
 
   it('renders all 6 categories', () => {
-    for (const slug of ['service-learning', 'cultural-heritage', 'stem-environmental', 'sports-adventure', 'language-immersion', 'history-heritage']) {
+    for (const slug of [
+      'service-learning',
+      'cultural-heritage',
+      'stem-environmental',
+      'sports-adventure',
+      'language-immersion',
+      'history-heritage',
+    ]) {
       expect(src).toContain(slug);
     }
   });
 
   it('renders all 12 destinations', () => {
-    for (const dest of ['bangkok', 'chiang-mai', 'phuket', 'krabi', 'khao-sok', 'kanchanaburi', 'ayutthaya', 'koh-tao', 'sukhothai', 'pai', 'chiang-rai', 'isan']) {
+    for (const dest of [
+      'bangkok',
+      'chiang-mai',
+      'phuket',
+      'krabi',
+      'khao-sok',
+      'kanchanaburi',
+      'ayutthaya',
+      'koh-tao',
+      'sukhothai',
+      'pai',
+      'chiang-rai',
+      'isan',
+    ]) {
       expect(src).toContain(dest);
     }
   });

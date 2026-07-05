@@ -10,11 +10,27 @@ interface Props {
 }
 const { slug, title, description, heroImage, pubDate, readingMinutes } = Astro.props;
 const href = blogPath(slug);
-const dateStr = pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+const dateStr = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric',
+});
 ---
-<a href={href} class="group block bg-canvas border border-hairline rounded-lg overflow-hidden no-underline transition-colors duration-200 hover:border-ink-muted-40">
+
+<a
+  href={href}
+  class="group block bg-canvas border border-hairline rounded-lg overflow-hidden no-underline transition-colors duration-200 hover:border-ink-muted-40"
+>
   <div class="aspect-[16/9] overflow-hidden bg-canvas-parchment">
-    <img src={heroImage} alt={title} class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300" loading="lazy" decoding="async" width={800} height={450} />
+    <img
+      src={heroImage}
+      alt={title}
+      class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+      loading="lazy"
+      decoding="async"
+      width={800}
+      height={450}
+    />
   </div>
   <div class="p-5">
     <div class="text-fine-print text-ink-muted-60 mb-2">{dateStr} · {readingMinutes} min read</div>

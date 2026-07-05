@@ -37,13 +37,18 @@ const postsWithMeta = await Promise.all(
       pubDate: post.data.pubDate,
       readingMinutes: Math.max(1, Math.round(wordCount / 220)),
     };
-  })
+  }),
 );
 
 const tagChipBase = `${prefix}/blog/tag`;
 ---
 
-<PageLayout title={isTh ? 'บล็อก' : 'Blog'} description={isTh ? 'เรื่องราว เคล็ดลับ และความรู้เกี่ยวกับทริปโรงเรียนในประเทศไทย' : 'Stories, tips, and insights on school trips to Thailand'}>
+<PageLayout
+  title={isTh ? 'บล็อก' : 'Blog'}
+  description={isTh
+    ? 'เรื่องราว เคล็ดลับ และความรู้เกี่ยวกับทริปโรงเรียนในประเทศไทย'
+    : 'Stories, tips, and insights on school trips to Thailand'}
+>
   <Hero
     variant="small"
     headline={isTh ? 'บล็อก' : 'Blog'}
@@ -53,27 +58,48 @@ const tagChipBase = `${prefix}/blog/tag`;
   />
 
   <Section>
-    {allTags.length > 0 && (
-      <div class="mb-12 flex flex-wrap gap-2">
-        <span class="text-sm text-teak-500 mr-2">{isTh ? 'หมวดหมู่:' : 'Filter:'}</span>
-        {allTags.map((tag: string) => (
-          <a href={`${tagChipBase}/${tag.toLowerCase()}`} class="text-xs bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 text-bamboo-700 px-3 py-1 rounded no-underline">{tag}</a>
-        ))}
-      </div>
-    )}
+    {
+      allTags.length > 0 && (
+        <div class="mb-12 flex flex-wrap gap-2">
+          <span class="text-sm text-teak-500 mr-2">{isTh ? 'หมวดหมู่:' : 'Filter:'}</span>
+          {allTags.map((tag: string) => (
+            <a
+              href={`${tagChipBase}/${tag.toLowerCase()}`}
+              class="text-xs bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 text-bamboo-700 px-3 py-1 rounded no-underline"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      )
+    }
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {postsWithMeta.map((p) => <BlogCard {...p} />)}
     </div>
 
     <nav class="mt-12 flex justify-center gap-3" aria-label="Pagination">
-      {page.url.prev && (
-        <a href={page.url.prev} class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline">← {isTh ? 'ก่อนหน้า' : 'Previous'}</a>
-      )}
+      {
+        page.url.prev && (
+          <a
+            href={page.url.prev}
+            class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline"
+          >
+            ← {isTh ? 'ก่อนหน้า' : 'Previous'}
+          </a>
+        )
+      }
       <span class="px-4 py-2 text-teak-700">{page.currentPage} / {page.lastPage}</span>
-      {page.url.next && (
-        <a href={page.url.next} class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline">{isTh ? 'ถัดไป' : 'Next'} →</a>
-      )}
+      {
+        page.url.next && (
+          <a
+            href={page.url.next}
+            class="px-4 py-2 bg-bamboo-100 hover:bg-bamboo-700 hover:text-rice-50 rounded no-underline"
+          >
+            {isTh ? 'ถัดไป' : 'Next'} →
+          </a>
+        )
+      }
     </nav>
   </Section>
 </PageLayout>

@@ -10,13 +10,18 @@ interface Props {
 }
 const { headline, sub, primaryCta, secondaryCta } = Astro.props;
 ---
+
 <section class="bg-canvas-parchment py-16 md:py-20">
   <div class="max-w-4xl mx-auto px-4 md:px-8 text-center">
     <h2 class="text-display-md text-ink">{headline}</h2>
     {sub && <p class="mt-4 text-lead text-ink-muted-80 max-w-2xl mx-auto">{sub}</p>}
     <div class="mt-8 flex flex-wrap justify-center gap-3">
       <ButtonPrimary href={primaryCta.href}>{primaryCta.label}</ButtonPrimary>
-      {secondaryCta && <ButtonSecondaryPill href={secondaryCta.href}>{secondaryCta.label}</ButtonSecondaryPill>}
+      {
+        secondaryCta && (
+          <ButtonSecondaryPill href={secondaryCta.href}>{secondaryCta.label}</ButtonSecondaryPill>
+        )
+      }
     </div>
   </div>
 </section>

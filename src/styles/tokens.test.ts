@@ -165,11 +165,11 @@ describe('design tokens', () => {
 
   // Apple type family
   it('uses SF Pro Display stack for --font-display', () => {
-    expect(css).toMatch(/--font-display:.*SF Pro Display/);
+    expect(css).toMatch(/--font-display:[\s\S]*SF Pro Display/);
   });
 
   it('uses SF Pro Text stack for --font-body', () => {
-    expect(css).toMatch(/--font-body:.*SF Pro Text/);
+    expect(css).toMatch(/--font-body:[\s\S]*SF Pro Text/);
   });
 
   // No warm palette leakage

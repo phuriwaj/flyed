@@ -6,12 +6,46 @@
     <meta name="robots" content="noindex,nofollow" />
     <title>flyed CMS — Preview</title>
     <style>
-      * { box-sizing: border-box; }
-      body { margin: 0; font-family: system-ui, -apple-system, sans-serif; height: 100vh; display: flex; flex-direction: column; }
-      .preview-banner { padding: 8px 12px; background: #fef3c7; color: #78350f; font-size: 13px; border-bottom: 1px solid #fbbf24; flex-shrink: 0; }
-      .preview-banner code { background: rgba(0,0,0,0.05); padding: 1px 4px; border-radius: 3px; }
-      .preview-frame { width: 100%; flex-grow: 1; border: 0; background: #fff; }
-      .preview-loading { display: flex; align-items: center; justify-content: center; height: 100%; color: #6b7280; font-size: 14px; }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .preview-banner {
+        padding: 8px 12px;
+        background: #fef3c7;
+        color: #78350f;
+        font-size: 13px;
+        border-bottom: 1px solid #fbbf24;
+        flex-shrink: 0;
+      }
+      .preview-banner code {
+        background: rgba(0, 0, 0, 0.05);
+        padding: 1px 4px;
+        border-radius: 3px;
+      }
+      .preview-frame {
+        width: 100%;
+        flex-grow: 1;
+        border: 0;
+        background: #fff;
+      }
+      .preview-loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #6b7280;
+        font-size: 14px;
+      }
     </style>
   </head>
   <body>
@@ -40,9 +74,12 @@
         var frame = document.getElementById('frame');
         var banner = document.getElementById('banner');
 
-        banner.innerHTML = branch === 'main'
-          ? 'Live site: <code>main</code> branch'
-          : 'Preview: <code>' + branch + '</code> — first load may take 30–60s while CF Pages deploys';
+        banner.innerHTML =
+          branch === 'main'
+            ? 'Live site: <code>main</code> branch'
+            : 'Preview: <code>' +
+              branch +
+              '</code> — first load may take 30–60s while CF Pages deploys';
 
         frame.src = previewUrl;
 
@@ -51,7 +88,8 @@
             // Detect 404 in iframe
             var title = frame.contentDocument && frame.contentDocument.title;
             if (title && /404|not found/i.test(title)) {
-              banner.innerHTML = 'Page not found at <code>' + previewUrl + '</code> — has the branch deployed yet?';
+              banner.innerHTML =
+                'Page not found at <code>' + previewUrl + '</code> — has the branch deployed yet?';
               banner.style.background = '#fee2e2';
               banner.style.color = '#7f1d1d';
             }

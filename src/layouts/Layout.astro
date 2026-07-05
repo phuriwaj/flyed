@@ -11,14 +11,23 @@ interface Props {
   noindex?: boolean;
 }
 
-const { title, description = 'Flyed — The infrastructure for modern teams.', ogImage, noindex = false } = Astro.props;
+const {
+  title,
+  description = 'Flyed — The infrastructure for modern teams.',
+  ogImage,
+  noindex = false,
+} = Astro.props;
 
 const SITE_NAME = 'flyed';
 const SITE_URL = Astro.site?.toString().replace(/\/$/, '') ?? 'https://flyed.dev';
 const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).toString();
-const ogImageUrl = ogImage ? new URL(ogImage, SITE_URL).toString() : new URL('/og-default.png', SITE_URL).toString();
+const ogImageUrl = ogImage
+  ? new URL(ogImage, SITE_URL).toString()
+  : new URL('/og-default.png', SITE_URL).toString();
 const isTh = Astro.url.pathname.startsWith('/th');
-const altPath = isTh ? Astro.url.pathname.replace(/^\/th/, '') || '/' : `/th${Astro.url.pathname === '/' ? '' : Astro.url.pathname}`;
+const altPath = isTh
+  ? Astro.url.pathname.replace(/^\/th/, '') || '/'
+  : `/th${Astro.url.pathname === '/' ? '' : Astro.url.pathname}`;
 
 const orgLd = {
   '@context': 'https://schema.org',
@@ -68,13 +77,27 @@ const orgLd = {
       }}
       extend={{
         link: [
-          { rel: 'alternate', hreflang: 'en', href: new URL(Astro.url.pathname.startsWith('/th') ? Astro.url.pathname.replace(/^\/th/, '') || '/' : Astro.url.pathname, SITE_URL).toString() },
+          {
+            rel: 'alternate',
+            hreflang: 'en',
+            href: new URL(
+              Astro.url.pathname.startsWith('/th')
+                ? Astro.url.pathname.replace(/^\/th/, '') || '/'
+                : Astro.url.pathname,
+              SITE_URL,
+            ).toString(),
+          },
           { rel: 'alternate', hreflang: 'th', href: new URL(altPath, SITE_URL).toString() },
-          { rel: 'alternate', hreflang: 'x-default', href: new URL(Astro.url.pathname.startsWith('/th') ? '/' : Astro.url.pathname, SITE_URL).toString() },
+          {
+            rel: 'alternate',
+            hreflang: 'x-default',
+            href: new URL(
+              Astro.url.pathname.startsWith('/th') ? '/' : Astro.url.pathname,
+              SITE_URL,
+            ).toString(),
+          },
         ],
-        meta: [
-          { name: 'theme-color', content: '#1d1d1f' },
-        ],
+        meta: [{ name: 'theme-color', content: '#1d1d1f' }],
       }}
     />
 

@@ -11,6 +11,7 @@ slug: cultural-heritage
 Cultural programs teach what no textbook can: the wai, the alms round, the temple etiquette, the rhythm of village life. Students stay with vetted Thai host families, learn Thai cooking from grandmothers, and walk through Sukhothai and Ayutthaya with licensed historian-guides.
 
 Curriculum fit:
+
 - IB MYP Individuals & Societies
 - IGCSE Global Citizenship
 - GCSE Religious Studies (Buddhism unit)

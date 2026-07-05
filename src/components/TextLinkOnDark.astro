@@ -7,8 +7,14 @@ interface Props {
 }
 
 const { href, underline = 'hover', class: className = '', ariaLabel } = Astro.props;
-const deco = underline === 'always' ? 'underline' : underline === 'never' ? 'no-underline' : 'no-underline hover:underline';
+const deco =
+  underline === 'always'
+    ? 'underline'
+    : underline === 'never'
+      ? 'no-underline'
+      : 'no-underline hover:underline';
 const base = `text-primary-on-dark hover:text-canvas transition-colors duration-150 ${deco}`;
 const cls = `${base} ${className}`;
 ---
+
 <a href={href} class={cls} aria-label={ariaLabel}><slot /></a>
