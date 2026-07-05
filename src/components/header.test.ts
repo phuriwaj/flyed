@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import LanguageSwitcher from './LanguageSwitcher.tsx';
 
 describe('Header.astro', () => {
   const src = readFileSync(resolve(__dirname, './Header.astro'), 'utf8');

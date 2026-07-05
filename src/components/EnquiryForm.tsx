@@ -144,7 +144,7 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
         throw new Error(`HTTP ${res.status}`);
       }
       setSubmitted(true);
-    } catch (e) {
+    } catch {
       setSubmitError(
         locale === 'th'
           ? 'เกิดข้อผิดพลาด กรุณาลองอีกครั้ง'
