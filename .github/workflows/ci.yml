@@ -58,20 +58,13 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Serve prerendered site
-        # Avoid `astro dev`: SSR requests fail with "Invalid hook call" inside
-        # workerd when the page tree contains React components (LanguageSwitcher,
-        # Counter, EnquiryForm, etc.). Build-time prerender is fine — only the
-        # dev/SSR path is broken. Serving dist/client/ exercises the same HTML
-        # the deploy will publish.
-        run: |
-          (cd dist/client && python3 -m http.server 4321 --bind 127.0.0.1) &
-          npx wait-on http://127.0.0.1:4321 --timeout 30000
+      # Playwright's `webServer` (see playwright.config.ts) manages the
+      # prerender-server lifecycle — it boots `python3 -m http.server` against
+      # dist/client/ and tears it down when the suite finishes. The previous
+      # manual serve/wait-on dance is no longer needed.
 
       - name: Run Playwright tests
         run: npm run test:e2e -- --reporter=line
-        env:
-          PLAYWRIGHT_BASE_URL: http://127.0.0.1:4321
 
       - name: Upload Playwright report on failure
         if: failure()

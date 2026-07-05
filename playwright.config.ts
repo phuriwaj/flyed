@@ -1,5 +1,21 @@
 import { defineConfig, devices } from '@playwright/test';
 
+/**
+ * Playwright config for the flyed Astro site.
+ *
+ * `output: 'static'` + `@astrojs/cloudflare` means:
+ *   - `astro preview` enters a redirect loop on /enquire (no Node entry
+ *     for the Cloudflare adapter) and won't reliably serve the deployed
+ *     shape.
+ *   - `astro dev` fails with "Invalid hook call" inside workerd for pages
+ *     that tree-shake in React components (e.g. /about renders
+ *     <LanguageSwitcher/>).
+ *
+ * The CI workflow (see .github/workflows/ci.yml) sidesteps both by serving
+ * the prerendered `dist/client/` directory with python's stdlib HTTP server.
+ * We mirror that here so the same server shape is used in CI and locally:
+ * Playwright boots the static server, runs the suite, and tears it down.
+ */
 export default defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -9,29 +25,21 @@ export default defineConfig({
   timeout: 60_000,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? 'http://localhost:4321',
+    baseURL: 'http://127.0.0.1:4321',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
-  webServer: process.env.CI
-    ? // In CI the GitHub Actions workflow already serves the prerendered
-      // dist/client/ on 127.0.0.1:4321 (see .github/workflows/ci.yml).
-      // Reuse that server instead of starting `npm run dev`, which has a
-      // "Invalid hook call" failure inside workerd for pages containing
-      // React components (e.g. /about renders <LanguageSwitcher/>).
-      {
-        command: 'echo "reusing existing server on 127.0.0.1:4321"',
-        url: 'http://127.0.0.1:4321',
-        reuseExistingServer: true,
-        timeout: 10_000,
-      }
-    : // Locally, fall back to `npm run dev` for the dev workflow.
-      {
-        command: 'npm run dev',
-        url: 'http://localhost:4321',
-        reuseExistingServer: !process.env.CI,
-        timeout: 120_000,
-      },
+  webServer: {
+    // `npm run build` must have produced `dist/client/`. In CI the build
+    // step precedes this; locally run `npm run build` once before the test
+    // suite (or let Playwright time out if you forgot — the error is clear).
+    command: 'python3 -m http.server 4321 --bind 127.0.0.1 --directory dist/client',
+    url: 'http://127.0.0.1:4321',
+    reuseExistingServer: !process.env.CI,
+    timeout: 30_000,
+    stdout: 'pipe',
+    stderr: 'pipe',
+  },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
   ],
