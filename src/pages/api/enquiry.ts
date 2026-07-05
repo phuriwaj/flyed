@@ -24,9 +24,13 @@ export const POST: APIRoute = async (ctx) => {
 
   // Rate-limit AFTER validation (junk requests don't burn KV ops) and BEFORE
   // generating an enquiryId or dispatching to Resend/CRM. Cloudflare Workers
-  // attaches the client IP as `cf-connecting-ip`; fall back to `unknown` in
-  // non-CF environments (local astro dev, vitest).
-  const ip = request.headers.get('cf-connecting-ip') ?? 'unknown';
+  // attaches the client IP as `cf-connecting-ip`; fall back to the standard
+  // `x-forwarded-for` chain (first hop only) and finally to `unknown` for
+  // local astro dev / vitest / any non-CF-proxied request.
+  const ip =
+    request.headers.get('cf-connecting-ip') ??
+    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+    'unknown';
   const rateLimitKv = (locals as { runtime?: { env?: { RATE_LIMIT_KV?: unknown } } } | undefined)
     ?.runtime?.env?.RATE_LIMIT_KV as Parameters<typeof rateLimited>[0]['kv'];
   const limit = await rateLimited({
@@ -49,7 +53,11 @@ export const POST: APIRoute = async (ctx) => {
   // 0. Persist to KV before downstream dispatch so a Resend/CRM failure
   // doesn't lose the lead. `locals` is absent in unit tests; in local dev
   // the binding is also absent (no wrangler runtime) — both fall through.
+  // `persisted` tracks whether the write ACTUALLY landed (binding present AND
+  // put() resolved without throwing). The catch block below keeps the lead in
+  // the request logs but does not flip the flag back to true.
   const leadsKv = (locals as any)?.runtime?.env?.LEADS_KV;
+  let persisted = false;
   if (leadsKv) {
     try {
       await leadsKv.put(
@@ -57,6 +65,7 @@ export const POST: APIRoute = async (ctx) => {
         JSON.stringify({ enquiry, createdAt: new Date().toISOString() }),
         { expirationTtl: 60 * 60 * 24 * 30 }, // 30d retry window
       );
+      persisted = true;
     } catch (e) {
       ctx.logger.error(
         `LEADS_KV put failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`,
@@ -106,10 +115,11 @@ export const POST: APIRoute = async (ctx) => {
   }
 
   // 3. Always return success (we logged everything we could).
-  // `durable` reflects whether the KV binding was present — i.e. whether the
-  // lead was persisted durably. The KV write itself is wrapped in try/catch
-  // and never blocks this response.
-  return new Response(JSON.stringify({ ok: true, enquiryId, durable: Boolean(leadsKv) }), {
+  // `durable` reflects whether the lead ACTUALLY landed in KV (binding present
+  // AND put() resolved). It's `false` when the binding is missing OR when the
+  // write threw — both signal that the lead has no durable copy and downstream
+  // dispatch was best-effort only.
+  return new Response(JSON.stringify({ ok: true, enquiryId, durable: persisted }), {
     status: 200,
     headers: { 'Content-Type': 'application/json' },
   });
