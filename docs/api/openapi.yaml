@@ -1,0 +1,494 @@
+openapi: 3.1.0
+info:
+  title: flyed runtime API
+  version: '0.1.0'
+  summary: Public HTTP endpoints for the flyed marketing site.
+  description: |
+    The flyed marketing site pre-renders all HTML at build time and only
+    runs on the edge for three POST endpoints under `/api/*`. This document
+    covers those three endpoints. Conventions, rate-limit behavior, and the
+    `durable` contract live in `docs/api/overview.md`; the rules in this
+    spec are the machine-readable contract.
+
+    Source-derived from:
+    - `src/pages/api/enquiry.ts` (line 1-143)
+    - `src/pages/api/contact.ts` (line 1-21)
+    - `src/pages/api/newsletter.ts` (line 1-20)
+    - `src/lib/rate-limit.ts` (line 1-52)
+    - `src/components/EnquiryForm.tsx` (line 4-22, the Zod schema reused on the client)
+
+    Branch tip: 6830fe4 (Wave 7). Generated 2026-07-05.
+  contact:
+    name: flyed engineering
+    url: https://flyed.dev
+  license:
+    name: Proprietary
+
+# No servers block — the spec is path-relative (per docs/api/overview.md §1).
+# Production base: https://flyed.dev  (www.flyed.dev redirects to apex)
+# Local dev base: http://localhost:4321
+
+tags:
+  - name: enquiry
+    description: Capture a qualified school-trip enquiry.
+  - name: contact
+    description: Capture a general contact message.
+  - name: newsletter
+    description: Capture an email signup.
+
+paths:
+  /api/enquiry:
+    post:
+      tags: [enquiry]
+      operationId: submitEnquiry
+      summary: Submit a school-trip enquiry
+      description: |
+        Validates the payload, rate-limits by client IP, persists the
+        lead to `LEADS_KV` (30-day TTL), dispatches to Resend (email) and
+        the configured CRM webhook. Returns `200 { ok: true, enquiryId,
+        durable }` on a successful persistence attempt regardless of
+        downstream dispatch success — `durable` reflects only the KV write.
+
+        Rate limit: 5 requests per IP per 60 seconds. See `docs/api/overview.md` §3.5.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EnquiryRequest'
+            examples:
+              uk_school_history_focus:
+                summary: UK school, history focus
+                value:
+                  schoolName: "St. Mary's International School"
+                  role: 'Head of Sixth Form'
+                  email: 'trip-lead@stmarys.example'
+                  phone: '+44 20 7946 0000'
+                  country: 'United Kingdom'
+                  groupSize: 24
+                  ages: '16-17'
+                  departureMonth: 'Jun'
+                  duration: 10
+                  subjects: ['history-heritage', 'cultural-heritage']
+                  curriculum: 'IB-DP'
+                  destinations: ['Bangkok', 'Ayutthaya']
+                  itinerary: 'andaman-sailing-week'
+                  notes: 'WW2-history focus if possible.'
+              minimal:
+                summary: Minimum required fields only
+                value:
+                  schoolName: 'Sample School'
+                  role: 'Teacher'
+                  email: 'teacher@school.example'
+                  phone: '+1 555 0100'
+                  country: 'United States'
+                  groupSize: 12
+                  ages: '14-15'
+                  departureMonth: 'Sep'
+                  duration: 5
+                  subjects: ['service-learning']
+      responses:
+        '200':
+          description: |
+            Validation passed and a persistence attempt was made. `durable`
+            is `true` only when `LEADS_KV` was present and `put()` resolved.
+            Downstream dispatch (Resend / CRM) is best-effort and logged on
+            failure; `200` does not guarantee the email was sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EnquirySuccessResponse'
+              examples:
+                durable_true:
+                  summary: Lead persisted to KV
+                  value:
+                    ok: true
+                    enquiryId: '5b1f2c8d-3a4e-4f01-b6c4-9c5d1f0e1a2b'
+                    durable: true
+                durable_false:
+                  summary: KV missing or write threw (binding fallback or error)
+                  value:
+                    ok: true
+                    enquiryId: '5b1f2c8d-3a4e-4f01-b6c4-9c5d1f0e1a2b'
+                    durable: false
+        '400':
+          $ref: '#/components/responses/BadRequestInvalidJson'
+        '422':
+          $ref: '#/components/responses/ValidationFailedEnquiry'
+        '429':
+          $ref: '#/components/responses/RateLimitExceeded'
+
+  /api/contact:
+    post:
+      tags: [contact]
+      operationId: submitContact
+      summary: Submit a general contact message
+      description: |
+        Validates `name`, `email`, `message`. Does **not** persist, email,
+        or log the payload (deliberate pre-launch behavior — see `docs/api/overview.md`
+        §7.2 and `DEPLOY.md` Known post-launch items).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '200':
+          description: Validation passed; no further action taken.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactSuccessResponse'
+              example:
+                ok: true
+        '422':
+          description: Body parsed but failed schema validation. `error` is an empty string by design.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactValidationErrorResponse'
+              example:
+                ok: false
+                error: ''
+
+  /api/newsletter:
+    post:
+      tags: [newsletter]
+      operationId: submitNewsletter
+      summary: Submit a newsletter signup email
+      description: |
+        Validates `email`. Does **not** persist or dispatch to a provider —
+        the email address is accepted and discarded (deliberate pre-launch
+        behavior — see `docs/api/overview.md` §7.3 and `DEPLOY.md` Known
+        post-launch items).
+
+        The handler simulates a 100ms network delay so the client UX does
+        not flash a success state faster than a real provider would respond.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsletterRequest'
+      responses:
+        '200':
+          description: Validation passed; address accepted (not dispatched).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterSuccessResponse'
+              example:
+                ok: true
+                subscribed: true
+        '422':
+          description: Body parsed but `email` failed `z.string().email()`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsletterValidationErrorResponse'
+              example:
+                ok: false
+                error: 'Invalid email'
+
+components:
+  schemas:
+    ErrorEnvelope:
+      type: object
+      description: Common error envelope used by every endpoint.
+      required: [ok, error]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+          description: Human-readable, English, not for parsing.
+        issues:
+          type: array
+          description: Present only on validation failures.
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              minimum:
+                type: number
+              maximum:
+                type: number
+              type:
+                type: string
+              inclusive:
+                type: boolean
+              exact:
+                type: boolean
+              message:
+                type: string
+              path:
+                type: array
+                items:
+                  type: string
+
+    EnquiryRequest:
+      type: object
+      required:
+        - schoolName
+        - role
+        - email
+        - phone
+        - country
+        - groupSize
+        - ages
+        - departureMonth
+        - duration
+        - subjects
+      properties:
+        schoolName:
+          type: string
+          minLength: 2
+          description: School or organization name.
+        role:
+          type: string
+          minLength: 2
+          description: Submitter's role (e.g. "Head of Sixth Form").
+        email:
+          type: string
+          format: email
+          minLength: 1
+          description: Validated by `z.string().min(1).pipe(z.string().email())`.
+        phone:
+          type: string
+          minLength: 6
+          description: Free-form; no format check.
+        country:
+          type: string
+          minLength: 2
+          description: Country name (free-form).
+        groupSize:
+          type: integer
+          minimum: 4
+          maximum: 60
+          description: Between 4 and 60 students.
+        ages:
+          type: string
+          minLength: 2
+          description: Free-form (e.g. "14-16", "Year 10").
+        departureMonth:
+          type: string
+          minLength: 2
+          description: Free-form (e.g. "Jun", "September").
+        duration:
+          type: integer
+          minimum: 2
+          maximum: 30
+          description: Trip length in days.
+        subjects:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: |
+            Free-form category strings (the form's six checkboxes are
+            `service-learning`, `cultural-heritage`, `stem-environmental`,
+            `sports-adventure`, `language-immersion`, `history-heritage`).
+        curriculum:
+          type: string
+          description: Optional. Free-form.
+        destinations:
+          type: array
+          items:
+            type: string
+          description: Optional. Free-form city names.
+        itinerary:
+          type: string
+          description: Optional. Free-form.
+        notes:
+          type: string
+          description: Optional. Free-form.
+
+    EnquirySuccessResponse:
+      type: object
+      required: [ok, enquiryId, durable]
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        enquiryId:
+          type: string
+          format: uuid
+          description: |
+            UUIDv4 generated by `crypto.randomUUID()`. Use as the
+            `LEADS_KV` key if you have access to the same Worker.
+        durable:
+          type: boolean
+          description: |
+            `true` only when `LEADS_KV` was bound AND `leadsKv.put()`
+            resolved without throwing. `false` when the binding was missing
+            or the write threw. See `docs/api/overview.md` §5.1.
+
+    ContactRequest:
+      type: object
+      required: [name, email, message]
+      properties:
+        name:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        message:
+          type: string
+          minLength: 10
+
+    ContactSuccessResponse:
+      type: object
+      required: [ok]
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+
+    ContactValidationErrorResponse:
+      type: object
+      required: [ok, error]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+          description: Empty string by design — clients should re-prompt without branching on this field.
+
+    NewsletterRequest:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+
+    NewsletterSuccessResponse:
+      type: object
+      required: [ok, subscribed]
+      properties:
+        ok:
+          type: boolean
+          enum: [true]
+        subscribed:
+          type: boolean
+          enum: [true]
+
+    NewsletterValidationErrorResponse:
+      type: object
+      required: [ok, error]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+          example: 'Invalid email'
+
+    ValidationFailedResponse:
+      type: object
+      description: Standard validation-failure envelope (used by /api/enquiry).
+      required: [ok, error, issues]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+          enum: ['Validation failed']
+        issues:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+              minimum:
+                type: number
+              maximum:
+                type: number
+              type:
+                type: string
+              inclusive:
+                type: boolean
+              exact:
+                type: boolean
+              message:
+                type: string
+              path:
+                type: array
+                items:
+                  type: string
+
+    InvalidJsonResponse:
+      type: object
+      required: [ok, error]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+          enum: ['Invalid JSON']
+
+    RateLimitExceededResponse:
+      type: object
+      required: [ok, error]
+      properties:
+        ok:
+          type: boolean
+          enum: [false]
+        error:
+          type: string
+          enum: ['Rate limit exceeded']
+
+  responses:
+    BadRequestInvalidJson:
+      description: Body could not be parsed as JSON.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/InvalidJsonResponse'
+          example:
+            ok: false
+            error: 'Invalid JSON'
+
+    ValidationFailedEnquiry:
+      description: Body parsed but failed schema validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationFailedResponse'
+          example:
+            ok: false
+            error: 'Validation failed'
+            issues:
+              - code: 'too_small'
+                minimum: 4
+                type: 'number'
+                inclusive: true
+                exact: false
+                message: 'between 4 and 60'
+                path: ['groupSize']
+
+    RateLimitExceeded:
+      description: |
+        6th request from the same IP inside 60 seconds. `Retry-After` is
+        the integer seconds until the earliest in-window request ages out.
+      headers:
+        Retry-After:
+          description: Seconds to wait before retrying.
+          schema:
+            type: integer
+            minimum: 1
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RateLimitExceededResponse'
+          example:
+            ok: false
+            error: 'Rate limit exceeded'
