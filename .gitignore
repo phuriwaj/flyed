@@ -55,3 +55,10 @@ test-results/
 # hosts when invoked via WSL.) Keep this rule so future `git add .`
 # runs do not re-stage them.
 undefined:*
+
+# Harness session overlay (per-user SDD task reports + plan briefs).
+# Lives next to the repo at <project>/.superpowers/ and is recreated
+# by the Claude Code harness on each session — do not commit per-user
+# session artifacts to the project repo. The plan files that drive
+# the actual work live under docs/superpowers/ instead.
+.superpowers/
