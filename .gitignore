@@ -49,3 +49,9 @@ test-results/
 # graphify skill output (chunked knowledge-graph artifacts)
 /graphify-out/
 /src/graphify-out/
+
+# Stray Chrome profile files that were accidentally committed with
+# absolute Windows-style paths. (Lighthouse creates these on Windows
+# hosts when invoked via WSL.) Keep this rule so future `git add .`
+# runs do not re-stage them.
+undefined:*
