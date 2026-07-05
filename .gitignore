@@ -62,3 +62,7 @@ undefined:*
 # session artifacts to the project repo. The plan files that drive
 # the actual work live under docs/superpowers/ instead.
 .superpowers/
+
+# Hand-authored design doc — separate from the project. Author keeps it
+# out of the repo.
+DESIGN.md
