@@ -325,12 +325,12 @@ Static pages are pre-rendered into `dist/` and served as-is by the Workers CDN. 
 
 ### Roles
 
-| Role                            | Where                                     | What they can do                      | Source              |
-| ------------------------------- | ----------------------------------------- | ------------------------------------- | ------------------- |
-| Decap editor                    | `/admin` (Decap Cloud SSO → GitHub OAuth) | Write `src/content/**` via UI commits | `docs/decap-cms.md` |
-| Cloudflare operator             | Cloudflare dashboard                      | Edit KV bindings, deploy, roll back   | `DEPLOY.md`         |
-| Anonymous visitor               | Public site                               | Read public pages                     | (no auth layer)     |
-| GitHub Actions / Workers Builds | CI                                        | Run `astro build` and deploy          | `wrangler.jsonc`    |
+| Role                            | Where                                     | What they can do                      | Source                                     |
+| ------------------------------- | ----------------------------------------- | ------------------------------------- | ------------------------------------------ |
+| Decap editor                    | `/admin` (Decap Cloud SSO → GitHub OAuth) | Write `src/content/**` via UI commits | `docs/operations/runbooks/RB-decap-cms.md` |
+| Cloudflare operator             | Cloudflare dashboard                      | Edit KV bindings, deploy, roll back   | `DEPLOY.md`                                |
+| Anonymous visitor               | Public site                               | Read public pages                     | (no auth layer)                            |
+| GitHub Actions / Workers Builds | CI                                        | Run `astro build` and deploy          | `wrangler.jsonc`                           |
 
 ### Secrets sources
 
@@ -361,7 +361,7 @@ None of these appear in `wrangler.jsonc` committed to the repo (only `vars: { NO
 | F-RETENTION-001                   | Medium | The 30-day TTL on `LEADS_KV` records is operational, not regulatory. There is no published retention policy to confirm this satisfies PDPA.                                                                                                                             | `src/pages/api/enquiry.ts:67`                                           |
 | F-I18N-BLOG-001                   | Medium | The blog uses one merged collection (`blog`) with a `locale` field. Editors must rename files when adding locale variants (`<slug>.en.mdx`, `<slug>.th.mdx`). A typo in `data.locale` silently hides a post from both locales.                                          | `src/content.config.ts:22-49`; `src/pages/blog/[...page].astro:12`      |
 | F-LOG-EMAIL-001                   | Medium | Resend dispatches an email containing the entire enquiry payload (`src/pages/api/enquiry.ts:81-90`). The destination is `ENQUIRY_TO_EMAIL`, defaulting to `sales@flyed.dev` (per `astro.config.mjs:57`). If the secret is misconfigured, the email could land anywhere. | `src/pages/api/enquiry.ts:79-90`; `astro.config.mjs:50-58`              |
-| F-ACCESS-001                      | Low    | There is no field-level role-based access on content. Any editor with Decap Cloud invite can edit any field. Acceptable for one-tenant projects.                                                                                                                        | `docs/decap-cms.md`                                                     |
+| F-ACCESS-001                      | Low    | There is no field-level role-based access on content. Any editor with Decap Cloud invite can edit any field. Acceptable for one-tenant projects.                                                                                                                        | `docs/operations/runbooks/RB-decap-cms.md`                              |
 | F-TEST-COVERAGE-001               | Low    | The enquiry endpoint's response status branches are exercised by hand in tests but the rate-limit sliding-window behavior under `RATE_LIMIT_KV` errors has no integration test against a real binding.                                                                  | `tests/e2e/enquiry.spec.ts`; `src/lib/rate-limit.test.ts`               |
 | F-CONTACT-MISSING-PERSISTENCE-001 | High   | `/api/contact` accepts and validates contact messages but discards them — no log, no persistence. The Thai-locale contact form has a latent bug — see UC-003 [F-FEAT-003-1](../requirements/use-cases/UC-003-submit-contact-form.md#findings).                          | `src/pages/api/contact.ts:18-21`; `src/components/ContactPage.astro:47` |
 | F-I18N-TH-FORMS-001               | High   | The enquiry form (`EnquiryForm.tsx:127`) hard-codes `/api/enquiry` (no locale prefix) — works for both EN and TH because Astro resolves the route by file path. But this design is subtle and undocumented.                                                             | `src/components/EnquiryForm.tsx:127`                                    |

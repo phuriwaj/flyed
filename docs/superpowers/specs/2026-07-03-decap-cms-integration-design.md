@@ -541,3 +541,5 @@ None. All decisions locked in brainstorming 2026-07-03.
 ---
 
 **Status:** Awaiting user review before transitioning to implementation plan via `superpowers:writing-plans`.
+
+> **Note (2026-07-05):** The runbook has since been moved to docs/operations/runbooks/RB-decap-cms.md (commit 5fe0e2a).

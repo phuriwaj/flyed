@@ -80,7 +80,7 @@ _Caption: visitor, editor, and downstream-system relationships — what the syst
 The site uses:
 
 - **No database.** Astro Content Collections read markdown / MDX files from the repository at build time (`src/content.config.ts:1-131`); runtime writes go to Cloudflare KV.
-- **No authentication for visitors.** Decap CMS uses GitHub as its identity provider via Decap Cloud (per `docs/decap-cms.md`).
+- **No authentication for visitors.** Decap CMS uses GitHub as its identity provider via Decap Cloud (per `docs/operations/runbooks/RB-decap-cms.md`).
 - **No server-side session state.** Every request is independent.
 
 #### 1.3.2 Product functions
@@ -93,7 +93,7 @@ The site uses:
 | Lead capture — contact           | Simple message form                                                       | `src/pages/api/contact.ts`, `src/components/ContactPage.astro`                  |
 | Lead capture — newsletter        | Email sign-up (no provider)                                               | `src/pages/api/newsletter.ts`, `src/components/NewsletterForm.tsx`              |
 | Internationalization             | Render every page in EN (default) and TH (`/th/*`)                        | `astro.config.mjs:67-73`, `src/i18n/index.ts`                                   |
-| Editorial workflow               | Decap CMS at `/admin` writes to git                                       | `docs/decap-cms.md`                                                             |
+| Editorial workflow               | Decap CMS at `/admin` writes to git                                       | `docs/operations/runbooks/RB-decap-cms.md`                                      |
 | Discoverability                  | Sitemap at `/sitemap-index.xml`, RSS at `/rss.xml`, hreflang alternates   | `astro.config.mjs:95`, `src/pages/rss.xml.ts`, `src/layouts/Layout.astro:78-99` |
 
 #### 1.3.3 User characteristics
@@ -105,7 +105,7 @@ The site uses:
 | Cloudflare operator | Engineering                                                          | On deploy / incident | Bind KV namespaces, roll back deploys         | Cloudflare account |
 | Marketing analyst   | Marketing                                                            | Reads dashboards     | None directly; reads Cloudflare Web Analytics | Cloudflare account |
 
-> **Assumption:** Decap editors do not require a separate per-edit session token; the GitHub OAuth flow is the identity layer. — based on `docs/decap-cms.md`. Confirm with `owner: engineering`.
+> **Assumption:** Decap editors do not require a separate per-edit session token; the GitHub OAuth flow is the identity layer. — based on `docs/operations/runbooks/RB-decap-cms.md`. Confirm with `owner: engineering`.
 
 #### 1.3.4 Limitations
 
@@ -128,7 +128,7 @@ The system operates under the following constraints:
 | **Astro island**              | A framework component (here: React 19) embedded in an otherwise-static page, hydrated per `client:*` directive. See `src/components/EnquiryForm.tsx` for an island example.                                         |
 | **Cloudflare KV**             | Eventually-consistent key-value store bound to a Worker via a `binding`; read/write via `get()` / `put()` with optional `expirationTtl`. Declared in `wrangler.jsonc:16-27`.                                        |
 | **Cloudflare Workers**        | Edge V8 isolates running on Cloudflare's network. The build target for `output: 'static'` + per-route SSR via `wrangler.jsonc`.                                                                                     |
-| **Decap CMS**                 | Git-backed headless CMS (formerly Netlify CMS); editors commit to the repo through a UI. See `docs/decap-cms.md`.                                                                                                   |
+| **Decap CMS**                 | Git-backed headless CMS (formerly Netlify CMS); editors commit to the repo through a UI. See `docs/operations/runbooks/RB-decap-cms.md`.                                                                            |
 | **Enquiry**                   | A school-trip enquiry submitted via `/enquire`; one record per submission. Schema: `src/components/EnquiryForm.tsx:4-22`.                                                                                           |
 | **Hreflang**                  | `<link rel="alternate" hreflang="...">` markup linking each page to its locale alternate. See `src/layouts/Layout.astro:78-99`.                                                                                     |
 | **i18n**                      | Internationalization; in this project, English (`en`, default, served at `/`) and Thai (`th`, served at `/th/*`).                                                                                                   |
@@ -163,7 +163,7 @@ The system operates under the following constraints:
 | [13] | `src/layouts/Layout.astro`                                         | Locale-derived `<html lang>`, hreflang alternates, JSON-LD Organization.                                              |
 | [14] | `lighthouserc.json`                                                | LHCI assertions (performance ≥ 0.85 warn, accessibility ≥ 0.95 error, etc.).                                          |
 | [15] | `DEPLOY.md`                                                        | Pre-launch checklist, smoke test, Lighthouse manual procedure, rollback.                                              |
-| [16] | `docs/decap-cms.md`                                                | Decap operator runbook.                                                                                               |
+| [16] | `docs/operations/runbooks/RB-decap-cms.md`                         | Decap operator runbook.                                                                                               |
 | [17] | `docs/image-prompts.md`                                            | Asset production guide.                                                                                               |
 | [18] | `docs/superpowers/specs/2026-06-30-flyed-marketing-site-design.md` | As-intended design (stale on persistence: Astro DB never wired; see audit).                                           |
 | [19] | `.superpowers/sdd/document-audit-2026-07-05.md`                    | Inputs to this SRS.                                                                                                   |
@@ -572,16 +572,16 @@ There is no SQL / document database. "Logical database requirements" therefore r
 
 These are imposed "hows" — by mandate rather than by analysis.
 
-| ID               | Statement                                                                                                                                                     | Rationale                                                                            | Source                                  |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | --------------------------------------- |
-| DC-RUNTIME-001   | The site shall run on Cloudflare Workers with `compatibility_date = 2026-06-01` and `compatibility_flags = ["nodejs_compat"]`.                                | Mandated runtime per `DEPLOY.md:34-35` and `wrangler.jsonc:3-4`.                     | `wrangler.jsonc:3-4`                    |
-| DC-FRAMEWORK-001 | The site shall use Astro 7 as the static-site framework with per-route SSR for `/api/*` only.                                                                 | Mandated tech choice; see `astro.config.mjs:42-43`.                                  | `astro.config.mjs:42-43`                |
-| DC-LANG-001      | The site shall use TypeScript with `strict` mode for all source files (no JavaScript in `src/`).                                                              | Mandated language; verified by absence of `.js` files in `src/` and `tsconfig.json`. | `tsconfig.json`                         |
-| DC-CSS-001       | The site shall use Tailwind 4 via `@tailwindcss/vite`.                                                                                                        | Mandated CSS framework.                                                              | `astro.config.mjs:6,86`                 |
-| DC-DATA-001      | The site shall not introduce an SQL or document database; lead writes go to Cloudflare KV; blog and itinerary content is markdown / MDX in the repo.          | Mandated persistence (no Astro DB, in contrast to the stale 2026-06-30 spec).        | `wrangler.jsonc`; absence in code       |
-| DC-IMAGE-001     | Marketing images shall live in `public/images/` and be served via `astro:assets` (post-Wave-7 refactor); pre-Wave-7 paths are deprecated.                     | Mandated by Wave 7 image refactor.                                                   | `docs/image-prompts.md`; recent commits |
-| DC-I18N-001      | The site shall be served in English (default, no prefix) and Thai (`/th/*` prefix); no other locales.                                                         | Mandated; see `astro.config.mjs:67-73`.                                              | `astro.config.mjs:67-73`                |
-| DC-CMS-001       | Editorial writes to `src/content/**` shall flow through Decap CMS at `/admin` and reach the repo as commits; there shall be no parallel content-authoring UI. | Mandated; see `docs/decap-cms.md`.                                                   | `docs/decap-cms.md`                     |
+| ID               | Statement                                                                                                                                                     | Rationale                                                                            | Source                                     |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------ |
+| DC-RUNTIME-001   | The site shall run on Cloudflare Workers with `compatibility_date = 2026-06-01` and `compatibility_flags = ["nodejs_compat"]`.                                | Mandated runtime per `DEPLOY.md:34-35` and `wrangler.jsonc:3-4`.                     | `wrangler.jsonc:3-4`                       |
+| DC-FRAMEWORK-001 | The site shall use Astro 7 as the static-site framework with per-route SSR for `/api/*` only.                                                                 | Mandated tech choice; see `astro.config.mjs:42-43`.                                  | `astro.config.mjs:42-43`                   |
+| DC-LANG-001      | The site shall use TypeScript with `strict` mode for all source files (no JavaScript in `src/`).                                                              | Mandated language; verified by absence of `.js` files in `src/` and `tsconfig.json`. | `tsconfig.json`                            |
+| DC-CSS-001       | The site shall use Tailwind 4 via `@tailwindcss/vite`.                                                                                                        | Mandated CSS framework.                                                              | `astro.config.mjs:6,86`                    |
+| DC-DATA-001      | The site shall not introduce an SQL or document database; lead writes go to Cloudflare KV; blog and itinerary content is markdown / MDX in the repo.          | Mandated persistence (no Astro DB, in contrast to the stale 2026-06-30 spec).        | `wrangler.jsonc`; absence in code          |
+| DC-IMAGE-001     | Marketing images shall live in `public/images/` and be served via `astro:assets` (post-Wave-7 refactor); pre-Wave-7 paths are deprecated.                     | Mandated by Wave 7 image refactor.                                                   | `docs/image-prompts.md`; recent commits    |
+| DC-I18N-001      | The site shall be served in English (default, no prefix) and Thai (`/th/*` prefix); no other locales.                                                         | Mandated; see `astro.config.mjs:67-73`.                                              | `astro.config.mjs:67-73`                   |
+| DC-CMS-001       | Editorial writes to `src/content/**` shall flow through Decap CMS at `/admin` and reach the repo as commits; there shall be no parallel content-authoring UI. | Mandated; see `docs/operations/runbooks/RB-decap-cms.md`.                            | `docs/operations/runbooks/RB-decap-cms.md` |
 
 ### 3.7 Software system attributes (NFRs, ISO 25010)
 

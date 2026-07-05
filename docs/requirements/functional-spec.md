@@ -35,12 +35,12 @@ Pages render under two locales: English (default, no URL prefix) and Thai (`/th/
 
 ## 2. Actors and roles
 
-| Actor                      | Description                                             | Permissions                                                                  | Authenticated via                            | Source               |
-| -------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------- | -------------------- |
-| Anonymous visitor          | Anyone reaching the site; primary lead source.          | Read public pages; submit `/api/enquiry`, `/api/contact`, `/api/newsletter`. | None. The system is rate-limited by IP only. | `src/pages/api/*.ts` |
-| Decap editor               | A marketing team member with Decap Cloud access.        | Commit to `src/content/**` via `/admin`.                                     | Decap Cloud SSO → GitHub OAuth.              | `docs/decap-cms.md`  |
-| Cloudflare operator        | Engineering team member with Cloudflare account access. | Bind KV namespaces, roll back deploys, view Workers logs.                    | Cloudflare account.                          | `DEPLOY.md`          |
-| Lighthouse CI (test actor) | Programmatic test runner.                               | Hit `/lighthouse/*` URLs locally and assert category scores.                 | None.                                        | `lighthouserc.json`  |
+| Actor                      | Description                                             | Permissions                                                                  | Authenticated via                            | Source                                     |
+| -------------------------- | ------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------ |
+| Anonymous visitor          | Anyone reaching the site; primary lead source.          | Read public pages; submit `/api/enquiry`, `/api/contact`, `/api/newsletter`. | None. The system is rate-limited by IP only. | `src/pages/api/*.ts`                       |
+| Decap editor               | A marketing team member with Decap Cloud access.        | Commit to `src/content/**` via `/admin`.                                     | Decap Cloud SSO → GitHub OAuth.              | `docs/operations/runbooks/RB-decap-cms.md` |
+| Cloudflare operator        | Engineering team member with Cloudflare account access. | Bind KV namespaces, roll back deploys, view Workers logs.                    | Cloudflare account.                          | `DEPLOY.md`                                |
+| Lighthouse CI (test actor) | Programmatic test runner.                               | Hit `/lighthouse/*` URLs locally and assert category scores.                 | None.                                        | `lighthouserc.json`                        |
 
 > **Assumption:** There are no other actors in the system. A "school-trip organizer" is not a separate persona at the auth layer — they are an Anonymous visitor filling the enquiry form. Confirmed by reading `src/pages/api/enquiry.ts` (no session/token check).
 
@@ -62,7 +62,7 @@ Pages render under two locales: English (default, no URL prefix) and Thai (`/th/
 | FEAT-012 | Subscribe to RSS                                  | Anonymous visitor | Should   | live                  | FR-CONTENT-008                                                                            | `src/pages/rss.xml.ts`                                                  |
 | FEAT-013 | Discover via sitemap                              | Crawler           | Must     | live                  | FR-CONTENT-009                                                                            | `astro.config.mjs:95`                                                   |
 | FEAT-014 | Locale switch between EN and TH                   | Anonymous visitor | Must     | live                  | FR-I18N-001, FR-I18N-002                                                                  | `src/components/LanguageSwitcher.tsx`, `src/layouts/Layout.astro:78-99` |
-| FEAT-015 | Edit content via Decap CMS                        | Decap editor      | Must     | live                  | —                                                                                         | `docs/decap-cms.md`                                                     |
+| FEAT-015 | Edit content via Decap CMS                        | Decap editor      | Must     | live                  | —                                                                                         | `docs/operations/runbooks/RB-decap-cms.md`                              |
 
 **Feature count:** 15. **Orphan check:** every ID in this table has at least one section below (§4).
 
@@ -198,7 +198,7 @@ In parallel, `src/layouts/Layout.astro:78-99` emits `<link rel="alternate" hrefl
 
 ### 4.6 FEAT-015 — Edit content via Decap CMS
 
-Detailed in `docs/decap-cms.md`. This FRS records the contract rather than re-documenting: Decap CMS at `/admin` writes commits to `src/content/**` against git; the next Workers Builds deploys the new content. The contract is mechanical: editors can change any field in any collection that the Zod schema permits.
+Detailed in `docs/operations/runbooks/RB-decap-cms.md`. This FRS records the contract rather than re-documenting: Decap CMS at `/admin` writes commits to `src/content/**` against git; the next Workers Builds deploys the new content. The contract is mechanical: editors can change any field in any collection that the Zod schema permits.
 
 ## 5. Cross-feature concerns
 

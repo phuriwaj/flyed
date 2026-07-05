@@ -61,7 +61,7 @@ relative to the configuration-surface consolidation.
   compatibility date, observability, and ASSETS binding in one file.
 - Good, because per-route SSR endpoints deploy as Worker functions with
   full Node-API polyfills via `nodejs_compat`.
-- Bad, because Pages-only documentation (`docs/decap-cms.md`,
+- Bad, because Pages-only documentation (`docs/operations/runbooks/RB-decap-cms.md`,
   `public/admin/README.md`) is now stale — preview URL format and rollback
   paths changed. Document updates are tracked as audit findings B.3 and B.5.
 - Bad, because the Cloudflare Workers image service has limitations — only
