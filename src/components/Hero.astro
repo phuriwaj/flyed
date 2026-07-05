@@ -14,11 +14,22 @@ interface Props {
   onDark?: boolean;
 }
 
-const { headline, sub, imageSrc, imageAlt, primaryCta, secondaryCta, variant = 'full', onDark = true } = Astro.props;
+const {
+  headline,
+  sub,
+  imageSrc,
+  imageAlt,
+  primaryCta,
+  secondaryCta,
+  variant = 'full',
+  onDark = true,
+} = Astro.props;
 const isSmall = variant === 'small';
 ---
 
-<section class={`relative ${isSmall ? 'h-[40vh] min-h-[320px]' : 'h-[85vh] min-h-[600px]'} w-full overflow-hidden bg-ink`}>
+<section
+  class={`relative ${isSmall ? 'h-[40vh] min-h-[320px]' : 'h-[85vh] min-h-[600px]'} w-full overflow-hidden bg-ink`}
+>
   <Image
     src={imageSrc}
     alt={imageAlt}
@@ -33,21 +44,34 @@ const isSmall = variant === 'small';
     class="absolute inset-0 w-full h-full object-cover"
   />
 
-  <div class={`relative z-10 max-w-6xl mx-auto px-4 md:px-8 flex flex-col justify-end ${isSmall ? 'pb-12' : 'pb-20'} h-full text-canvas`}>
-    <h1 class={`${isSmall ? 'text-display-md' : 'text-display-lg md:text-hero-display'} font-semibold max-w-3xl`}>
+  <div
+    class={`relative z-10 max-w-6xl mx-auto px-4 md:px-8 flex flex-col justify-end ${isSmall ? 'pb-12' : 'pb-20'} h-full text-canvas`}
+  >
+    <h1
+      class={`${isSmall ? 'text-display-md' : 'text-display-lg md:text-hero-display'} font-semibold max-w-3xl`}
+    >
       {headline}
     </h1>
-    {sub && <p class={`mt-4 ${isSmall ? 'text-body' : 'text-lead'} max-w-2xl text-canvas/85`}>{sub}</p>}
+    {
+      sub && (
+        <p class={`mt-4 ${isSmall ? 'text-body' : 'text-lead'} max-w-2xl text-canvas/85`}>{sub}</p>
+      )
+    }
 
-    {(primaryCta || secondaryCta) && (
-      <div class="mt-8 flex flex-wrap gap-3">
-        {primaryCta && <ButtonPrimary href={primaryCta.href}>{primaryCta.label}</ButtonPrimary>}
-        {secondaryCta && (
-          <ButtonSecondaryPill href={secondaryCta.href} class={onDark ? '!text-canvas !border-canvas hover:!bg-canvas/10' : ''}>
-            {secondaryCta.label}
-          </ButtonSecondaryPill>
-        )}
-      </div>
-    )}
+    {
+      (primaryCta || secondaryCta) && (
+        <div class="mt-8 flex flex-wrap gap-3">
+          {primaryCta && <ButtonPrimary href={primaryCta.href}>{primaryCta.label}</ButtonPrimary>}
+          {secondaryCta && (
+            <ButtonSecondaryPill
+              href={secondaryCta.href}
+              class={onDark ? '!text-canvas !border-canvas hover:!bg-canvas/10' : ''}
+            >
+              {secondaryCta.label}
+            </ButtonSecondaryPill>
+          )}
+        </div>
+      )
+    }
   </div>
 </section>

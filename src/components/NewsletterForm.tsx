@@ -15,7 +15,10 @@ export default function NewsletterForm() {
     setStatus(res.ok ? 'done' : 'error');
   };
 
-  if (status === 'done') return <p className="text-caption text-ink-muted-80">Thanks — we'll send occasional trip ideas.</p>;
+  if (status === 'done')
+    return (
+      <p className="text-caption text-ink-muted-80">Thanks — we'll send occasional trip ideas.</p>
+    );
 
   return (
     <form onSubmit={submit} className="flex gap-2 max-w-md">
@@ -35,7 +38,9 @@ export default function NewsletterForm() {
       >
         {status === 'sending' ? '...' : 'Subscribe'}
       </button>
-      {status === 'error' && <p className="text-caption text-[color:var(--color-alert-red)] self-center">Try again</p>}
+      {status === 'error' && (
+        <p className="text-caption text-[color:var(--color-alert-red)] self-center">Try again</p>
+      )}
     </form>
   );
 }

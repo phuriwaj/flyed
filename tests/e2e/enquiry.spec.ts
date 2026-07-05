@@ -21,7 +21,10 @@ test.describe('Enquiry form', () => {
     await page.getByLabel(/ages/i).fill('14-16');
     await page.getByLabel(/departure month/i).fill('2026-09');
     await page.getByLabel(/length/i).fill('7');
-    await page.getByLabel(/school/i).first().fill('Test School');
+    await page
+      .getByLabel(/school/i)
+      .first()
+      .fill('Test School');
     await page.getByLabel(/role/i).first().fill('Teacher');
     await page.getByLabel(/phone/i).fill('+1234567890');
     await page.getByLabel(/country/i).fill('Thailand');
@@ -38,7 +41,10 @@ test.describe('Enquiry form', () => {
     await page.getByLabel(/ages/i).fill('14-16');
     await page.getByLabel(/departure month/i).fill('2026-09');
     await page.getByLabel(/length/i).fill('7');
-    await page.getByLabel(/school/i).first().fill('Test School');
+    await page
+      .getByLabel(/school/i)
+      .first()
+      .fill('Test School');
     await page.getByLabel(/role/i).first().fill('Teacher');
     await page.getByLabel(/phone/i).fill('+1234567890');
     await page.getByLabel(/country/i).fill('Thailand');

@@ -20,7 +20,10 @@ export default function LanguageSwitcher({ currentLocale, altPath, currentPathna
         {currentLocale}
       </button>
       {open && (
-        <ul role="listbox" className="absolute right-0 mt-1 bg-canvas border border-hairline rounded-md min-w-[6rem]">
+        <ul
+          role="listbox"
+          className="absolute right-0 mt-1 bg-canvas border border-hairline rounded-md min-w-[6rem]"
+        >
           <li>
             <a
               href={currentLocale === 'en' ? currentPathname : altPath}

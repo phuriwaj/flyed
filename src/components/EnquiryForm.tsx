@@ -4,7 +4,10 @@ import { z } from 'zod';
 export const enquirySchema = z.object({
   schoolName: z.string().min(2, 'School / organization name required'),
   role: z.string().min(2, 'Your role is required'),
-  email: z.string().min(1, 'Email is required').pipe(z.string().email('Please enter a valid email')),
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .pipe(z.string().email('Please enter a valid email')),
   phone: z.string().min(6, 'Phone number required'),
   country: z.string().min(2, 'Country is required'),
   groupSize: z.coerce.number().int().min(4, 'between 4 and 60').max(60, 'between 4 and 60'),
@@ -30,11 +33,24 @@ const categoryOptions = [
 ];
 
 const destinationOptions = [
-  'Bangkok','Chiang Mai','Chiang Rai','Phuket','Krabi','Khao Sok','Kanchanaburi','Ayutthaya','Koh Tao','Sukhothai','Pai','Isan',
+  'Bangkok',
+  'Chiang Mai',
+  'Chiang Rai',
+  'Phuket',
+  'Krabi',
+  'Khao Sok',
+  'Kanchanaburi',
+  'Ayutthaya',
+  'Koh Tao',
+  'Sukhothai',
+  'Pai',
+  'Isan',
 ];
 
-const inputClass = 'mt-1 w-full h-11 px-5 rounded-pill bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
-const textareaClass = 'mt-1 w-full px-5 py-3 rounded-lg bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
+const inputClass =
+  'mt-1 w-full h-11 px-5 rounded-pill bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
+const textareaClass =
+  'mt-1 w-full px-5 py-3 rounded-lg bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
 
 interface Props {
   defaults?: Partial<EnquiryData>;
@@ -50,7 +66,17 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const stepFields: (keyof EnquiryData)[][] = [
-    ['groupSize','ages','departureMonth','duration','schoolName','role','email','phone','country'],
+    [
+      'groupSize',
+      'ages',
+      'departureMonth',
+      'duration',
+      'schoolName',
+      'role',
+      'email',
+      'phone',
+      'country',
+    ],
     ['subjects'],
     ['destinations'],
     ['notes'],
@@ -119,7 +145,11 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
       }
       setSubmitted(true);
     } catch (e) {
-      setSubmitError(locale === 'th' ? 'เกิดข้อผิดพลาด กรุณาลองอีกครั้ง' : 'Something went wrong. Please try again.');
+      setSubmitError(
+        locale === 'th'
+          ? 'เกิดข้อผิดพลาด กรุณาลองอีกครั้ง'
+          : 'Something went wrong. Please try again.',
+      );
     } finally {
       setSubmitting(false);
     }
@@ -128,19 +158,32 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
   if (submitted) {
     return (
       <div className="bg-canvas-parchment p-8 rounded-lg border border-hairline text-center">
-        <h2 className="text-display-md text-ink">
-          {locale === 'th' ? 'ขอบคุณ!' : 'Thanks!'}
-        </h2>
+        <h2 className="text-display-md text-ink">{locale === 'th' ? 'ขอบคุณ!' : 'Thanks!'}</h2>
         <p className="mt-2 text-body text-ink-muted-80">
-          {locale === 'th' ? 'เราจะติดต่อกลับภายใน 1 วันทำการ' : "We'll be in touch within one business day."}
+          {locale === 'th'
+            ? 'เราจะติดต่อกลับภายใน 1 วันทำการ'
+            : "We'll be in touch within one business day."}
         </p>
       </div>
     );
   }
 
-  const Field = ({ name, label, type = 'text', required = true }: { name: keyof EnquiryData; label: string; type?: string; required?: boolean }) => (
+  const Field = ({
+    name,
+    label,
+    type = 'text',
+    required = true,
+  }: {
+    name: keyof EnquiryData;
+    label: string;
+    type?: string;
+    required?: boolean;
+  }) => (
     <label className="block" htmlFor={name}>
-      <span className="text-caption-strong text-ink">{label}{required && ' *'}</span>
+      <span className="text-caption-strong text-ink">
+        {label}
+        {required && ' *'}
+      </span>
       <input
         id={name}
         type={type}
@@ -151,21 +194,45 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
         aria-required={required || undefined}
         className={inputClass}
       />
-      {errors[name] && <span id={`${name}-error`} role="alert" className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors[name]}</span>}
+      {errors[name] && (
+        <span
+          id={`${name}-error`}
+          role="alert"
+          className="text-caption text-[color:var(--color-alert-red)] mt-1 block"
+        >
+          {errors[name]}
+        </span>
+      )}
     </label>
   );
 
   return (
     <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-      <div className="text-caption text-ink-muted-60">Step {step + 1} of {stepFields.length}</div>
+      <div className="text-caption text-ink-muted-60">
+        Step {step + 1} of {stepFields.length}
+      </div>
 
       {step === 0 && (
         <div className="space-y-4">
-          <Field name="groupSize" label={locale === 'th' ? 'ขนาดกลุ่ม' : 'Group size'} type="number" />
+          <Field
+            name="groupSize"
+            label={locale === 'th' ? 'ขนาดกลุ่ม' : 'Group size'}
+            type="number"
+          />
           <Field name="ages" label={locale === 'th' ? 'อายุ / ชั้นเรียน' : 'Ages / grades'} />
-          <Field name="departureMonth" label={locale === 'th' ? 'เดือนเดินทาง' : 'Departure month'} />
-          <Field name="duration" label={locale === 'th' ? 'ระยะเวลา (วัน)' : 'Trip length (days)'} type="number" />
-          <Field name="schoolName" label={locale === 'th' ? 'โรงเรียน / องค์กร' : 'School / organization'} />
+          <Field
+            name="departureMonth"
+            label={locale === 'th' ? 'เดือนเดินทาง' : 'Departure month'}
+          />
+          <Field
+            name="duration"
+            label={locale === 'th' ? 'ระยะเวลา (วัน)' : 'Trip length (days)'}
+            type="number"
+          />
+          <Field
+            name="schoolName"
+            label={locale === 'th' ? 'โรงเรียน / องค์กร' : 'School / organization'}
+          />
           <Field name="role" label={locale === 'th' ? 'ตำแหน่ง' : 'Your role'} />
           <Field name="email" label="Email" type="email" />
           <Field name="phone" label={locale === 'th' ? 'โทรศัพท์' : 'Phone'} type="tel" />
@@ -175,7 +242,9 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
 
       {step === 1 && (
         <div>
-          <span className="text-caption-strong text-ink">{locale === 'th' ? 'วิชาที่สนใจ' : 'Subjects of interest'} *</span>
+          <span className="text-caption-strong text-ink">
+            {locale === 'th' ? 'วิชาที่สนใจ' : 'Subjects of interest'} *
+          </span>
           <div
             role="group"
             aria-invalid={Boolean(errors.subjects) || undefined}
@@ -199,13 +268,23 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
               </label>
             ))}
           </div>
-          {errors.subjects && <span id="subjects-error" role="alert" className="text-caption text-[color:var(--color-alert-red)] mt-1 block">{errors.subjects}</span>}
+          {errors.subjects && (
+            <span
+              id="subjects-error"
+              role="alert"
+              className="text-caption text-[color:var(--color-alert-red)] mt-1 block"
+            >
+              {errors.subjects}
+            </span>
+          )}
         </div>
       )}
 
       {step === 2 && (
         <div>
-          <span className="text-caption-strong text-ink">{locale === 'th' ? 'จุดหมาย' : 'Destinations (optional)'}</span>
+          <span className="text-caption-strong text-ink">
+            {locale === 'th' ? 'จุดหมาย' : 'Destinations (optional)'}
+          </span>
           <div className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-2">
             {destinationOptions.map((d) => (
               <label key={d} className="flex items-center gap-2 text-body text-ink">
@@ -224,14 +303,18 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
               </label>
             ))}
           </div>
-          <p className="mt-2 text-caption text-ink-muted-60">{locale === 'th' ? 'หรือเลือก "ให้เราเลือก" ด้านล่าง' : 'Or pick "you choose" below'}</p>
+          <p className="mt-2 text-caption text-ink-muted-60">
+            {locale === 'th' ? 'หรือเลือก "ให้เราเลือก" ด้านล่าง' : 'Or pick "you choose" below'}
+          </p>
         </div>
       )}
 
       {step === 3 && (
         <div>
           <label className="block">
-            <span className="text-caption-strong text-ink">{locale === 'th' ? 'หมายเหตุ' : 'Notes / questions'}</span>
+            <span className="text-caption-strong text-ink">
+              {locale === 'th' ? 'หมายเหตุ' : 'Notes / questions'}
+            </span>
             <textarea
               rows={6}
               value={data.notes ?? ''}
@@ -244,12 +327,24 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
 
       {step === 4 && (
         <div className="bg-canvas-parchment p-6 rounded-lg border border-hairline">
-          <h3 className="text-body-strong text-ink mb-3">{locale === 'th' ? 'ตรวจสอบข้อมูล' : 'Review'}</h3>
-          <pre className="text-caption text-ink-muted-80 whitespace-pre-wrap">{JSON.stringify(data, null, 2)}</pre>
+          <h3 className="text-body-strong text-ink mb-3">
+            {locale === 'th' ? 'ตรวจสอบข้อมูล' : 'Review'}
+          </h3>
+          <pre className="text-caption text-ink-muted-80 whitespace-pre-wrap">
+            {JSON.stringify(data, null, 2)}
+          </pre>
         </div>
       )}
 
-      {submitError && <p role="status" aria-live="polite" className="text-caption text-[color:var(--color-alert-red)]">{submitError}</p>}
+      {submitError && (
+        <p
+          role="status"
+          aria-live="polite"
+          className="text-caption text-[color:var(--color-alert-red)]"
+        >
+          {submitError}
+        </p>
+      )}
 
       <div className="flex justify-between gap-3">
         {step > 0 && (
@@ -277,7 +372,13 @@ export default function EnquiryForm({ defaults = {}, locale = 'en' }: Props) {
             disabled={submitting}
             className="inline-flex items-center justify-center bg-primary hover:bg-primary-hover active:scale-[0.95] text-canvas text-body px-[22px] py-[11px] rounded-pill transition-colors duration-150 disabled:opacity-50"
           >
-            {submitting ? (locale === 'th' ? 'กำลังส่ง...' : 'Sending...') : (locale === 'th' ? 'ส่งคำขอ' : 'Send enquiry')}
+            {submitting
+              ? locale === 'th'
+                ? 'กำลังส่ง...'
+                : 'Sending...'
+              : locale === 'th'
+                ? 'ส่งคำขอ'
+                : 'Send enquiry'}
           </button>
         )}
       </div>

@@ -16,7 +16,10 @@ export const POST: APIRoute = async (ctx) => {
 
   const result = enquirySchema.safeParse(body);
   if (!result.success) {
-    return new Response(JSON.stringify({ ok: false, error: 'Validation failed', issues: result.error.issues }), { status: 422 });
+    return new Response(
+      JSON.stringify({ ok: false, error: 'Validation failed', issues: result.error.issues }),
+      { status: 422 },
+    );
   }
 
   // Rate-limit AFTER validation (junk requests don't burn KV ops) and BEFORE
@@ -24,8 +27,8 @@ export const POST: APIRoute = async (ctx) => {
   // attaches the client IP as `cf-connecting-ip`; fall back to `unknown` in
   // non-CF environments (local astro dev, vitest).
   const ip = request.headers.get('cf-connecting-ip') ?? 'unknown';
-  const rateLimitKv = (locals as { runtime?: { env?: { RATE_LIMIT_KV?: unknown } } } | undefined)?.runtime
-    ?.env?.RATE_LIMIT_KV as Parameters<typeof rateLimited>[0]['kv'];
+  const rateLimitKv = (locals as { runtime?: { env?: { RATE_LIMIT_KV?: unknown } } } | undefined)
+    ?.runtime?.env?.RATE_LIMIT_KV as Parameters<typeof rateLimited>[0]['kv'];
   const limit = await rateLimited({
     ip,
     kv: rateLimitKv,
@@ -77,7 +80,9 @@ export const POST: APIRoute = async (ctx) => {
         }),
       });
     } catch (e) {
-      ctx.logger.error(`Resend delivery failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`);
+      ctx.logger.error(
+        `Resend delivery failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`,
+      );
     }
   } else {
     ctx.logger.warn(`RESEND_API_KEY not configured; skipping email send [enquiryId=${enquiryId}]`);
@@ -92,7 +97,9 @@ export const POST: APIRoute = async (ctx) => {
         body: JSON.stringify({ ...enquiry, enquiryId }),
       });
     } catch (e) {
-      ctx.logger.error(`CRM webhook failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`);
+      ctx.logger.error(
+        `CRM webhook failed [enquiryId=${enquiryId}]: ${e instanceof Error ? e.message : String(e)}`,
+      );
     }
   } else {
     ctx.logger.warn(`CRM_WEBHOOK_URL not configured; skipping CRM [enquiryId=${enquiryId}]`);

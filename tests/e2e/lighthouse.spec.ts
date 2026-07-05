@@ -42,11 +42,11 @@ test.describe('Lighthouse-style checks', () => {
   });
 
   // Blog post pages are heavy (gallery + related trips + JSON-LD scripts)
-// and python's single-threaded http.server saturates when many requests
-// pile up under parallel tests — `page.goto` then waits past the test
-// timeout. Verify the structured-data shape against the prerendered
-// HTML file directly instead.
-test.skip('blog post page has structured data', async ({ page }) => {
+  // and python's single-threaded http.server saturates when many requests
+  // pile up under parallel tests — `page.goto` then waits past the test
+  // timeout. Verify the structured-data shape against the prerendered
+  // HTML file directly instead.
+  test.skip('blog post page has structured data', async ({ page }) => {
     await page.goto('/blog/01-why-thailand-service-learning', { waitUntil: 'domcontentloaded' });
     const ldJson = await page.locator('script[type="application/ld+json"]').first().textContent();
     expect(ldJson).toBeTruthy();

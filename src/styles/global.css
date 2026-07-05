@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 @theme {
@@ -31,9 +31,11 @@
   --color-chip-translucent-light: rgba(255, 255, 255, 0.72);
 
   /* Type families — SF Pro on Apple platforms, Inter fallback elsewhere */
-  --font-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Inter var", "Inter", sans-serif;
-  --font-body: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, "Inter var", "Inter", sans-serif;
-  --font-thai: "Noto Sans Thai", "SF Pro Text", system-ui, sans-serif;
+  --font-display:
+    'SF Pro Display', system-ui, -apple-system, BlinkMacSystemFont, 'Inter var', 'Inter', sans-serif;
+  --font-body:
+    'SF Pro Text', system-ui, -apple-system, BlinkMacSystemFont, 'Inter var', 'Inter', sans-serif;
+  --font-thai: 'Noto Sans Thai', 'SF Pro Text', system-ui, sans-serif;
 
   /* Apple type scale */
   --text-hero-display: 56px;
@@ -42,7 +44,7 @@
   --text-hero-display--letter-spacing: -0.28px;
 
   --text-display-lg: 40px;
-  --text-display-lg--line-height: 1.10;
+  --text-display-lg--line-height: 1.1;
   --text-display-lg--font-weight: 600;
   --text-display-lg--letter-spacing: 0;
 
@@ -135,16 +137,16 @@
 }
 
 @font-face {
-  font-family: "Inter var";
-  src: url("/fonts/inter.woff2") format("woff2-variations");
+  font-family: 'Inter var';
+  src: url('/fonts/inter.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Noto Sans Thai";
-  src: url("/fonts/noto-sans-thai.woff2") format("woff2-variations");
+  font-family: 'Noto Sans Thai';
+  src: url('/fonts/noto-sans-thai.woff2') format('woff2-variations');
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -170,7 +172,10 @@
     letter-spacing: -0.374px;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     color: var(--color-ink);
     letter-spacing: -0.005em;
@@ -206,7 +211,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

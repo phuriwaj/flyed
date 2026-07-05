@@ -1,6 +1,11 @@
 ---
-interface Crumb { label: string; href?: string; }
-interface Props { items: Crumb[]; }
+interface Crumb {
+  label: string;
+  href?: string;
+}
+interface Props {
+  items: Crumb[];
+}
 const { items } = Astro.props;
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -13,18 +18,23 @@ const jsonLd = {
   })),
 };
 ---
+
 <nav aria-label="Breadcrumb" class="text-caption text-ink-muted-80">
   <ol class="flex flex-wrap items-center gap-1">
-    {items.map((c, i) => (
-      <li class="flex items-center gap-1">
-        {c.href ? (
-          <a href={c.href} class="hover:text-primary no-underline">{c.label}</a>
-        ) : (
-          <span aria-current="page">{c.label}</span>
-        )}
-        {i < items.length - 1 && <span aria-hidden="true">/</span>}
-      </li>
-    ))}
+    {
+      items.map((c, i) => (
+        <li class="flex items-center gap-1">
+          {c.href ? (
+            <a href={c.href} class="hover:text-primary no-underline">
+              {c.label}
+            </a>
+          ) : (
+            <span aria-current="page">{c.label}</span>
+          )}
+          {i < items.length - 1 && <span aria-hidden="true">/</span>}
+        </li>
+      ))
+    }
   </ol>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </nav>

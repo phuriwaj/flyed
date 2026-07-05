@@ -20,7 +20,9 @@ export async function getStaticPaths() {
     }));
 }
 
-interface Props { entry: CollectionEntry<'itineraries'>; }
+interface Props {
+  entry: CollectionEntry<'itineraries'>;
+}
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 
@@ -31,7 +33,12 @@ const prefix = '/th';
 
 const allItineraries = await getCollection('itineraries');
 const related = allItineraries
-  .filter((i) => i.data.published && i.data.slug !== entry.data.slug && i.data.category === entry.data.category)
+  .filter(
+    (i) =>
+      i.data.published &&
+      i.data.slug !== entry.data.slug &&
+      i.data.category === entry.data.category,
+  )
   .slice(0, 3);
 
 const galleryImages = (entry.data.gallery ?? []).map((src) => ({ src, alt: entry.data.title }));
@@ -64,11 +71,13 @@ const tripLd = {
   />
 
   <Section class="py-8">
-    <Breadcrumbs items={[
-      { label: dict.nav.home, href: prefix || '/' },
-      { label: dict.nav.itineraries, href: `${prefix}/itineraries` },
-      { label: entry.data.title },
-    ]} />
+    <Breadcrumbs
+      items={[
+        { label: dict.nav.home, href: prefix || '/' },
+        { label: dict.nav.itineraries, href: `${prefix}/itineraries` },
+        { label: entry.data.title },
+      ]}
+    />
   </Section>
 
   <Section>
@@ -79,47 +88,83 @@ const tripLd = {
       <aside class="bg-canvas-parchment p-6 rounded-lg h-fit">
         <h3 class="font-display text-xl font-semibold mb-4">ภาพรวม</h3>
         <dl class="space-y-3 text-sm">
-          <div><dt class="font-semibold text-ink-muted-60 uppercase">วัน</dt><dd class="text-ink">{entry.data.days}</dd></div>
-          <div><dt class="font-semibold text-ink-muted-60 uppercase">กลุ่ม</dt><dd class="text-ink">{entry.data.groupSize.min}–{entry.data.groupSize.max}</dd></div>
-          <div><dt class="font-semibold text-ink-muted-60 uppercase">อายุ</dt><dd class="text-ink">{entry.data.ageBand.min}–{entry.data.ageBand.max}</dd></div>
-          <div><dt class="font-semibold text-ink-muted-60 uppercase">ราคาเริ่มต้น</dt><dd class="text-ink font-semibold">{entry.data.currency} {entry.data.priceFrom.toLocaleString()}</dd></div>
-          <div><dt class="font-semibold text-ink-muted-60 uppercase">เดือนเริ่มต้น</dt><dd class="text-ink">{entry.data.startMonths.join(', ')}</dd></div>
-          <div><dt class="font-semibold text-ink-muted-60 uppercase">หลักสูตร</dt><dd class="text-ink">{entry.data.curricula.join(', ')}</dd></div>
+          <div>
+            <dt class="font-semibold text-ink-muted-60 uppercase">วัน</dt><dd class="text-ink">
+              {entry.data.days}
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-ink-muted-60 uppercase">กลุ่ม</dt><dd class="text-ink">
+              {entry.data.groupSize.min}–{entry.data.groupSize.max}
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-ink-muted-60 uppercase">อายุ</dt><dd class="text-ink">
+              {entry.data.ageBand.min}–{entry.data.ageBand.max}
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-ink-muted-60 uppercase">ราคาเริ่มต้น</dt><dd
+              class="text-ink font-semibold"
+            >
+              {entry.data.currency}
+              {entry.data.priceFrom.toLocaleString()}
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-ink-muted-60 uppercase">เดือนเริ่มต้น</dt><dd
+              class="text-ink"
+            >
+              {entry.data.startMonths.join(', ')}
+            </dd>
+          </div>
+          <div>
+            <dt class="font-semibold text-ink-muted-60 uppercase">หลักสูตร</dt><dd class="text-ink">
+              {entry.data.curricula.join(', ')}
+            </dd>
+          </div>
         </dl>
-        <a href={`${prefix}/enquire?itinerary=${entry.data.slug}`} class="mt-6 block text-center bg-primary hover:bg-primary-hover text-canvas font-normal px-4 py-3 rounded-pill no-underline">
+        <a
+          href={`${prefix}/enquire?itinerary=${entry.data.slug}`}
+          class="mt-6 block text-center bg-primary hover:bg-primary-hover text-canvas font-normal px-4 py-3 rounded-pill no-underline"
+        >
           ส่งคำขอสำหรับทริปนี้
         </a>
       </aside>
     </div>
   </Section>
 
-  {galleryImages.length > 0 && (
-    <Section bg="parchment">
-      <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">แกลเลอรี่</h2>
-      <ImageCarousel client:visible images={galleryImages} />
-    </Section>
-  )}
+  {
+    galleryImages.length > 0 && (
+      <Section bg="parchment">
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">แกลเลอรี่</h2>
+        <ImageCarousel client:visible images={galleryImages} />
+      </Section>
+    )
+  }
 
-  {related.length > 0 && (
-    <Section>
-      <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">ทริปที่คล้ายกัน</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {related.map((r) => (
-          <ItineraryCard
-            slug={r.data.slug}
-            title={r.data.title}
-            category={r.data.category}
-            destinations={r.data.destinations.map((d: any) => d.id ?? d)}
-            days={r.data.days}
-            priceFrom={r.data.priceFrom}
-            currency={r.data.currency}
-            heroImage={r.data.heroImage}
-            ageBand={r.data.ageBand}
-          />
-        ))}
-      </div>
-    </Section>
-  )}
+  {
+    related.length > 0 && (
+      <Section>
+        <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">ทริปที่คล้ายกัน</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {related.map((r) => (
+            <ItineraryCard
+              slug={r.data.slug}
+              title={r.data.title}
+              category={r.data.category}
+              destinations={r.data.destinations.map((d: any) => d.id ?? d)}
+              days={r.data.days}
+              priceFrom={r.data.priceFrom}
+              currency={r.data.currency}
+              heroImage={r.data.heroImage}
+              ageBand={r.data.ageBand}
+            />
+          ))}
+        </div>
+      </Section>
+    )
+  }
 
   <CTASection
     headline="พร้อมจองหรือยัง?"

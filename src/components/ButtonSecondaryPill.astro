@@ -7,11 +7,19 @@ interface Props {
 }
 
 const { href, type = 'button', class: className = '', ariaLabel } = Astro.props;
-const base = 'inline-flex items-center justify-center bg-transparent text-primary text-body font-normal px-[22px] py-[11px] rounded-pill border border-primary no-underline transition-colors duration-150 hover:bg-primary/5 active:scale-[0.95] focus-visible:outline-2 focus-visible:outline-primary-focus focus-visible:outline-offset-2';
+const base =
+  'inline-flex items-center justify-center bg-transparent text-primary text-body font-normal px-[22px] py-[11px] rounded-pill border border-primary no-underline transition-colors duration-150 hover:bg-primary/5 active:scale-[0.95] focus-visible:outline-2 focus-visible:outline-primary-focus focus-visible:outline-offset-2';
 const cls = `${base} ${className}`;
 ---
-{href ? (
-  <a href={href} class={cls} aria-label={ariaLabel}><slot /></a>
-) : (
-  <button type={type} class={cls} aria-label={ariaLabel}><slot /></button>
-)}
+
+{
+  href ? (
+    <a href={href} class={cls} aria-label={ariaLabel}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={cls} aria-label={ariaLabel}>
+      <slot />
+    </button>
+  )
+}

@@ -67,5 +67,7 @@ for (const file of mdx) {
   }
 }
 
-console.log(`locale frontmatter migration: ${inserted} inserted, ${skipped} skipped, ${failed} failed`);
+console.log(
+  `locale frontmatter migration: ${inserted} inserted, ${skipped} skipped, ${failed} failed`,
+);
 process.exit(failed > 0 ? 1 : 0);

@@ -1,6 +1,11 @@
 ---
-interface QA { q: string; a: string; }
-interface Props { items: QA[]; }
+interface QA {
+  q: string;
+  a: string;
+}
+interface Props {
+  items: QA[];
+}
 const { items } = Astro.props;
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -12,6 +17,7 @@ const jsonLd = {
   })),
 };
 ---
+
 <style is:global>
   @media (prefers-reduced-motion: reduce) {
     details summary > span[aria-hidden] {
@@ -22,14 +28,21 @@ const jsonLd = {
 </style>
 
 <div class="divide-y divide-hairline border-y border-hairline">
-  {items.map((qa) => (
-    <details class="group py-4">
-      <summary class="flex justify-between items-center cursor-pointer text-body-strong text-ink list-none hover:text-primary transition-colors duration-150">
-        <span>{qa.q}</span>
-        <span class="text-primary text-2xl transition-transform duration-200 group-open:rotate-45 select-none" aria-hidden="true">+</span>
-      </summary>
-      <p class="mt-3 text-body text-ink-muted-80">{qa.a}</p>
-    </details>
-  ))}
+  {
+    items.map((qa) => (
+      <details class="group py-4">
+        <summary class="flex justify-between items-center cursor-pointer text-body-strong text-ink list-none hover:text-primary transition-colors duration-150">
+          <span>{qa.q}</span>
+          <span
+            class="text-primary text-2xl transition-transform duration-200 group-open:rotate-45 select-none"
+            aria-hidden="true"
+          >
+            +
+          </span>
+        </summary>
+        <p class="mt-3 text-body text-ink-muted-80">{qa.a}</p>
+      </details>
+    ))
+  }
 </div>
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

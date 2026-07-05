@@ -37,7 +37,9 @@ export default function Counter({ end, suffix = '', prefix = '', duration = 1800
 
   return (
     <span ref={ref}>
-      {prefix}{value.toLocaleString()}{suffix}
+      {prefix}
+      {value.toLocaleString()}
+      {suffix}
     </span>
   );
 }

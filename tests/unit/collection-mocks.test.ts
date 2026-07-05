@@ -1,11 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  getCollection,
-  getEntry,
-  reference,
-  z,
-  defineCollection,
-} from 'astro:content';
+import { getCollection, getEntry, reference, z, defineCollection } from 'astro:content';
 
 // Smoke test for the realistic `astro:content` mock at
 // tests/mocks/astro-content.ts. We cast through `any` liberally at the
@@ -15,7 +9,6 @@ import {
 // real schema doesn't know about (`does-not-exist`). Asserting on
 // runtime behaviour is the point.
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const asAny = (v: unknown): any => v;
 
 describe('astro:content mock — basic surface', () => {
@@ -103,18 +96,16 @@ describe('astro:content mock — getCollection fixtures', () => {
 
 describe('astro:content mock — filter predicate', () => {
   it('applies an optional filter (the pattern used by rss.xml.ts and blog routes)', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const draftFilter: any = ({ data }: { data: { draft: boolean } }) => Boolean(data.draft);
     const drafts = await getCollection('blog', draftFilter);
     expect(drafts.length).toBe(0); // fixture set has no drafts
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     const publishedFilter: any = ({ data }: { data: { draft: boolean } }) => !data.draft;
     const published = await getCollection('blog', publishedFilter);
     expect(published.length).toBeGreaterThan(0);
   });
 
   it('locale-filter pattern matches the EN blog routes', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const enFilter: any = ({ data }: { data: { locale: string } }) => data.locale === 'en';
     const enPosts = await getCollection('blog', enFilter);
     expect(enPosts.length).toBeGreaterThan(0);
@@ -133,7 +124,7 @@ describe('astro:content mock — getEntry reference resolution', () => {
     // frontmatter like `author: kriengsak`.
     const author = await getEntry(asAny(post.data.author));
     expect(author).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     expect((author as any).data.name).toBeTypeOf('string');
   });
 
@@ -143,7 +134,7 @@ describe('astro:content mock — getEntry reference resolution', () => {
     const refSlug = String((post.data.relatedItineraries as unknown[])[0]);
     const itin = await getEntry(asAny(refSlug));
     expect(itin).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     expect((itin as any).data.days).toBeTypeOf('number');
   });
 

@@ -41,15 +41,15 @@ Editor saves in /admin
 
 ## File layout
 
-| File | Purpose |
-|---|---|
-| `public/admin/index.html` | Decap CMS shell (loads from unpkg) |
-| `public/admin/config.yml` | Collections, i18n, backend, preview config |
-| `public/admin/preview.html` | Custom preview iframe |
-| `public/admin/README.md` | Editor how-to |
-| `src/content.config.ts` | `blog` and `blogTh` Astro collections |
-| `src/pages/th/blog/*` | Thai blog pages (read `blogTh`) |
-| `scripts/migrate-blog-i18n.mjs` | One-shot migration of existing posts |
+| File                            | Purpose                                    |
+| ------------------------------- | ------------------------------------------ |
+| `public/admin/index.html`       | Decap CMS shell (loads from unpkg)         |
+| `public/admin/config.yml`       | Collections, i18n, backend, preview config |
+| `public/admin/preview.html`     | Custom preview iframe                      |
+| `public/admin/README.md`        | Editor how-to                              |
+| `src/content.config.ts`         | `blog` and `blogTh` Astro collections      |
+| `src/pages/th/blog/*`           | Thai blog pages (read `blogTh`)            |
+| `scripts/migrate-blog-i18n.mjs` | One-shot migration of existing posts       |
 
 ## Day-to-day operations
 

@@ -7,7 +7,13 @@ const { class: className = 'h-8 w-8', variant = 'light' } = Astro.props;
 const bg = variant === 'dark' ? '#ffffff' : '#1d1d1f';
 const stroke = variant === 'dark' ? '#1d1d1f' : '#ffffff';
 ---
+
 <svg class={className} viewBox="0 0 32 32" fill="none" aria-hidden="true">
-  <circle cx="16" cy="16" r="14" fill={bg} />
-  <path d="M10 22 L16 8 L22 22 M12.5 17 H19.5" stroke={stroke} stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="16" cy="16" r="14" fill={bg}></circle>
+  <path
+    d="M10 22 L16 8 L22 22 M12.5 17 H19.5"
+    stroke={stroke}
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
 </svg>

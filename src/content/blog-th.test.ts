@@ -13,7 +13,9 @@ describe('blog + blogTh collection glob split', () => {
     // This test is a structural check; pass once migration runs
     expect(files.length).toBeGreaterThan(0);
     // Log for visibility
-    console.log(`[blog-th] enFiles=${enFiles.length} thFiles=${thFiles.length} total=${files.length}`);
+    console.log(
+      `[blog-th] enFiles=${enFiles.length} thFiles=${thFiles.length} total=${files.length}`,
+    );
   });
 
   it('blog collection glob is scoped to *.en.mdx', async () => {

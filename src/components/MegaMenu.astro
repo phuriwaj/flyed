@@ -31,29 +31,45 @@ const destinations = [
 ];
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-canvas border border-hairline rounded-lg min-w-[640px]">
+<div
+  class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 bg-canvas border border-hairline rounded-lg min-w-[640px]"
+>
   <div>
-    <h3 class="text-caption-strong uppercase tracking-wider text-ink-muted-60 mb-3">{isTh ? 'หมวดหมู่' : 'Trip Categories'}</h3>
+    <h3 class="text-caption-strong uppercase tracking-wider text-ink-muted-60 mb-3">
+      {isTh ? 'หมวดหมู่' : 'Trip Categories'}
+    </h3>
     <ul>
-      {categories.map((cat) => (
-        <li>
-          <a href={`${prefix}/trips/${cat.slug}`} class="block text-body-strong text-ink hover:text-primary px-3 py-2 rounded-xs no-underline">
-            {cat.label}
-          </a>
-        </li>
-      ))}
+      {
+        categories.map((cat) => (
+          <li>
+            <a
+              href={`${prefix}/trips/${cat.slug}`}
+              class="block text-body-strong text-ink hover:text-primary px-3 py-2 rounded-xs no-underline"
+            >
+              {cat.label}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
   <div>
-    <h3 class="text-caption-strong uppercase tracking-wider text-ink-muted-60 mb-3">{isTh ? 'จุดหมาย' : 'Destinations'}</h3>
+    <h3 class="text-caption-strong uppercase tracking-wider text-ink-muted-60 mb-3">
+      {isTh ? 'จุดหมาย' : 'Destinations'}
+    </h3>
     <ul class="grid grid-cols-2 gap-1">
-      {destinations.map((dest) => (
-        <li>
-          <a href={`${prefix}/destinations/${dest.slug}`} class="block text-button-utility text-ink-muted-80 hover:text-primary px-3 py-2 rounded-xs no-underline">
-            {isTh ? dest.th : dest.name}
-          </a>
-        </li>
-      ))}
+      {
+        destinations.map((dest) => (
+          <li>
+            <a
+              href={`${prefix}/destinations/${dest.slug}`}
+              class="block text-button-utility text-ink-muted-80 hover:text-primary px-3 py-2 rounded-xs no-underline"
+            >
+              {isTh ? dest.th : dest.name}
+            </a>
+          </li>
+        ))
+      }
     </ul>
   </div>
 </div>

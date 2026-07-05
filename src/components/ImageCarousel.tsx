@@ -11,7 +11,8 @@ export default function ImageCarousel({ images }: Props) {
   const prev = () => setIdx((i) => (i - 1 + images.length) % images.length);
   const next = () => setIdx((i) => (i + 1) % images.length);
 
-  const controlBtn = 'absolute top-1/2 -translate-y-1/2 w-11 h-11 rounded-full inline-flex items-center justify-center bg-chip-translucent hover:bg-ink text-canvas active:scale-[0.95] transition-colors duration-150';
+  const controlBtn =
+    'absolute top-1/2 -translate-y-1/2 w-11 h-11 rounded-full inline-flex items-center justify-center bg-chip-translucent hover:bg-ink text-canvas active:scale-[0.95] transition-colors duration-150';
 
   return (
     <div className="relative bg-canvas-parchment rounded-lg overflow-hidden">
@@ -22,12 +23,24 @@ export default function ImageCarousel({ images }: Props) {
         <>
           <button onClick={prev} aria-label="Previous image" className={`left-3 ${controlBtn}`}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M9 2.5 4.5 7 9 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M9 2.5 4.5 7 9 11.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
           <button onClick={next} aria-label="Next image" className={`right-3 ${controlBtn}`}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-              <path d="M5 2.5 9.5 7 5 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path
+                d="M5 2.5 9.5 7 5 11.5"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </svg>
           </button>
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">

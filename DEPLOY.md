@@ -6,6 +6,7 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
 ## Pre-launch checklist
 
 ### 1. Cloudflare account setup (one-time)
+
 - [ ] Create Cloudflare account at https://dash.cloudflare.com/sign-up
 - [ ] Add domain `flyed.dev` to Cloudflare (free tier OK)
 - [ ] Update nameservers at registrar to Cloudflare's nameservers
@@ -20,6 +21,7 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
   - Optional: add `LHCI_TOKEN` for Lighthouse CI public storage upload
 
 ### 2. Cloudflare Pages project
+
 - [ ] Connect GitHub repo `flyed-dev/flyed` to Cloudflare Pages
 - [ ] Build settings:
   - Framework preset: **Astro**
@@ -35,18 +37,20 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
   - `NODE_ENV` — `production`
 
 ### 3. DNS records (Cloudflare)
+
 - [ ] A record: `@` → Cloudflare Pages auto-managed
 - [ ] CNAME: `www` → `flyed.pages.dev`
 - [ ] Verify with `dig flyed.dev +short`
 
 ### 4. Domain
+
 - [ ] Custom domain `flyed.dev` added to Pages project
 - [ ] Custom domain `www.flyed.dev` added to Pages project
 - [ ] SSL/TLS: Full (strict)
 - [ ] Always Use HTTPS: ON
 - [ ] Minimum TLS Version: 1.2
 - [ ] www → apex redirect: Cloudflare Dashboard → Rules → Redirect Rules
-  (static `_redirects` file does NOT support absolute URLs — must be configured in dashboard)
+      (static `_redirects` file does NOT support absolute URLs — must be configured in dashboard)
   - Name: `www to apex`
   - If: hostname eq `www.flyed.dev`
   - Then: Static redirect → `https://flyed.dev/${uri}` status 301
@@ -64,6 +68,7 @@ git push origin main
 ## Post-deploy verification
 
 ### 1. Smoke test (manual)
+
 - [ ] Visit https://flyed.dev — home page hero loads, "5 steps" CTA visible
 - [ ] Click "Enquire" → form step 1 renders
 - [ ] Fill and submit form → success message appears
@@ -81,6 +86,7 @@ git push origin main
 - [ ] Open sitemap at /sitemap-index.xml — valid XML
 
 ### 2. Lighthouse audit
+
 - [ ] Open https://pagespeed.web.dev/ → enter https://flyed.dev
 - [ ] Performance ≥ 90 (target), 85 (warning floor)
 - [ ] Accessibility ≥ 95 (error floor)
@@ -90,12 +96,14 @@ git push origin main
 - [ ] Repeat for /enquire
 
 ### 3. Cross-browser smoke
+
 - [ ] Chrome (desktop + mobile emulation)
 - [ ] Safari (iOS Safari 17+)
 - [ ] Firefox
 - [ ] Edge
 
 ### 4. Mobile responsive
+
 - [ ] 375px width: hero text readable, no horizontal scroll
 - [ ] 768px width: tablet layout correct
 - [ ] 1440px width: desktop layout correct
@@ -103,6 +111,7 @@ git push origin main
 - [ ] Form inputs don't trigger zoom on iOS (16px+ font size)
 
 ### 5. SEO validation
+
 - [ ] Google Search Console: add property https://flyed.dev
 - [ ] Submit sitemap: https://flyed.dev/sitemap-index.xml
 - [ ] Request indexing: home, /about, /itineraries/andaman-sailing-week
@@ -110,6 +119,7 @@ git push origin main
 - [ ] Verify Open Graph: `curl -s https://flyed.dev/ | grep og:image`
 
 ### 6. Performance checks
+
 - [ ] First Contentful Paint < 1.5s on 3G
 - [ ] Largest Contentful Paint < 2.5s
 - [ ] Cumulative Layout Shift < 0.1
@@ -119,14 +129,17 @@ git push origin main
 ## Monitoring
 
 ### Cloudflare Analytics
+
 - [ ] Enable Web Analytics in Pages project settings
 - [ ] Set up email alerts for: error rate > 1%, bandwidth > 50GB/month
 
 ### Error tracking
+
 - [ ] Set up Sentry or similar for /api endpoints
 - [ ] Monitor: 4xx rate, 5xx rate, P95 response time
 
 ### Form submission monitoring
+
 - [ ] Resend dashboard: 100% delivery rate
 - [ ] CRM webhook: success rate
 - [ ] Set up Slack/email alerts for failed submissions
@@ -140,6 +153,7 @@ If a deploy breaks production:
 ```
 
 Or via CLI:
+
 ```bash
 wrangler pages deployment list --project-name=flyed
 wrangler pages deployment rollback <deployment-id> --project-name=flyed

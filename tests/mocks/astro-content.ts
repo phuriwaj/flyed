@@ -45,8 +45,9 @@ const blogFixtures = [
     id: '01-why-thailand-service-learning.en',
     data: {
       locale: 'en' as const,
-      title: 'Why Thailand is the world\'s best classroom for service learning',
-      description: 'Five structural reasons Thailand outperforms other destinations for IB MYP service and CAS programs.',
+      title: "Why Thailand is the world's best classroom for service learning",
+      description:
+        'Five structural reasons Thailand outperforms other destinations for IB MYP service and CAS programs.',
       pubDate: new Date('2026-06-15T00:00:00.000Z'),
       author: 'kriengsak',
       tags: ['Service', 'Curriculum'],
@@ -54,14 +55,15 @@ const blogFixtures = [
       relatedItineraries: ['northern-thailand-service-week'],
       draft: false,
     },
-    body: '# Why Thailand is the world\'s best classroom for service learning\n\nThailand has quietly become the world\'s most popular destination for IB service learning...',
+    body: "# Why Thailand is the world's best classroom for service learning\n\nThailand has quietly become the world's most popular destination for IB service learning...",
   },
   {
     id: '01-why-thailand-service-learning.th',
     data: {
       locale: 'th' as const,
       title: 'ทำไมไทยถึงเป็นห้องเรียนที่ดีที่สุดในโลกสำหรับการเรียนรู้ผ่านจิตอาสา',
-      description: 'เหตุผลเชิงโครงสร้างห้าประการที่ทำให้ไทยเหนือกว่าจุดหมายปลายทางอื่นสำหรับโปรแกรม IB MYP และ CAS',
+      description:
+        'เหตุผลเชิงโครงสร้างห้าประการที่ทำให้ไทยเหนือกว่าจุดหมายปลายทางอื่นสำหรับโปรแกรม IB MYP และ CAS',
       pubDate: new Date('2026-06-15T00:00:00.000Z'),
       author: 'kriengsak',
       tags: ['Service', 'Curriculum'],
@@ -78,7 +80,8 @@ const itineraryFixtures = [
     id: 'northern-thailand-service-week',
     data: {
       title: 'Northern Thailand Service Week',
-      description: 'Seven-day service-learning immersion in Chiang Mai and Chiang Rai — bamboo construction, hill-tribe English teaching, ethical elephant sanctuary.',
+      description:
+        'Seven-day service-learning immersion in Chiang Mai and Chiang Rai — bamboo construction, hill-tribe English teaching, ethical elephant sanctuary.',
       category: 'service-learning' as const,
       destinations: ['chiang-mai', 'chiang-rai'],
       days: 7,
@@ -107,7 +110,7 @@ const destinationFixtures = [
     data: {
       name: 'Chiang Mai',
       nameTh: 'เชียงใหม่',
-      tagline: 'Northern Thailand\'s cultural heart — temples, night markets, and mountain forests',
+      tagline: "Northern Thailand's cultural heart — temples, night markets, and mountain forests",
       region: 'North' as const,
       bestFor: ['service-learning', 'stem-environmental', 'language-immersion'],
       bestMonths: ['Nov', 'Dec', 'Jan', 'Feb'],
@@ -125,7 +128,8 @@ const categoryFixtures = [
     data: {
       title: 'Cultural & Heritage',
       titleTh: 'วัฒนธรรมและมรดก',
-      description: 'Temple homestays, Isan village immersion, Bangkok old-town walks, and Thai cooking from scratch.',
+      description:
+        'Temple homestays, Isan village immersion, Bangkok old-town walks, and Thai cooking from scratch.',
       icon: '🏛️',
       color: 'sunset' as const,
       itineraryCount: 1,
@@ -172,17 +176,12 @@ type CollectionEntry = {
 
 type Filter = (entry: CollectionEntry) => boolean;
 
-export async function getCollection(
-  name: string,
-  filter?: Filter,
-): Promise<CollectionEntry[]> {
+export async function getCollection(name: string, filter?: Filter): Promise<CollectionEntry[]> {
   const all = (FIXTURES[name] as CollectionEntry[] | undefined) ?? [];
   return filter ? all.filter(filter) : all;
 }
 
-type ReferenceArg =
-  | string
-  | { collection?: string; id: string };
+type ReferenceArg = string | { collection?: string; id: string };
 
 function extractId(arg: ReferenceArg | ReferenceArg[]): string {
   if (Array.isArray(arg)) {

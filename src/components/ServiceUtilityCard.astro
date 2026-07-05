@@ -13,6 +13,7 @@ interface Props {
 
 const { href, imageSrc, imageAlt, title, meta, cta, class: className = '' } = Astro.props;
 ---
+
 <a
   href={href}
   class={`group block bg-canvas border border-hairline rounded-lg p-6 no-underline transition-shadow duration-200 hover:border-ink-muted-40 ${className}`}

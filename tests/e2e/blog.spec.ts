@@ -11,14 +11,18 @@ test.describe('Blog index', () => {
 
   test('first blog post opens and shows title + body', async ({ page }) => {
     await page.goto('/blog/2');
-    const firstLink = page.locator('a[href*="/blog/"]:not([href$="/blog"]):not([href*="/tag"])').first();
+    const firstLink = page
+      .locator('a[href*="/blog/"]:not([href$="/blog"]):not([href*="/tag"])')
+      .first();
     await firstLink.click();
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
   test('tag filter UI exists', async ({ page }) => {
     await page.goto('/blog/2');
-    const tagUi = page.locator('[data-testid="tag-filter"], select[name*="tag"], [aria-label*="tag" i]');
+    const tagUi = page.locator(
+      '[data-testid="tag-filter"], select[name*="tag"], [aria-label*="tag" i]',
+    );
     if ((await tagUi.count()) > 0) {
       await expect(tagUi.first()).toBeVisible();
     } else {

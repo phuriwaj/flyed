@@ -11,9 +11,7 @@ export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => data.locale === 'en' && !data.draft);
   const tags = Array.from(new Set(posts.flatMap((p) => p.data.tags)));
   return tags.map((tag) => {
-    const tagPosts = posts.filter((p) =>
-      (p.data.tags as readonly string[]).includes(tag)
-    );
+    const tagPosts = posts.filter((p) => (p.data.tags as readonly string[]).includes(tag));
     return {
       params: { tag: tag.toLowerCase() },
       props: { tag, posts: tagPosts },
@@ -38,13 +36,20 @@ const postsWithMeta = posts.map((post) => ({
 ---
 
 <PageLayout title={`${tag} | Blog`} description={`Posts tagged ${tag}`}>
-  <Hero variant="small" headline={`Tag: ${tag}`} imageSrc="/images/hero/blog-hero.jpg" imageAlt="blog" />
+  <Hero
+    variant="small"
+    headline={`Tag: ${tag}`}
+    imageSrc="/images/hero/blog-hero.jpg"
+    imageAlt="blog"
+  />
   <Section>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {postsWithMeta.map((p) => <BlogCard {...p} />)}
     </div>
     <div class="mt-8 text-center">
-      <a href={`${prefix}/blog`} class="text-bamboo-700 hover:underline">← {isTh ? 'กลับไปบล็อก' : 'Back to all posts'}</a>
+      <a href={`${prefix}/blog`} class="text-bamboo-700 hover:underline"
+        >← {isTh ? 'กลับไปบล็อก' : 'Back to all posts'}</a
+      >
     </div>
   </Section>
 </PageLayout>

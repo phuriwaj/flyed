@@ -13,12 +13,22 @@ const isTh = locale === 'th';
 const prefix = isTh ? '/th' : '';
 
 const offices = [
-  { city: isTh ? 'กรุงเทพฯ (สำนักงานใหญ่)' : 'Bangkok HQ', address: 'Sukhumvit Soi 22, Khlong Toei, Bangkok 10110', phone: '+66 2 000 0000' },
-  { city: isTh ? 'เชียงใหม่ (ฐาน)' : 'Chiang Mai base', address: '12 Nimmanhaemin Rd, Suthep, Chiang Mai 50200', phone: '+66 53 000 000' },
+  {
+    city: isTh ? 'กรุงเทพฯ (สำนักงานใหญ่)' : 'Bangkok HQ',
+    address: 'Sukhumvit Soi 22, Khlong Toei, Bangkok 10110',
+    phone: '+66 2 000 0000',
+  },
+  {
+    city: isTh ? 'เชียงใหม่ (ฐาน)' : 'Chiang Mai base',
+    address: '12 Nimmanhaemin Rd, Suthep, Chiang Mai 50200',
+    phone: '+66 53 000 000',
+  },
 ];
 
-const inputClass = 'mt-1 w-full h-11 px-5 rounded-pill bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
-const textareaClass = 'mt-1 w-full px-5 py-3 rounded-lg bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
+const inputClass =
+  'mt-1 w-full h-11 px-5 rounded-pill bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
+const textareaClass =
+  'mt-1 w-full px-5 py-3 rounded-lg bg-canvas text-body text-ink border border-[rgba(0,0,0,0.08)] focus:outline-none focus:border-primary transition-colors duration-150';
 ---
 
 <PageLayout
@@ -50,19 +60,25 @@ const textareaClass = 'mt-1 w-full px-5 py-3 rounded-lg bg-canvas text-body text
         <ButtonPrimary type="submit">{isTh ? 'ส่ง' : 'Send'}</ButtonPrimary>
       </form>
       <div class="space-y-8">
-        {offices.map((o) => (
-          <div>
-            <h3 class="text-body-strong text-ink">{o.city}</h3>
-            <address class="not-italic text-body text-ink-muted-80 mt-2">
-              <div>{o.address}</div>
-              <div class="mt-1">{o.phone}</div>
-            </address>
-          </div>
-        ))}
+        {
+          offices.map((o) => (
+            <div>
+              <h3 class="text-body-strong text-ink">{o.city}</h3>
+              <address class="not-italic text-body text-ink-muted-80 mt-2">
+                <div>{o.address}</div>
+                <div class="mt-1">{o.phone}</div>
+              </address>
+            </div>
+          ))
+        }
         <div>
           <h3 class="text-body-strong text-ink">{isTh ? 'ออนไลน์' : 'Online'}</h3>
           <ul class="text-body text-ink-muted-80 mt-2 space-y-1">
-            <li><a href="mailto:hello@flyed.dev" class="text-primary no-underline hover:underline">hello@flyed.dev</a></li>
+            <li>
+              <a href="mailto:hello@flyed.dev" class="text-primary no-underline hover:underline"
+                >hello@flyed.dev</a
+              >
+            </li>
             <li>WhatsApp: +66 81 000 0000</li>
             <li>Line: @flyed</li>
           </ul>

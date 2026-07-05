@@ -5,7 +5,11 @@ describe('content schemas', () => {
     const mod = await import('../content.config');
     expect(mod.collections).toBeDefined();
     expect(Object.keys(mod.collections).sort()).toEqual([
-      'blog', 'categories', 'destinations', 'itineraries', 'team',
+      'blog',
+      'categories',
+      'destinations',
+      'itineraries',
+      'team',
     ]);
   });
 });

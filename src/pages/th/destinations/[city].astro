@@ -19,7 +19,9 @@ export async function getStaticPaths() {
   }));
 }
 
-interface Props { entry: CollectionEntry<'destinations'>; }
+interface Props {
+  entry: CollectionEntry<'destinations'>;
+}
 const { entry } = Astro.props;
 export const locale = 'th';
 const dict = getDict('th');
@@ -28,15 +30,26 @@ const prefix = '/th';
 
 const allItineraries = await getCollection('itineraries');
 const matchingItineraries = allItineraries.filter((itin) =>
-  itin.data.destinations.some((d: any) => (typeof d === 'string' ? d === entry.data.name : d.id === entry.id))
+  itin.data.destinations.some((d: any) =>
+    typeof d === 'string' ? d === entry.data.name : d.id === entry.id,
+  ),
 );
 
 const title = entry.data.nameTh ?? entry.data.name;
 
 const faqs = [
-  { q: 'What is the best time to visit?', a: `${entry.data.bestMonths.join(', ')} are the recommended months.` },
-  { q: 'How do students get there?', a: 'Fly into Bangkok, then domestic connection. We arrange all transfers from airport to first hotel.' },
-  { q: 'Is it safe?', a: 'Yes. Our risk assessment covers this destination specifically and is available on request.' },
+  {
+    q: 'What is the best time to visit?',
+    a: `${entry.data.bestMonths.join(', ')} are the recommended months.`,
+  },
+  {
+    q: 'How do students get there?',
+    a: 'Fly into Bangkok, then domestic connection. We arrange all transfers from airport to first hotel.',
+  },
+  {
+    q: 'Is it safe?',
+    a: 'Yes. Our risk assessment covers this destination specifically and is available on request.',
+  },
 ];
 
 const testimonial = {
@@ -59,11 +72,13 @@ const testimonial = {
   />
 
   <Section class="py-8">
-    <Breadcrumbs items={[
-      { label: dict.nav.home, href: prefix || '/' },
-      { label: dict.nav.destinations, href: `${prefix}/destinations` },
-      { label: title },
-    ]} />
+    <Breadcrumbs
+      items={[
+        { label: dict.nav.home, href: prefix || '/' },
+        { label: dict.nav.destinations, href: `${prefix}/destinations` },
+        { label: title },
+      ]}
+    />
   </Section>
 
   <Section>
@@ -74,25 +89,27 @@ const testimonial = {
 
   <Section bg="parchment">
     <h2 class="font-display text-3xl md:text-4xl font-semibold mb-8">ทริปที่เราจัดที่นี่</h2>
-    {matchingItineraries.length > 0 ? (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {matchingItineraries.map((itin) => (
-          <ItineraryCard
-            slug={itin.data.slug}
-            title={itin.data.title}
-            category={itin.data.category}
-            destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
-            days={itin.data.days}
-            priceFrom={itin.data.priceFrom}
-            currency={itin.data.currency}
-            heroImage={itin.data.heroImage}
-            ageBand={itin.data.ageBand}
-          />
-        ))}
-      </div>
-    ) : (
-      <p class="text-ink-muted-80">ยังไม่มีโปรแกรมสำเร็จรูป แต่เราสามารถออกแบบให้</p>
-    )}
+    {
+      matchingItineraries.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {matchingItineraries.map((itin) => (
+            <ItineraryCard
+              slug={itin.data.slug}
+              title={itin.data.title}
+              category={itin.data.category}
+              destinations={itin.data.destinations.map((d: any) => d.id ?? d)}
+              days={itin.data.days}
+              priceFrom={itin.data.priceFrom}
+              currency={itin.data.currency}
+              heroImage={itin.data.heroImage}
+              ageBand={itin.data.ageBand}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="text-ink-muted-80">ยังไม่มีโปรแกรมสำเร็จรูป แต่เราสามารถออกแบบให้</p>
+      )
+    }
   </Section>
 
   <Section bg="parchment">
@@ -109,9 +126,13 @@ const testimonial = {
       <div class="bg-canvas-parchment p-6 rounded-lg">
         <h3 class="font-semibold text-ink mb-2">ประเภทที่เหมาะ</h3>
         <div class="flex flex-wrap gap-1">
-          {entry.data.bestFor.map((cat) => (
-            <span class="text-fine-print bg-ink text-canvas px-2 py-0.5 rounded">{dict.categories[cat]}</span>
-          ))}
+          {
+            entry.data.bestFor.map((cat) => (
+              <span class="text-fine-print bg-ink text-canvas px-2 py-0.5 rounded">
+                {dict.categories[cat]}
+              </span>
+            ))
+          }
         </div>
       </div>
       <div class="bg-canvas-parchment p-6 rounded-lg">
@@ -128,6 +149,9 @@ const testimonial = {
 
   <CTASection
     headline={`วางแผนทริป${title}`}
-    primaryCta={{ href: `${prefix}/enquire?destination=${entry.data.slug}`, label: dict.nav.enquire }}
+    primaryCta={{
+      href: `${prefix}/enquire?destination=${entry.data.slug}`,
+      label: dict.nav.enquire,
+    }}
   />
 </PageLayout>

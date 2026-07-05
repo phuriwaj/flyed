@@ -51,10 +51,10 @@ test.describe('Decap CMS admin shell', () => {
   });
 
   // SPA fallback for /admin/* is a Cloudflare Pages feature, configured via
-// dist/client/_redirects. It is only meaningful against the deployed site or
-// a Pages-emulating server — python's stdlib HTTP server does NOT process
-// _redirects, so this test would fail under our static preview. Skipped here.
-test.skip('/admin/* SPA fallback works for unknown paths', async ({ page }) => {
+  // dist/client/_redirects. It is only meaningful against the deployed site or
+  // a Pages-emulating server — python's stdlib HTTP server does NOT process
+  // _redirects, so this test would fail under our static preview. Skipped here.
+  test.skip('/admin/* SPA fallback works for unknown paths', async ({ page }) => {
     await page.goto('/admin/some/deep/path');
     // Should load index.html with Decap script
     const decapScript = page.locator('script[src*="decap-cms"]');
