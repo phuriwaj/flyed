@@ -1,3 +1,17 @@
+---
+title: flyed image prompt library
+doc_type: playbook
+status: draft
+version: 0.1.0
+date: 2026-07-05
+authors: ['docs-architect (AI-generated, pending human review)']
+reviewers: []
+system: flyed marketing site
+source_commit: bc0995c
+related:
+  - docs/development/contributing.md
+---
+
 # flyed Image Prompt Library
 
 Tool-neutral prompts for AI image generation. Adapt to your chosen model (Midjourney v7, Flux 1.1, Imagen 4, DALL-E 3, Stable Diffusion XL). Adjust weighting syntax to match your tool.

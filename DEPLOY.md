@@ -1,3 +1,22 @@
+---
+title: flyed — production launch runbook (root project doc)
+doc_type: deployment
+status: draft
+version: 0.1.0
+date: 2026-07-05
+authors: ['docs-architect (AI-generated, pending human review)']
+reviewers: []
+system: flyed marketing site
+source_commit: bc0995c
+related:
+  - docs/operations/deployment.md
+  - docs/operations/runbooks/RB-leads-kv-failure.md
+  - docs/operations/runbooks/RB-enquiry-429.md
+  - docs/operations/runbooks/RB-decap-cms.md
+---
+
+> **Detailed deployment guide:** see [docs/operations/deployment.md](docs/operations/deployment.md). This file remains as the root project doc.
+
 # flyed Production Launch Runbook
 
 This is the deployment + manual verification checklist for the flyed marketing

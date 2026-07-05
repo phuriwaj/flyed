@@ -1,3 +1,5 @@
+<!-- For broader documentation, see [docs/index.md](docs/index.md). -->
+
 ## Development
 
 When starting the dev server, use background mode:

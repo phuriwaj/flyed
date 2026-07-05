@@ -1,3 +1,17 @@
+---
+title: flyed CMS — editor guide
+doc_type: onboarding
+status: draft
+version: 0.1.0
+date: 2026-07-05
+authors: ['docs-architect (AI-generated, pending human review)']
+reviewers: []
+system: flyed marketing site
+source_commit: bc0995c
+related:
+  - ../../docs/operations/runbooks/RB-decap-cms.md
+---
+
 # flyed CMS — Editor Guide
 
 The flyed CMS is a browser-based editor for blog content. It writes to Git and creates pull requests — no separate database.
@@ -18,7 +32,7 @@ The flyed CMS is a browser-based editor for blog content. It writes to Git and c
 5. Write the body in the markdown editor
 6. Click **"Publish"**
 7. Decap creates a branch (`cms/<your-slug>`), commits your changes, and opens a PR
-8. A reviewer checks the PR, sees the CF Pages preview URL, and merges → production
+8. A reviewer checks the PR, sees the Cloudflare Workers preview URL, and merges → production
 
 ## Translating to Thai
 
@@ -46,9 +60,15 @@ Posts with **Draft: true** are hidden from `/th/blog` (and the production build 
 ## Previewing your work
 
 - Click the **"View"** button (top right) to see how the post will look
-- The preview loads from a CF Pages branch deploy (real Astro-rendered page)
-- **First preview takes 30–60 seconds** while CF Pages builds the branch
+- The preview loads from a **Cloudflare Workers Builds** branch preview URL.
+  - Default pattern: `https://<branch>.<project>.workers.dev` (per Cloudflare Workers Builds docs).
+  - Your project name is the Workers project slug — see the operator runbook at [`docs/operations/runbooks/RB-decap-cms.md`](../../docs/operations/runbooks/RB-decap-cms.md) for the exact pattern your team uses.
+- **First preview takes 30–60 seconds** while Workers Builds compiles the branch
 - Subsequent updates are faster
+
+## OAuth and the GitHub token
+
+Decap Cloud handles OAuth for you; if a self-hosted setup is introduced in the future, the backend will need a `CMS_GITHUB_TOKEN` (a GitHub PAT with `repo` scope) wired to an OAuth handler under `src/pages/api/cms-auth.ts`. Today this is **not** implemented — Decap Cloud is the only path. See [`RB-decap-cms.md` § OAuth workflow](../../docs/operations/runbooks/RB-decap-cms.md) for the full operator procedure.
 
 ## Hero images
 
@@ -65,6 +85,7 @@ Posts with **Draft: true** are hidden from `/th/blog` (and the production build 
 
 ## Need help?
 
-- Slack: #marketing-eng
-- GitHub: @flyed-dev
+- Slack: `#marketing-eng`
+- GitHub: `@flyed-dev`
 - Or open a PR with your question
+- Operator runbook (for setup, password reset, rollback): [`docs/operations/runbooks/RB-decap-cms.md`](../../docs/operations/runbooks/RB-decap-cms.md)
