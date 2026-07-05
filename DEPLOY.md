@@ -1,7 +1,10 @@
 # flyed Production Launch Runbook
 
 This is the deployment + manual verification checklist for the flyed marketing
-site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
+site. The site is a Cloudflare Workers project (Workers Builds) backed by an
+Astro 7 static-output build with per-route SSR for the `/api/*` and `/admin/*`
+endpoints. The site contents are pre-rendered at build time; only the
+runtime endpoints run on the edge.
 
 ## Pre-launch checklist
 
@@ -11,7 +14,7 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
 - [ ] Add domain `flyed.dev` to Cloudflare (free tier OK)
 - [ ] Update nameservers at registrar to Cloudflare's nameservers
 - [ ] Get Account ID from Cloudflare dashboard (right sidebar)
-- [ ] Create API token: My Profile → API Tokens → Create Token → Edit Cloudflare Pages template
+- [ ] Create API token: My Profile → API Tokens → Create Token → Edit Cloudflare Workers template
   - Account: <your account>
   - Zone Resources: Include → Specific zone → flyed.dev
   - Account Resources: Include → Specific account → <your account>
@@ -20,15 +23,16 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
   - Add `CLOUDFLARE_ACCOUNT_ID` (the account ID)
   - Optional: add `LHCI_TOKEN` for Lighthouse CI public storage upload
 
-### 2. Cloudflare Pages project
+### 2. Cloudflare Workers project
 
-- [ ] Connect GitHub repo `flyed-dev/flyed` to Cloudflare Pages
+- [ ] Connect GitHub repo `flyed-dev/flyed` to Cloudflare Workers (Workers Builds)
 - [ ] Build settings:
-  - Framework preset: **Astro**
   - Build command: `npm run build`
   - Build output directory: `dist`
   - Root directory: `/`
   - Node version: 22
+  - Compatibility date: `2026-06-01` (matches `wrangler.jsonc`)
+  - Compatibility flags: `nodejs_compat`
 - [ ] Environment variables (Production):
   - `RESEND_API_KEY` — set via `wrangler secret put RESEND_API_KEY`
   - `CRM_WEBHOOK_URL` — set via `wrangler secret put CRM_WEBHOOK_URL`
@@ -36,16 +40,39 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
   - `SITE_URL` — `https://flyed.dev`
   - `NODE_ENV` — `production`
 
+### 2.5. KV namespaces
+
+The `enquiry` API handler depends on two KV namespaces (one for sliding-window
+rate limiting, one for lead capture). They are declared in `wrangler.jsonc`
+with placeholder ids (`0000…01`, `0000…02`). Before the first deploy you must
+create them in Cloudflare and patch the real ids back into `wrangler.jsonc`:
+
+```bash
+# Production namespaces
+npx wrangler kv namespace create RATE_LIMIT_KV
+npx wrangler kv namespace create LEADS_KV
+
+# Preview namespaces (used by `wrangler dev` and PR previews)
+npx wrangler kv namespace create RATE_LIMIT_KV --preview
+npx wrangler kv namespace create LEADS_KV --preview
+```
+
+Each command prints an `id` (production) and a `--preview` run prints a
+`preview_id`. Paste both strings into the matching `kv_namespaces` entries in
+`wrangler.jsonc` — `id` for `id`, `preview_id` for `preview_id`. Until this is
+done, the build itself succeeds but the runtime handler will skip durable lead
+capture and the rate limiter will fall open.
+
 ### 3. DNS records (Cloudflare)
 
-- [ ] A record: `@` → Cloudflare Pages auto-managed
-- [ ] CNAME: `www` → `flyed.pages.dev`
+- [ ] A record: `@` → Workers route (auto-managed once the custom domain is bound)
+- [ ] CNAME: `www` → `flyed.workers.dev` (or the project workers.dev subdomain)
 - [ ] Verify with `dig flyed.dev +short`
 
 ### 4. Domain
 
-- [ ] Custom domain `flyed.dev` added to Pages project
-- [ ] Custom domain `www.flyed.dev` added to Pages project
+- [ ] Custom domain `flyed.dev` added to the Workers project (Triggers → Custom Domains)
+- [ ] Custom domain `www.flyed.dev` added to the Workers project
 - [ ] SSL/TLS: Full (strict)
 - [ ] Always Use HTTPS: ON
 - [ ] Minimum TLS Version: 1.2
@@ -61,8 +88,8 @@ site. The site is a Cloudflare Pages project with an Astro 7 SSR worker.
 # From main branch, after all CI passes
 git push origin main
 
-# Cloudflare Pages auto-deploys via the GitHub Actions workflow
-# or via the Cloudflare GitHub App integration
+# Cloudflare Workers Builds auto-deploys via the GitHub Actions workflow
+# or via the Cloudflare GitHub App integration.
 ```
 
 ## Post-deploy verification
@@ -130,7 +157,7 @@ git push origin main
 
 ### Cloudflare Analytics
 
-- [ ] Enable Web Analytics in Pages project settings
+- [ ] Enable Web Analytics on the Workers project (Workers Analytics → Enable)
 - [ ] Set up email alerts for: error rate > 1%, bandwidth > 50GB/month
 
 ### Error tracking
@@ -149,14 +176,14 @@ git push origin main
 If a deploy breaks production:
 
 ```bash
-# Cloudflare Pages: Dashboard → flyed → Deployments → click previous successful deploy → "Rollback to this deploy"
+# Cloudflare Dashboard → Workers & Pages → flyed → Deployments → click previous successful deploy → "Rollback to this deploy"
 ```
 
 Or via CLI:
 
 ```bash
-wrangler pages deployment list --project-name=flyed
-wrangler pages deployment rollback <deployment-id> --project-name=flyed
+wrangler deployments list --name=flyed
+wrangler deployments rollback <deployment-id> --name=flyed
 ```
 
 ## Known post-launch items
@@ -169,6 +196,12 @@ wrangler pages deployment rollback <deployment-id> --project-name=flyed
   (Priority: LOW, after 6 months of traffic data)
 - **Newsletter provider not wired** — endpoint accepts email, no provider integration
   (Priority: HIGH, before any newsletter CTA drives traffic)
+- **Lead durability = LEADS_KV** — the `enquiry` handler returns `durable: true`
+  only when the lead has been written to the `LEADS_KV` namespace. If the
+  binding is missing or `put()` throws, the response still returns 200 but
+  `durable: false` and the only record is in the request log. Confirm the
+  namespace exists and ids are patched in `wrangler.jsonc` before going live
+  (see "KV namespaces" above).
 - **Image srcset for mobile** could be tuned further based on real-user metrics
   (Priority: LOW, ongoing)
 - **Zod v3→v5 migration** when Zod 5 ships
