@@ -26,6 +26,7 @@ export default [
       'coverage/**',
       '.lighthouseci/**',
       '.wrangler/**',
+      '.claude/worktrees/**',
       '.simple-git-hooks.js',
       'eslint.config.js',
     ],
