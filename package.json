@@ -16,7 +16,11 @@
     "test:e2e:ui": "playwright test --ui",
     "lhci": "lhci autorun",
     "check": "astro check && tsc --noEmit",
-    "migrate:blog-i18n": "node --experimental-strip-types scripts/migrate-blog-i18n.mts"
+    "migrate:blog-i18n": "node --experimental-strip-types scripts/migrate-blog-i18n.mts",
+    "format": "prettier --write --ignore-unknown .",
+    "format:check": "prettier --check --ignore-unknown .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.0.2",
@@ -48,11 +52,26 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
+    "@typescript-eslint/eslint-plugin": "^8.62.1",
+    "@typescript-eslint/parser": "^8.62.1",
     "@vitest/ui": "^2.1.9",
+    "eslint": "^10.6.0",
+    "eslint-plugin-astro": "^2.1.1",
     "gray-matter": "^4.0.3",
     "happy-dom": "^15.11.7",
+    "lint-staged": "^17.0.8",
+    "prettier": "^3.9.4",
+    "prettier-plugin-astro": "^0.14.1",
+    "simple-git-hooks": "^2.13.1",
     "vitest": "^2.1.9",
     "wait-on": "^9.0.10",
     "yaml": "^2.9.0"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts,tsx,jsx,astro,css,json,md,mdx,yml,yaml,html}": "prettier --write --ignore-unknown",
+    "*.{ts,tsx,astro}": "eslint --fix"
   }
 }

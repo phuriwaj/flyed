@@ -1,0 +1,33 @@
+# Build output
+dist/
+.astro/
+
+# Dependencies
+node_modules/
+
+# Lockfile — never reformat
+package-lock.json
+
+# Binary assets
+*.png
+*.avif
+*.webp
+*.ico
+*.gif
+
+# Wrangler config (JSONC with comments — Prettier will mangle these)
+wrangler.jsonc
+
+# Cloudflare custom config (not JSON — special formats)
+public/_headers
+public/_redirects
+
+# Test artifacts
+playwright-report/
+test-results/
+coverage/
+.lighthouseci/
+
+# Plan/spec markdown lives outside the product; leave the diff for humans
+.superpowers/
+docs/superpowers/
