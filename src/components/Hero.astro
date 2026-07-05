@@ -30,14 +30,13 @@ const isSmall = variant === 'small';
 <section
   class={`relative ${isSmall ? 'h-[40vh] min-h-[320px]' : 'h-[85vh] min-h-[600px]'} w-full overflow-hidden bg-ink`}
 >
+  <!-- format/widths omitted: imageService=passthrough + public/* src → no build-time variants. Re-add after image-migration follow-up lands. -->
   <Image
     src={imageSrc}
     alt={imageAlt}
     width={2400}
     height={1350}
-    widths={[800, 1200, 1800, 2400]}
     sizes="100vw"
-    format="avif"
     loading="eager"
     fetchpriority="high"
     decoding="async"

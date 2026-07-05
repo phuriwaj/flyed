@@ -190,14 +190,13 @@ const whyBlocks = [
   {/* Hero tile — edge-to-edge photography, no gradient */}
   <ServiceTile surface="ink" ariaLabel="Hero">
     <div class="relative w-full h-[80vh] min-h-[600px] -my-12 md:-my-20">
+      <!-- format/widths omitted: imageService=passthrough + public/* src → no build-time variants. Re-add after image-migration follow-up lands. -->
       <Image
         src="/images/hero/home-hero.jpg"
         alt="Students hiking a forested ridge at golden hour in northern Thailand"
         width={2400}
         height={1350}
-        widths={[800, 1200, 1800, 2400]}
         sizes="100vw"
-        format="avif"
         loading="eager"
         fetchpriority="high"
         class="absolute inset-0 w-full h-full object-cover"
