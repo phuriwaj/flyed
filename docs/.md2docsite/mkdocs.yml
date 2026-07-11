@@ -1,0 +1,142 @@
+site_name: flyed Docs
+docs_dir: ..
+exclude_docs: |
+  .md2docsite/**
+  site/**
+  *.html
+  *.zip
+  DESIGN.md
+  design.md
+  Design.md
+
+theme:
+  name: material
+  font: false
+  custom_dir: overrides
+  palette:
+    - media: '(prefers-color-scheme: light)'
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: '(prefers-color-scheme: dark)'
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.indexes
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.tabs.link
+
+plugins:
+  - search
+  - offline
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.betterem
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.smartsymbols
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.inlinehilite
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: md2-mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra_javascript:
+  - https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js
+  - javascripts/md2docsite-diagrams.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+# >>> md2docsite:theme (auto-generated — do not edit by hand) >>>
+extra_css:
+  - assets/md2docsite-theme.css
+  - stylesheets/extra.css
+# <<< md2docsite:theme <<<
+
+# >>> md2docsite:nav (auto-generated — do not edit by hand) >>>
+nav:
+  - Home: index.md
+  - Api:
+      - API overview — flyed runtime endpoints: api/overview.md
+  - Architecture:
+      - Decisions:
+          - "Astro 7 `output: 'static'` with per-route SSR opt-in": architecture/decisions/0003-astro-7-static-default-with-opt-in-ssr.md
+          - 'Defer real AVIF / WebP until images are ESM-imported from `src/assets/`': architecture/decisions/0004-avif-webp-deferred.md
+          - Run on Cloudflare Workers (not Cloudflare Pages): architecture/decisions/0001-cloudflare-workers-vs-pages.md
+          - 'Use two Cloudflare KV namespaces — `RATE_LIMIT_KV` and `LEADS_KV`': architecture/decisions/0002-kv-namespaces-and-durability.md
+          - React 19 islands with Astro view transitions: architecture/decisions/0005-react-19-islands-with-astro-view-transitions.md
+      - Architecture overview — flyed: architecture/overview.md
+  - Data:
+      - Data dictionary — flyed marketing site: data/data-dictionary.md
+      - Database design — flyed marketing site: data/database-design.md
+  - Development:
+      - Contributing — flyed: development/contributing.md
+      - Onboarding — first 30 minutes with flyed: development/onboarding.md
+      - Local development setup — flyed: development/setup.md
+  - flyed Image Prompt Library: image-prompts.md
+  - Operations:
+      - Deployment — flyed: operations/deployment.md
+      - Runbooks:
+          - RB — Decap CMS on Cloudflare Workers: operations/runbooks/RB-decap-cms.md
+          - RB — Enquiry 429 storm: operations/runbooks/RB-enquiry-429.md
+          - 'RB — Astro image service under @astrojs/cloudflare': operations/runbooks/RB-image-service.md
+          - RB — LEADS_KV put failure: operations/runbooks/RB-leads-kv-failure.md
+          - RB — Rate-limit KV eviction / TTL behaviour: operations/runbooks/RB-rate-limit-kv-eviction.md
+  - Quality:
+      - Defects:
+          - DEF-001 — Home page visual snapshots are stale; full-page Playwright tests fail on desktop/tablet/mobile: quality/defects/DEF-001-home-visual-snapshots-stale.md
+  - Requirements:
+      - Functional specification — flyed marketing site: requirements/functional-spec.md
+      - Software requirements specification — flyed marketing site: requirements/srs.md
+      - Use Cases:
+          - UC-001 — Submit a school-trip enquiry: requirements/use-cases/UC-001-submit-school-trip-enquiry.md
+          - UC-002 — Subscribe to the newsletter: requirements/use-cases/UC-002-subscribe-newsletter.md
+          - UC-003 — Submit a contact message: requirements/use-cases/UC-003-submit-contact-form.md
+          - UC-004 — Browse content by locale: requirements/use-cases/UC-004-browse-content-by-locale.md
+  - Superpowers:
+      - Plans:
+          - Navigation Component Implementation Plan: superpowers/plans/2026-06-29-navigation-implementation.md
+          - flyed Marketing Site Implementation Plan: superpowers/plans/2026-06-30-flyed-marketing-site-implementation.md
+          - Decap CMS Integration Implementation Plan: superpowers/plans/2026-07-03-decap-cms.md
+          - Cloudflare Workers Migration Implementation Plan: superpowers/plans/2026-07-04-cloudflare-workers-migration.md
+          - flyed Improvements Implementation Plan: superpowers/plans/2026-07-04-flyed-improvements.md
+      - Specs:
+          - Navigation Component Design: superpowers/specs/2026-06-29-navigation-design.md
+          - flyed — Marketing Site Design: superpowers/specs/2026-06-30-flyed-marketing-site-design.md
+          - flyed — Decap CMS Integration Design: superpowers/specs/2026-07-03-decap-cms-integration-design.md
+          - Migrate flyed from Cloudflare Pages to Cloudflare Workers: superpowers/specs/2026-07-04-cloudflare-workers-migration-design.md
+# <<< md2docsite:nav <<<

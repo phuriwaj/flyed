@@ -1,0 +1,19 @@
+{#- Custom override of Material's partials/copyright.html. This file is yours — md2docsite never
+touches anything under overrides/. Original lives at: material/templates/partials/copyright.html -#}
+<div class="md-copyright">
+  {% if config.copyright %}
+  <div class="md-copyright__highlight">{{ config.copyright }}</div>
+  {% endif %}
+  <div class="md-copyright__highlight">
+    Built with
+    <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener"
+      >Claude Code</a
+    >
+    · md2docsite
+  </div>
+  {% if not config.extra.generator == false %} Made with
+  <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+    Material for MkDocs
+  </a>
+  {% endif %}
+</div>

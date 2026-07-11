@@ -1,0 +1,64 @@
+/* Hand overrides — loads after assets/md2docsite-theme.css and always wins.
+   Extends the ivory/slate/clay tokens (see ../DESIGN.md) to component
+   surfaces the generator's structural layer doesn't reach: buttons,
+   admonitions/callouts, and tables. Mermaid diagrams are styled by the
+   md2docsite skill runtime (javascripts/md2docsite-diagrams.js). */
+
+/* Buttons — markdown [text](url){: .md-button } */
+.md-typeset .md-button {
+  font-family: var(--md-code-font, ui-monospace, monospace);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  transition: background-color 0.15s ease;
+}
+.md-typeset .md-button:hover {
+  background: var(--md-typeset-mark-color);
+  border-color: var(--md-default-fg-color--lightest);
+  color: var(--md-default-fg-color);
+}
+.md-typeset .md-button--primary {
+  background: var(--md-typeset-a-color);
+  border-color: var(--md-typeset-a-color);
+  color: var(--md-primary-bg-color, #fff);
+}
+.md-typeset .md-button--primary:hover {
+  background: var(--md-accent-fg-color);
+  border-color: var(--md-accent-fg-color);
+}
+
+/* Callouts / admonitions — keep Material's semantic left-border color,
+   but unify the panel to the house surface + border treatment. */
+.md-typeset .admonition,
+.md-typeset details {
+  background: var(--md-default-bg-color);
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left-width: 4px;
+  box-shadow: none;
+}
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-family: var(--md-code-font, ui-monospace, monospace);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* Tables — row-hover wash + rule using the house tokens */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.md-typeset table:not([class]) td {
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+.md-typeset table:not([class]) tr:hover {
+  background-color: var(--md-typeset-mark-color);
+}

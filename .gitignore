@@ -66,3 +66,8 @@ undefined:*
 # Hand-authored design doc — separate from the project. Author keeps it
 # out of the repo.
 DESIGN.md
+
+# md2docsite tool-owned build artifacts
+docs/.md2docsite/.venv/
+docs/site/
+docs/site.zip
