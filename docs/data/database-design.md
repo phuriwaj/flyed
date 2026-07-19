@@ -43,8 +43,8 @@ flowchart LR
   Build[Astro build]
   KV[(Cloudflare KV)]
   subgraph KVNS[Namespaces]
-    LKV[LEADS_KV<br/>key: UUID v4<br/>value: {enquiry, createdAt}]
-    RKV[RATE_LIMIT_KV<br/>key: rl:&lt;ip&gt;<br/>value: [ts,…]]
+    LKV["LEADS_KV<br/>key: UUID v4<br/>value: {enquiry, createdAt}"]
+    RKV["RATE_LIMIT_KV<br/>key: rl:&lt;ip&gt;<br/>value: [ts,…]"]
   end
   C1 --> Build
   C2 --> Build

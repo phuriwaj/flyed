@@ -138,7 +138,7 @@ flowchart LR
     layouts[Layouts + components<br/>src/layouts/, src/components/]
     islands[React 19 islands<br/>src/components/*.tsx]
     blog[Content collections<br/>src/content.config.ts<br/>blog, itineraries, destinations, categories, team]
-    i18n[i18n dictionaries<br/>src/i18n/{en,th}.json]
+    i18n["i18n dictionaries<br/>src/i18n/{en,th}.json"]
   end
   subgraph cf[Cloudflare runtime]
     wrk[Workers entrypoint<br/>@astrojs/cloudflare/entrypoints/server]
