@@ -26,6 +26,11 @@ export default defineConfig({
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: 'http://127.0.0.1:4321',
+    // Freeze CSS transitions/animations AND JavaScript rAF loops (Counter.tsx
+    // checks prefers-reduced-motion and skips its 1800ms count-up animation,
+    // rendering the final value immediately). Without this the visual spec
+    // captures different pixels each shot — see DEF-002.
+    reducedMotion: 'reduce',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },

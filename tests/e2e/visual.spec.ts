@@ -19,8 +19,15 @@ for (const vp of VIEWPORTS) {
   for (const p of PAGES) {
     test(`visual: ${p.name} @ ${vp.name}`, async ({ page }) => {
       await page.setViewportSize({ width: vp.width, height: vp.height });
+      // Per project-level reducedMotion: 'reduce', Counter.tsx renders
+      // its final value immediately and skips its 1800ms rAF count-up.
+      // Defence-in-depth in case a contributor disables that project
+      // setting locally — also emulate here.
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto(p.path, { waitUntil: 'networkidle' });
-      // Disable animations site-wide via injected CSS
+      // Disable CSS transitions/animations site-wide via injected CSS.
+      // Note: this does NOT stop JS rAF loops (e.g. Counter.tsx) — the
+      // reducedMotion emulation above is what kills those.
       await page.addStyleTag({
         content: `*, *::before, *::after {
           animation-duration: 0s !important;
@@ -29,11 +36,15 @@ for (const vp of VIEWPORTS) {
           transition-delay: 0s !important;
         }`,
       });
-      // Scroll to bottom and back to trigger any lazy-load
+      // Wait for variable fonts to load (Fraunces, Inter, Noto Sans Thai)
+      // so the first pixel comparison isn't against a fallback-font render.
+      await page.evaluate(() => document.fonts.ready);
+      // Scroll to bottom and back to trigger lazy-loaded images and any
+      // client:visible hydration, then settle.
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(500);
       await page.evaluate(() => window.scrollTo(0, 0));
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(500);
       await expect(page).toHaveScreenshot(`${p.name}-${vp.name}.png`, {
         fullPage: true,
         maxDiffPixelRatio: 0.02,

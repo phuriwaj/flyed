@@ -2,7 +2,7 @@
 id: DEF-001
 title: Home page visual snapshots are stale; full-page Playwright tests fail on desktop/tablet/mobile
 doc_type: defect
-status: new
+status: resolved
 severity: S3
 priority: P2
 date: 2026-07-05
@@ -10,7 +10,19 @@ found_in: 7c4f554 (branch wave-7-improvements)
 environment: local (Node 22.23.1, Playwright 1.61.1, happy chromium), serving dist/client/ via python3 http.server
 related_test: tests/e2e/visual.spec.ts:20 (visual: home @ desktop/tablet/mobile)
 related_requirement: not yet traced (visual regression baseline policy is owned by CI; see .github/workflows/ci.yml "Update baselines if requested")
-related: []
+related:
+  - 4dcb62c (regenerated home snapshots — closes the snapshot-staleness claim)
+  - docs/quality/defects/DEF-002-visual-rendering-flake-counter-raf.md (separate rendering-stability flake surfaced after the fix)
+resolution:
+  fixed_in: 4dcb62c
+  closing_note: |
+    The original snapshot-staleness claim was fixed in commit 4dcb62c which regenerated the
+    three home snapshots (home-desktop, home-mobile, home-tablet). The defect doc frontmatter
+    was not updated at the time and remained status: new. The snapshot baselines themselves are
+    correct against the current page — actual.png and expected.png for home-mobile match within
+    5 bytes. A separate, unrelated rendering-stability flake (Counter.tsx 1800ms rAF count-up
+    triggered by IntersectionObserver) was misattributed to snapshot staleness and is tracked
+    as DEF-002.
 ---
 
 # DEF-001 — Home page visual snapshots are stale; full-page Playwright tests fail on desktop/tablet/mobile
