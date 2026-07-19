@@ -30,6 +30,10 @@ export default defineConfig({
     // checks prefers-reduced-motion and skips its 1800ms count-up animation,
     // rendering the final value immediately). Without this the visual spec
     // captures different pixels each shot — see DEF-002.
+    // @ts-expect-error: `reducedMotion` is on BrowserContextOptions (Playwright 1.42+)
+    // but @playwright/test 1.61.1's TestOptions doesn't surface it. The runtime accepts
+    // the option and Counter.tsx's prefers-reduced-motion shortcut fires. If a future
+    // Playwright upgrade exposes it on TestOptions, remove this suppression.
     reducedMotion: 'reduce',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
